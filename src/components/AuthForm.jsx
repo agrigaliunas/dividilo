@@ -41,7 +41,7 @@ const AuthForm = () => {
                     placeholder="Ingrese contraseña..."
                   />
                   <button onClick={handleViewPassword}>
-                    {viewPassword ?<EyeSlash/>: <Eye/>}
+                    {viewPassword ?<Eye/>: <EyeSlash/>}
                   </button>
                   
                 </div>
