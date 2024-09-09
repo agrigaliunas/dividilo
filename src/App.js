@@ -1,9 +1,16 @@
 import './App.css';
+import { Route, Routes } from "react-router-dom";
+import LoginScreen from './screens/LoginScreen.js';
+import RegisterScreen from './screens/RegisterScreen.js';
 
 function App() {
   return (
-    <div className="App">
-    </div>
+    <Routes>
+      <Route path="/login" element={<LoginScreen />} exact/>
+      <Route path="/register" element={<RegisterScreen />} exact/>
+
+    </Routes>
+
   );
 }
 
