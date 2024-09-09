@@ -1,9 +1,12 @@
 import './App.css';
-import AuthForm from './components/AuthForm.jsx';
+import { Route, Routes } from "react-router-dom";
+import AuthScreen from './screens/AuthScreen.js';
 
 function App() {
   return (
-      <AuthForm></AuthForm>     
+    <Routes>
+      <Route path="/auth" element={<AuthScreen />} exact/>
+    </Routes>
 
   );
 }
