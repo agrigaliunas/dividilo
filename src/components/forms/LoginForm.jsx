@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Eye } from "./icons/Eye";
-import { EyeSlash } from "./icons/EyeSlash";
+import { Eye } from "../icons/Eye";
+import { EyeSlash } from "../icons/EyeSlash";
 
-const RegisterForm = () => {
+const LoginForm = () => {
 
   const [viewPassword, setViewPassword] = useState(false)
 
@@ -15,11 +15,10 @@ const RegisterForm = () => {
   }
 
   return (
-    <div className="h-screen flex justify-center items-center">
       <div className="flex flex-col p-6 w-[90vw] h-[80vh] lg:w-[30vw] border border-1 border-[#e9e9ef] rounded-md shadow-sm">
         <div className="w-full flex flex-col gap-16">
           <div className="flex flex-col gap-1">
-            <h1 className="text-3xl font-semibold">Iniciar Sesión</h1>
+            <h2 className="text-3xl font-semibold">Iniciar Sesión</h2>
             <span>¡Bienvenido! 👋</span>
           </div>
           <div>
@@ -55,8 +54,7 @@ const RegisterForm = () => {
           </div>
         </div>
       </div>
-    </div>
   );
 };
 
-export default RegisterForm;
+export default LoginForm;
