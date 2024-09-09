@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Eye } from "./icons/Eye";
 import { EyeSlash } from "./icons/EyeSlash";
 
-const AuthForm = () => {
+const LoginForm = () => {
 
   const [viewPassword, setViewPassword] = useState(false)
 
@@ -59,4 +59,4 @@ const AuthForm = () => {
   );
 };
 
-export default AuthForm;
+export default LoginForm;
