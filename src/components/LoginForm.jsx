@@ -1,23 +1,21 @@
 import React, { useState } from "react";
 import { Eye } from "./icons/Eye";
 import { EyeSlash } from "./icons/EyeSlash";
+import { Link } from "react-router-dom";
 
 const LoginForm = () => {
 
   const [viewPassword, setViewPassword] = useState(false)
 
   const handleViewPassword = (e) => {
-
     e.preventDefault()
-
     setViewPassword(!viewPassword)
-
   }
 
   return (
     <div className="h-screen flex justify-center items-center">
-      <div className="flex flex-col p-6 w-[90vw] h-[80vh] lg:w-[30vw] border border-1 border-[#e9e9ef] rounded-md shadow-sm">
-        <div className="w-full flex flex-col gap-16">
+      <div className="flex flex-col p-6 w-[90vw] lg:h-[80vh] lg:w-[30vw] border border-1 border-[#e9e9ef] rounded-md shadow-sm overflow-hidden">
+        <div className="w-full flex flex-col gap-8">
           <div className="flex flex-col gap-1">
             <h1 className="text-3xl font-semibold">Iniciar Sesión</h1>
             <span>¡Bienvenido! 👋</span>
@@ -43,14 +41,13 @@ const LoginForm = () => {
                   <button onClick={handleViewPassword}>
                     {viewPassword ?<Eye/>: <EyeSlash/>}
                   </button>
-                  
                 </div>
               </div>
               <div className="flex flex-row justify-end">
                 <button className="text-brandblue font-semibold">Olvidé mi contraseña</button>
               </div>
               <button className="bg-brandblue text-white p-2 rounded-md hover:opacity-85">Iniciar Sesión</button>
-              <button className="bg-white text-brandblue border border-brandblue p-2 rounded-md">Registrarse</button>
+              <Link to="/register" className="bg-white text-center text-brandblue border border-brandblue p-2 rounded-md">Registrarse</Link>
             </form>
           </div>
         </div>
