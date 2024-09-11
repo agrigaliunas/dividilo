@@ -1,11 +1,16 @@
 import React, { useState } from 'react'
 import { MyAccountSection } from '../sections/MyAccountSection';
 import { MyAccountSectionTitle } from '../MyAccountSectionTitle';
+import { DeleteAccount } from '../icons/DeleteAccount.jsx'
+import { InfoAccount } from '../icons/InfoAccount.jsx'
+import { Padlock } from '../icons/Padlock.jsx';
+import { Danger } from '../icons/Danger.jsx';
 
 
 const sections = [{
   step: 0,
   title: "Información personal",
+  icon: <InfoAccount />,
   labels: [{
     title: "Nombre",
     placeholder: "Ingrese nombre...",
@@ -17,8 +22,8 @@ const sections = [{
     type: "text"
   },
   {
-    title: "Email",
-    placeholder: "Ingrese email...",
+    title: "Correo electrónico",
+    placeholder: "Ingrese correo electrónico...",
     type: "email"
   }
   ],
@@ -27,6 +32,7 @@ const sections = [{
 {
   step: 1,
   title: "Seguridad",
+  icon: <Padlock />,
   labels: [{
     title: "Contraseña actual",
     placeholder: "Ingrese contraseña actual...",
@@ -48,6 +54,7 @@ const sections = [{
 {
   step: 2,
   title: "Zona peligrosa",
+  icon: <Danger/>,
   labels: [{
     title: "Elimina tu cuenta. Esta acción no tiene vuelta atrás.",
   },
@@ -65,7 +72,7 @@ const MyAccountLayout = () => {
   }
 
   return (
-    <div className="flex flex-col p-6 w-[90vw] h-[80vh] lg:w-[70vw] border border-1 border-[#e9e9ef] rounded-md shadow-sm gap-6">
+    <div className="flex flex-col p-6 w-[90vw] h-[80vh] lg:w-[30vw] border border-1 border-[#e9e9ef] rounded-md shadow-sm gap-6">
       <h2 className="text-3xl font-semibold text-center">Mi cuenta</h2>
       <div className='flex flex-row justify-center w-full gap-4'>
         {sections.map(s => (

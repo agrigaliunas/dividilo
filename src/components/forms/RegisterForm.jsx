@@ -1,6 +1,12 @@
 import React, { useState } from "react";
+<<<<<<< HEAD:src/components/forms/RegisterForm.jsx
 import { Eye } from "../icons/Eye";
 import { EyeSlash } from "../icons/EyeSlash";
+=======
+import { Eye } from "./icons/Eye";
+import { EyeSlash } from "./icons/EyeSlash";
+import { Link } from "react-router-dom";
+>>>>>>> fd9c8305f705df0b3498524827f298732a6e768d:src/components/RegisterForm.jsx
 
 const RegisterForm = () => {
 
@@ -16,14 +22,36 @@ const RegisterForm = () => {
 
   return (
     <div className="h-screen flex justify-center items-center">
-      <div className="flex flex-col p-6 w-[90vw] h-[80vh] lg:w-[30vw] border border-1 border-[#e9e9ef] rounded-md shadow-sm">
-        <div className="w-full flex flex-col gap-16">
+      <div className="flex flex-col p-6 w-[90vw] lg:h-[80vh] lg:w-[30vw] border border-1 border-[#e9e9ef] rounded-md shadow-sm overflow-hidden">
+        <div className="w-full flex flex-col gap-8">
           <div className="flex flex-col gap-1">
+<<<<<<< HEAD:src/components/forms/RegisterForm.jsx
             <h2 className="text-3xl font-semibold">Iniciar Sesión</h2>
+=======
+            <h1 className="text-3xl font-semibold">Crear una cuenta</h1>
+>>>>>>> fd9c8305f705df0b3498524827f298732a6e768d:src/components/RegisterForm.jsx
             <span>¡Bienvenido! 👋</span>
           </div>
           <div>
             <form action="" className="flex flex-col gap-3">
+              <div className="flex flex-row gap-1 w-full">
+                <div className="flex flex-col gap-1 w-[50%]">
+                  <label>Nombre</label>
+                  <input
+                    className="px-2 py-3 border border-1 border-[#e9e9ef] shadow-sm outline-none rounded-md text-sm"
+                    type="email"
+                    placeholder="Ingrese nombre..."
+                  />
+                </div>
+                <div className="flex flex-col gap-1 w-[50%]">
+                  <label>Apellido</label>
+                  <input
+                    className="px-2 py-3 border border-1 border-[#e9e9ef] shadow-sm outline-none rounded-md text-sm"
+                    type="email"
+                    placeholder="Ingrese apellido..."
+                  />
+                </div>
+              </div>
               <div className="flex flex-col gap-1">
                 <label>Correo electrónico</label>
                 <input
@@ -43,14 +71,23 @@ const RegisterForm = () => {
                   <button onClick={handleViewPassword}>
                     {viewPassword ?<Eye/>: <EyeSlash/>}
                   </button>
-                  
                 </div>
               </div>
-              <div className="flex flex-row justify-end">
-                <button className="text-brandblue font-semibold">Olvidé mi contraseña</button>
+              <div className="flex flex-col gap-1">
+                <label>Confirmar contraseña</label>
+                <div className="flex flex-row border border-1 border-[#e9e9ef] justify-between items-center w-full px-2 shadow-sm rounded-md ">
+                  <input
+                    className="py-3 text-sm outline-none w-full"
+                    type= {viewPassword ? "text": "password" }
+                    placeholder="Reingrese contraseña..."
+                  />
+                  <button onClick={handleViewPassword}>
+                    {viewPassword ?<Eye/>: <EyeSlash/>}
+                  </button>
+                </div>
               </div>
-              <button className="bg-brandblue text-white p-2 rounded-md hover:opacity-85">Iniciar Sesión</button>
-              <button className="bg-white text-brandblue border border-brandblue p-2 rounded-md">Registrarse</button>
+              <button className="bg-brandblue text-white p-2 rounded-md hover:opacity-85">Registrarse</button>
+              <Link to="/login" className="bg-white text-center text-brandblue border border-brandblue p-2 rounded-md">Ya tengo una cuenta</Link>
             </form>
           </div>
         </div>
