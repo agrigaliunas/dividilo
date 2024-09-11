@@ -4,7 +4,9 @@ import { MainCenter } from '../components/MainCenter.jsx';
 
 const AccountScreen = () => {
   return (
-    <MainCenter><MyAccountLayout /></MainCenter>
+    <MainCenter>
+      <MyAccountLayout />
+    </MainCenter>
   )
 }
 
