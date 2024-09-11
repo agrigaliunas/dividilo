@@ -27,7 +27,8 @@ const sections = [{
     type: "email"
   }
   ],
-  button: "Actualizar información"
+  button: "Actualizar información",
+  buttonColor: "bg-brandblue"
 },
 {
   step: 1,
@@ -49,37 +50,52 @@ const sections = [{
     type: "password"
   }
   ],
-  button: "Actualizar contraseña"
+  button: "Actualizar contraseña",
+  buttonColor: "bg-brandblue"
 },
 {
   step: 2,
   title: "Zona peligrosa",
-  icon: <Danger/>,
+  icon: <Danger />,
   labels: [{
-    title: "Elimina tu cuenta. Esta acción no tiene vuelta atrás.",
+    title: "¡Atención! ¡Esta acción no tiene vuelta atrás!",
+    placeholder: "Ingrese contraseña para eliminar la cuenta...",
+    type: "password"
   },
   ],
-  button: "Eliminar cuenta"
+  button: "Eliminar cuenta",
+  buttonColor: "bg-red-600	"
 }]
 
 const MyAccountLayout = () => {
 
 
   const [step, setStep] = useState(1);
+  const [clearForm, setClearForm] = useState(false);
 
   const handleChangeStep = (selectedStep) => {
     setStep(selectedStep)
+    setClearForm(true);
   }
+
+  React.useEffect(() => {
+    if (clearForm) {
+      setClearForm(false);
+    }
+  }, [clearForm]);
 
   return (
     <div className="flex flex-col p-6 w-[90vw] h-[80vh] lg:w-[30vw] border border-1 border-[#e9e9ef] rounded-md shadow-sm gap-6">
       <h2 className="text-3xl font-semibold text-center">Mi cuenta</h2>
       <div className='flex flex-row justify-center w-full gap-4'>
         {sections.map(s => (
-          <MyAccountSectionTitle section={s} actualStep={step} changeStep={handleChangeStep}/>
+          <MyAccountSectionTitle section={s} actualStep={step} changeStep={handleChangeStep} />
         ))}
       </div>
-        <MyAccountSection section={sections[step]} />
+      <MyAccountSection
+        section={sections[step]}
+        clearForm={clearForm}
+      />
     </div>
   )
 }
