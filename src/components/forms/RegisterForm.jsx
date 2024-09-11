@@ -1,12 +1,7 @@
 import React, { useState } from "react";
-<<<<<<< HEAD:src/components/forms/RegisterForm.jsx
 import { Eye } from "../icons/Eye";
 import { EyeSlash } from "../icons/EyeSlash";
-=======
-import { Eye } from "./icons/Eye";
-import { EyeSlash } from "./icons/EyeSlash";
 import { Link } from "react-router-dom";
->>>>>>> fd9c8305f705df0b3498524827f298732a6e768d:src/components/RegisterForm.jsx
 
 const RegisterForm = () => {
 
@@ -25,11 +20,7 @@ const RegisterForm = () => {
       <div className="flex flex-col p-6 w-[90vw] lg:h-[80vh] lg:w-[30vw] border border-1 border-[#e9e9ef] rounded-md shadow-sm overflow-hidden">
         <div className="w-full flex flex-col gap-8">
           <div className="flex flex-col gap-1">
-<<<<<<< HEAD:src/components/forms/RegisterForm.jsx
-            <h2 className="text-3xl font-semibold">Iniciar Sesión</h2>
-=======
             <h1 className="text-3xl font-semibold">Crear una cuenta</h1>
->>>>>>> fd9c8305f705df0b3498524827f298732a6e768d:src/components/RegisterForm.jsx
             <span>¡Bienvenido! 👋</span>
           </div>
           <div>

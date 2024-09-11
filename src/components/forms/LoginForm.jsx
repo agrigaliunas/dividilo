@@ -1,12 +1,7 @@
 import React, { useState } from "react";
-<<<<<<< HEAD:src/components/forms/LoginForm.jsx
 import { Eye } from "../icons/Eye";
 import { EyeSlash } from "../icons/EyeSlash";
-=======
-import { Eye } from "./icons/Eye";
-import { EyeSlash } from "./icons/EyeSlash";
 import { Link } from "react-router-dom";
->>>>>>> fd9c8305f705df0b3498524827f298732a6e768d:src/components/LoginForm.jsx
 
 const LoginForm = () => {
 
@@ -18,14 +13,9 @@ const LoginForm = () => {
   }
 
   return (
-<<<<<<< HEAD:src/components/forms/LoginForm.jsx
-      <div className="flex flex-col p-6 w-[90vw] h-[80vh] lg:w-[30vw] border border-1 border-[#e9e9ef] rounded-md shadow-sm">
-        <div className="w-full flex flex-col gap-16">
-=======
     <div className="h-screen flex justify-center items-center">
       <div className="flex flex-col p-6 w-[90vw] lg:h-[80vh] lg:w-[30vw] border border-1 border-[#e9e9ef] rounded-md shadow-sm overflow-hidden">
         <div className="w-full flex flex-col gap-8">
->>>>>>> fd9c8305f705df0b3498524827f298732a6e768d:src/components/LoginForm.jsx
           <div className="flex flex-col gap-1">
             <h2 className="text-3xl font-semibold">Iniciar Sesión</h2>
             <span>¡Bienvenido! 👋</span>
@@ -62,6 +52,7 @@ const LoginForm = () => {
           </div>
         </div>
       </div>
+    </div>
   );
 };
 
