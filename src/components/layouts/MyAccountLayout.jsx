@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { MyAccountSection } from '../sections/MyAccountSection';
 import { MyAccountSectionTitle } from '../MyAccountSectionTitle';
 import { DeleteAccount } from '../icons/DeleteAccount.jsx'
@@ -58,7 +58,7 @@ const sections = [{
   title: "Zona peligrosa",
   icon: <Danger />,
   labels: [{
-    title: "¡Atención! ¡Esta acción no tiene vuelta atrás!",
+    title: "⚠️ ¡Atención! ¡Esta acción no tiene vuelta atrás!",
     placeholder: "Ingrese contraseña para eliminar la cuenta...",
     type: "password"
   },
@@ -78,7 +78,7 @@ const MyAccountLayout = () => {
     setClearForm(true);
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (clearForm) {
       setClearForm(false);
     }
