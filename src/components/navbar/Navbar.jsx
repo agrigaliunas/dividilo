@@ -7,26 +7,25 @@ export const Navbar = () => {
     const { isMenuOpen, closeMenu } = useMenu();
 
     return (
-        <>
-            {isMenuOpen && (
-                <nav className='w-[80vw] lg:w-[25vw] h-full shadow-sm border border-gray-100 rounded-r-lg absolute bg-white justify-center items-center overflow-hidden'>
-                    <div className='flex h-full relative px-8 py-16'>
-                        <button
-                            onClick={closeMenu}
-                            className='absolute top-4 right-4 text-xl font-bold'
-                        >
-                            <Cross></Cross>
-                        </button>
+        <nav
+            className={`z-50 w-[80vw] lg:w-[25vw] h-full shadow-md border border-gray-100 rounded-r-xl fixed bg-gray-50 top-0 left-0 transition-transform duration-300 ease-in-out 
+            transform ${isMenuOpen ? 'translate-x-0 opacity-100' : '-translate-x-full pointer-events-none'}`}
+        >
+            <div className='flex h-full relative py-24'>
+                <button
+                    onClick={closeMenu}
+                    className='absolute top-4 right-4 text-xl font-bold hover:opacity-70'
+                >
+                    <Cross />
+                </button>
 
-                        <ul className='flex flex-col text-2xl text-left gap-4'>
-                            <li>Inicio</li>
-                            <li><Link to='/account'>Mi perfil</Link></li>
-                            <li>Ayuda</li>
-                            <li>Cerrar sesión</li>
-                        </ul>
-                    </div>
-                </nav>
-            )}
-        </>
+                <div className='flex flex-col text-2xl text-left gap-4 w-full px-3'>
+                    <Link className='hover:bg-gray-100 w-full py-1 rounded-md px-4'>Inicio</Link>
+                    <Link className='hover:bg-gray-100 w-full py-1 rounded-md px-4'>Mi perfil</Link>
+                    <Link className='hover:bg-gray-100 w-full py-1 rounded-md px-4'>Ayuda</Link>
+                    <Link className='hover:bg-gray-100 w-full py-1 rounded-md px-4'>Cerrar sesión</Link>
+                </div>
+            </div>
+        </nav>
     );
 }

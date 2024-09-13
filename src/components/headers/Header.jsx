@@ -12,8 +12,8 @@ export const Header = () => {
 
 
     return (
-        <header className='flex justify-start p-5'>
-            <button onClick={handleOpenMenu}>
+        <header className='z-10 sticky top-0 p-5'>
+            <button onClick={handleOpenMenu} className='rounded-md hover:scale-110 transition-all'>
                 <BurgerMenu />
             </button>
         </header>
