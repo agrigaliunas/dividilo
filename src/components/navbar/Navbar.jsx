@@ -1,6 +1,7 @@
 import React from 'react';
 import { useMenu } from '../../contexts/MenuContext';
 import { Cross } from '../icons/Cross';
+import { Link } from 'react-router-dom';
 
 export const Navbar = () => {
     const { isMenuOpen, closeMenu } = useMenu();
@@ -19,7 +20,7 @@ export const Navbar = () => {
 
                         <ul className='flex flex-col text-2xl text-left gap-4'>
                             <li>Inicio</li>
-                            <li>Mi perfil</li>
+                            <li><Link to='/account'>Mi perfil</Link></li>
                             <li>Ayuda</li>
                             <li>Cerrar sesión</li>
                         </ul>
