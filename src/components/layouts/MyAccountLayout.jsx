@@ -86,7 +86,7 @@ const MyAccountLayout = () => {
   }, [clearForm]);
 
   return (
-    <div className="flex flex-col p-6 w-[90vw] h-[80vh] lg:w-[30vw] rounded-md shadow-sm gap-6">
+    <div className="flex flex-col p-6 w-[90vw] h-[80vh] lg:w-[30vw] gap-6">
       <div className="flex flex-col gap-1">
       <FormTitle title='Mi cuenta'></FormTitle>
       <SubTitle subtitle='¡Seleccioná una opción para mas detalles!'></SubTitle>
