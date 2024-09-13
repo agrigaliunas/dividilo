@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Eye } from "../icons/Eye";
 import { EyeSlash } from "../icons/EyeSlash";
 import { Link } from "react-router-dom";
+import { FormTitle } from "./FormTitle";
+import { SubTitle } from "./SubTitle";
 
 const LoginForm = () => {
 
@@ -14,11 +16,11 @@ const LoginForm = () => {
 
   return (
     <div className="h-screen flex justify-center items-center">
-      <div className="flex flex-col p-6 w-[90vw] lg:h-[80vh] lg:w-[30vw] border border-1 border-[#e9e9ef] rounded-md shadow-sm overflow-hidden">
+      <div className="flex flex-col p-6 w-[90vw] lg:h-[80vh] lg:w-[30vw] rounded-md shadow-sm overflow-hidden">
         <div className="w-full flex flex-col gap-8">
           <div className="flex flex-col gap-1">
-            <h2 className="text-3xl font-semibold">Iniciar Sesión</h2>
-            <span>¡Bienvenido! 👋</span>
+            <FormTitle title='Iniciar Sesión'></FormTitle>
+            <SubTitle subtitle='¡Bienvenido! 👋'></SubTitle>
           </div>
           <div>
             <form action="" className="flex flex-col gap-3">

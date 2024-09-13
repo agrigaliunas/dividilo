@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { MyAccountSection } from '../sections/MyAccountSection';
 import { MyAccountSectionTitle } from '../MyAccountSectionTitle';
-import { DeleteAccount } from '../icons/DeleteAccount.jsx'
 import { InfoAccount } from '../icons/InfoAccount.jsx'
 import { Padlock } from '../icons/Padlock.jsx';
 import { Danger } from '../icons/Danger.jsx';
+import { FormTitle } from '../forms/FormTitle.jsx';
+import { SubTitle } from '../forms/SubTitle.jsx';
 
 
 const sections = [{
@@ -85,9 +86,12 @@ const MyAccountLayout = () => {
   }, [clearForm]);
 
   return (
-    <div className="flex flex-col p-6 w-[90vw] h-[80vh] lg:w-[30vw] border border-1 border-[#e9e9ef] rounded-md shadow-sm gap-6">
-      <h2 className="text-3xl font-semibold text-center">Mi cuenta</h2>
-      <div className='flex flex-row justify-center w-full gap-4'>
+    <div className="flex flex-col p-6 w-[90vw] h-[80vh] lg:w-[30vw] rounded-md shadow-sm gap-6">
+      <div className="flex flex-col gap-1">
+      <FormTitle title='Mi cuenta'></FormTitle>
+      <SubTitle subtitle='¡Seleccioná una opción para mas detalles!'></SubTitle>
+      </div>
+      <div className='flex flex-row justify-left w-full gap-4'>
         {sections.map(s => (
           <MyAccountSectionTitle section={s} actualStep={step} changeStep={handleChangeStep} />
         ))}
