@@ -21,7 +21,7 @@ export const Navbar = () => {
 
                 <div className='flex flex-col text-2xl text-left gap-4 w-full px-3'>
                     <Link className='hover:bg-gray-100 w-full py-1 rounded-md px-4'>Inicio</Link>
-                    <Link className='hover:bg-gray-100 w-full py-1 rounded-md px-4'>Mi perfil</Link>
+                    <Link to = '/account' className='hover:bg-gray-100 w-full py-1 rounded-md px-4'>Mi perfil</Link>
                     <Link className='hover:bg-gray-100 w-full py-1 rounded-md px-4'>Ayuda</Link>
                     <Link className='hover:bg-gray-100 w-full py-1 rounded-md px-4'>Cerrar sesión</Link>
                 </div>
