@@ -1,9 +1,10 @@
 import React from 'react'
-import LoginForm from '../components/LoginForm.jsx';
+import LoginForm from '../components/forms/LoginForm.jsx';
+import { MainCenter } from '../components/MainCenter.jsx';
 
 const LoginScreen = () => {
   return (
-    <LoginForm />
+    <MainCenter><LoginForm /></MainCenter>
   )
 }
 

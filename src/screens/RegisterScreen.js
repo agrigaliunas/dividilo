@@ -1,9 +1,10 @@
 import React from 'react'
-import RegisterForm from '../components/RegisterForm.jsx';
+import RegisterForm from '../components/forms/RegisterForm.jsx';
+import { MainCenter } from '../components/MainCenter.jsx';
 
 const RegisterScreen = () => {
   return (
-    <RegisterForm />
+    <MainCenter><RegisterForm /></MainCenter>
   )
 }
 

@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 #root {
-    @apply min-h-screen;
+    @apply min-h-screen relative  
 }
