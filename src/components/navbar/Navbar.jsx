@@ -8,7 +8,7 @@ export const Navbar = () => {
 
     return (
         <nav
-            className={`z-50 w-[80vw] lg:w-[25vw] h-full shadow-md border border-gray-100 rounded-r-xl fixed bg-white top-0 left-0 transition-transform duration-300 ease-in-out 
+            className={`z-50 w-[80vw] lg:w-[20vw] h-full shadow-md border border-gray-100 rounded-r-xl fixed bg-white top-0 left-0 transition-transform duration-300 ease-in-out 
             transform ${isMenuOpen ? 'translate-x-0 opacity-100' : '-translate-x-full pointer-events-none'}`}
         >
             <div className='flex h-full relative py-24'>

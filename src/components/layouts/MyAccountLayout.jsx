@@ -18,7 +18,7 @@ const MyAccountLayout = () => {
   const [sections, setSections] = useState([])
   const [loading, setLoading] = useState(true)
 
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(0);
   const [clearForm, setClearForm] = useState(false);
 
   const handleChangeStep = (selectedStep) => {

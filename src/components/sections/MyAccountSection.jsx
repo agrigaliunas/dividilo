@@ -13,7 +13,7 @@ export const MyAccountSection = ({ section, clearForm }) => {
                 ))}
 
             </div>
-            <button className={`${section.buttonColor} text-white p-2 rounded-md hover:opacity-85`}>{section?.button}</button>
+            <button className={` ${section.buttonColor} text-white p-2 rounded-md hover:opacity-85`}>{section?.button}</button>
         </div>
     )
 }

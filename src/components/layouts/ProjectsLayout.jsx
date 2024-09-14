@@ -32,7 +32,7 @@ const ProjectsLayout = () => {
                         Crear nuevo proyecto
                     </button>
                 </div>
-                <div className="flex flex-col gap-12 justify-center items-start px-5">
+                <div className="flex flex-col gap-8 justify-center items-start px-5">
                     <section className="">
                         <div className="flex flex-row gap-4 p-2 bg-orange-600 bg-opacity-40 rounded-xl w-[20vh] items-center text-gray-800 cursor-default select-none">
                             <Clock />
@@ -43,7 +43,7 @@ const ProjectsLayout = () => {
                         <ProjectsGrid projects={projects} estado={"En progreso"}></ProjectsGrid>
                     </section>
                     <section className="">
-                        <div className="flex flex-row gap-2 p-2 bg-green-600 bg-opacity-40 rounded-xl w-[20vh] items-center text-gray-800 cursor-default select-none">
+                        <div className="flex flex-row gap-4 p-2 bg-green-600 bg-opacity-40 rounded-xl w-[20vh] items-center text-gray-800 cursor-default select-none">
                             <CheckCircle />
                             <span className="text-lg font-semibold text-center">
                                 FINALIZADOS

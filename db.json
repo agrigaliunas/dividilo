@@ -1,76 +1,119 @@
 {
-    "proyectos": [
-        {
-            "id": 1,
-            "nombre": "Viaje MDQ",
-            "descripcion": "Viaje con la familia",
-            "montoTotal": 1400,
-            "estado": "Finalizado"
-        },
-        {
-            "id": 2,
-            "nombre": "Renovación de Cocina",
-            "descripcion": "Remodelación completa de la cocina",
-            "montoTotal": 5000,
-            "estado": "En progreso"
-        },
-        {
-            "id": 3,
-            "nombre": "Curso de Fotografía",
-            "descripcion": "Curso intensivo de fotografía digital",
-            "montoTotal": 300,
-            "estado": "Finalizado"
-        },
-        {
-            "id": 4,
-            "nombre": "Mantenimiento del Auto",
-            "descripcion": "Servicios y reparaciones del vehículo",
-            "montoTotal": 800,
-            "estado": "En progreso"
-        },
-        {
-            "id": 5,
-            "nombre": "Mudanza a Nueva Casa",
-            "descripcion": "Gastos asociados con la mudanza",
-            "montoTotal": 2000,
-            "estado": "Finalizado"
-        },
-        {
-            "id": 6,
-            "nombre": "Vacaciones en Europa",
-            "descripcion": "Viaje de vacaciones a varios países europeos",
-            "montoTotal": 4500,
-            "estado": "En progreso"
-        },
-        {
-            "id": 7,
-            "nombre": "Clases de Yoga",
-            "descripcion": "Inscripción para un año de clases de yoga",
-            "montoTotal": 600,
-            "estado": "Finalizado"
-        },
-        {
-            "id": 8,
-            "nombre": "Curso de Desarrollo Web",
-            "descripcion": "Curso online de desarrollo web avanzado",
-            "montoTotal": 400,
-            "estado": "En progreso"
-        },
-        {
-            "id": 9,
-            "nombre": "Compra de Muebles",
-            "descripcion": "Adquisición de muebles para la sala de estar",
-            "montoTotal": 1200,
-            "estado": "Finalizado"
-        },
-        {
-            "id": 10,
-            "nombre": "Fiesta de Cumpleaños",
-            "descripcion": "Organización y gastos para fiesta de cumpleaños",
-            "montoTotal": 700,
-            "estado": "En progreso"
-        }
-    ],
+        "proyectos": [
+            {
+                "id": 1,
+                "nombre": "Viaje MDQ",
+                "descripcion": "Viaje con la familia",
+                "montoTotal": 1400,
+                "estado": "Finalizado",
+                "participantes": [
+                    "Agustin Grigaliunas",
+                    "Juan Perez"
+                ]
+            },
+            {
+                "id": 2,
+                "nombre": "Renovación de Cocina",
+                "descripcion": "Remodelación completa de la cocina",
+                "montoTotal": 5000,
+                "estado": "En progreso",
+                "participantes": [
+                    "Lautaro Jimenez",
+                    "Maria Gomez",
+                    "Agustin Grigaliunas"
+                ]
+            },
+            {
+                "id": 3,
+                "nombre": "Curso de Fotografía",
+                "descripcion": "Curso intensivo de fotografía digital",
+                "montoTotal": 300,
+                "estado": "Finalizado",
+                "participantes": [
+                    "Juan Perez",
+                    "Maria Gomez"
+                ]
+            },
+            {
+                "id": 4,
+                "nombre": "Mantenimiento del Auto",
+                "descripcion": "Servicios y reparaciones del vehículo",
+                "montoTotal": 800,
+                "estado": "En progreso",
+                "participantes": [
+                    "Lautaro Jimenez",
+                    "Maria Gomez"
+                ]
+            },
+            {
+                "id": 5,
+                "nombre": "Mudanza a Nueva Casa",
+                "descripcion": "Gastos asociados con la mudanza",
+                "montoTotal": 2000,
+                "estado": "Finalizado",
+                "participantes": [
+                    "Agustin Grigaliunas",
+                    "Juan Perez"
+                ]
+            },
+            {
+                "id": 6,
+                "nombre": "Vacaciones en Europa",
+                "descripcion": "Viaje de vacaciones a varios países europeos",
+                "montoTotal": 4500,
+                "estado": "En progreso",
+                "participantes": [
+                    "Maria Gomez",
+                    "Juan Perez",
+                    "Agustin Grigaliunas"
+                ]
+            },
+            {
+                "id": 7,
+                "nombre": "Clases de Yoga",
+                "descripcion": "Inscripción para un año de clases de yoga",
+                "montoTotal": 600,
+                "estado": "Finalizado",
+                "participantes": [
+                    "Juan Perez",
+                    "Lautaro Jimenez"
+                ]
+            },
+            {
+                "id": 8,
+                "nombre": "Curso de Desarrollo Web",
+                "descripcion": "Curso online de desarrollo web avanzado",
+                "montoTotal": 400,
+                "estado": "En progreso",
+                "participantes": [
+                    "Lautaro Jimenez",
+                    "Maria Gomez"
+                ]
+            },
+            {
+                "id": 9,
+                "nombre": "Compra de Muebles",
+                "descripcion": "Adquisición de muebles para la sala de estar",
+                "montoTotal": 1200,
+                "estado": "Finalizado",
+                "participantes": [
+                    "Agustin Grigaliunas",
+                    "Maria Gomez"
+                ]
+            },
+            {
+                "id": 10,
+                "nombre": "Fiesta de Cumpleaños",
+                "descripcion": "Organización y gastos para fiesta de cumpleaños",
+                "montoTotal": 700,
+                "estado": "En progreso",
+                "participantes": [
+                    "Juan Perez",
+                    "Lautaro Jimenez",
+                    "Maria Gomez"
+                ]
+            }
+        ],
     "sections": [
         {
             "step": 0,
