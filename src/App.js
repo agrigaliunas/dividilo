@@ -5,6 +5,7 @@ import RegisterScreen from './screens/RegisterScreen.js';
 import AccountScreen from './screens/AccountScreen.js';
 import { Header } from './components/headers/Header.jsx';
 import { Navbar } from './components/navbar/Navbar.jsx';
+import { ProjectScreen } from './screens/ProjectScreen.js';
 
 
 function App() {
@@ -16,6 +17,8 @@ function App() {
         <Route path="/login" element={<LoginScreen />} exact />
         <Route path="/register" element={<RegisterScreen />} exact />
         <Route path="/account" element={<AccountScreen />} exact />
+        <Route path="/dashboard" element={<ProjectScreen />} exact />
+
       </Routes>
     </>
   );

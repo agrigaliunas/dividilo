@@ -5,3 +5,11 @@
 #root {
     @apply min-h-screen relative bg-gray-100
 }
+
+button {
+    @apply select-none
+}
+
+input {
+    @apply outline-none
+}
