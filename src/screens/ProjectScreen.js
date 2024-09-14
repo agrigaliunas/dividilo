@@ -1,8 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Clock } from "../components/icons/Clock.jsx";
 import { CheckCircle } from "../components/icons/CheckCircle.jsx";
 
+
 export const ProjectScreen = () => {
+
+    const [projects, setProjects] = useState([])
+    const [loading, setLoading] = useState(true)
+
+
+    const fetchProjects = async () => {
+        const data = await fetch("http://localhost:8000/proyectos").then(data => data.json())
+        return data;
+    }
+
+
+    useEffect(() => {
+        const projects = fetchProjects()
+        setProjects(projects)
+        setLoading(false)
+    }, [])
+
   return (
     <main className="p-16">
       <div className="bg-white rounded-xl p-4 flex flex-col gap-10">

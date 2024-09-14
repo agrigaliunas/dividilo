@@ -1,0 +1,10 @@
+{
+    "proyectos": [
+        {
+            "id": 1,
+            "nombre": "Viaje MDQ",
+            "descripcion": "Viaje con la familia",
+            "montoTotal": 1400
+        }
+    ]
+}
