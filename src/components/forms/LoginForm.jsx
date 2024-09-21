@@ -4,8 +4,11 @@ import { EyeSlash } from "../icons/EyeSlash";
 import { Link } from "react-router-dom";
 import { FormTitle } from "./FormTitle";
 import { SubTitle } from "./SubTitle";
+import { useAuth } from "../../contexts/AuthContext";
 
 const LoginForm = () => {
+
+  const {login} = useAuth()
 
   const [viewPassword, setViewPassword] = useState(false)
   const [email, setEmail] = useState("")
@@ -24,6 +27,13 @@ const LoginForm = () => {
     setPassword(e.target.value)
   }
 
+  const loginUser = () => {
+    const userData = {
+      "email": email
+    }
+    login(userData)
+  }
+
   return (
     <div className="h-screen flex justify-center items-center">
       <div className="flex flex-col p-6 w-[90vw] lg:h-[80vh] lg:w-[40vw] overflow-hidden bg-white rounded-xl">
@@ -33,7 +43,7 @@ const LoginForm = () => {
             <SubTitle subtitle='¡Bienvenido! 👋'></SubTitle>
           </div>
           <div>
-            <form action="" className="flex flex-col gap-3">
+            <form action="" className="flex flex-col gap-3" onSubmit={loginUser}>
               <div className="flex flex-col gap-1">
                 <label>Correo electrónico</label>
                 <input
