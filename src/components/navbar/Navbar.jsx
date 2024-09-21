@@ -2,7 +2,7 @@ import React from "react";
 import { useMenu } from "../../contexts/MenuContext";
 import { useAuth } from "../../contexts/AuthContext.js";
 import { Cross } from "../icons/Cross";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { Bell } from "../icons/Bell";
 import { InfoAccount } from "../icons/InfoAccount";
 import { Logout } from "../icons/Logout";
@@ -12,7 +12,13 @@ import { UserPlus } from "../icons/UserPlus.jsx";
 
 export const Navbar = () => {
   const { isMenuOpen, closeMenu } = useMenu();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+
+  const logoutUser = async () => {
+    await logout();
+    <Navigate to="/register" />
+  }
+
 
   return (
     <nav
@@ -75,10 +81,10 @@ export const Navbar = () => {
                 className="hover:bg-gray-100 w-full py-1 rounded-md px-4"
                 onClick={closeMenu}
               >
-                <span className="flex flex-row gap-1 items-center">
+                <button onClick={logoutUser} className="flex flex-row gap-1 items-center">
                   <Logout />
                   Cerrar sesión
-                </span>
+                </button>
               </Link>
             </>
           ) : (

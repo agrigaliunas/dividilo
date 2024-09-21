@@ -1,11 +1,19 @@
 import React from 'react'
 import LoginForm from '../components/forms/LoginForm.jsx';
 import { MainCenter } from '../components/MainCenter.jsx';
+import { useAuth } from '../contexts/AuthContext.js';
+import { Navigate } from 'react-router-dom';
 
 const LoginScreen = () => {
-  return (
-    <MainCenter><LoginForm /></MainCenter>
-  )
-}
+  const {user} = useAuth()
+  return user ? (
+    <MainCenter>
+      <Navigate to="/dashboard" />
+    </MainCenter>
+  ) : (
+    <LoginForm />
+  );
+};
+
 
 export default LoginScreen
