@@ -1,4 +1,22 @@
 {
+  "usuarios": [
+    {
+      "id": "1",
+      "nombre": "Agustin",
+      "apellido": "Grigaliunas",
+      "email": "agustingrigaliunas@gmail.com",
+      "password": "1234",
+      "rol": "usuario"
+    },
+    {
+      "id": "2",
+      "nombre": "Lautaro",
+      "apellido": "Jimenez",
+      "email": "lauta.jimenez@gmail.com",
+      "password": "1234",
+      "rol": "admin"
+    }
+  ],
   "proyectos": [
     {
       "id": "1",
