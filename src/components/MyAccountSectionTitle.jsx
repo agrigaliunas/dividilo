@@ -8,7 +8,7 @@ export const MyAccountSectionTitle = ({
 }) => {
   return (
     <div
-      className={`rounded-xl content-center transition-all ${
+      className={`rounded-xl border border-1 border-[#e9e9ef] content-center transition-all ${
         section.step === actualStep
           ? "text-white bg-brandblue lg:hover:bg-gray-100 lg:hover:text-black"
           : "bg-gray-100  lg:hover:bg-brandblue lg:hover:text-white"
