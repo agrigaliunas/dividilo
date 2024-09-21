@@ -1,181 +1,530 @@
 {
-        "proyectos": [
-            {
-                "id": 1,
-                "nombre": "Viaje MDQ",
-                "descripcion": "Viaje con la familia",
-                "montoTotal": 1400,
-                "estado": "Finalizado",
-                "participantes": [
-                    "Agustin Grigaliunas",
-                    "Juan Perez"
-                ]
-            },
-            {
-                "id": 2,
-                "nombre": "Renovación de Cocina",
-                "descripcion": "Remodelación completa de la cocina",
-                "montoTotal": 5000,
-                "estado": "En progreso",
-                "participantes": [
-                    "Lautaro Jimenez",
-                    "Maria Gomez",
-                    "Agustin Grigaliunas"
-                ]
-            },
-            {
-                "id": 3,
-                "nombre": "Curso de Fotografía",
-                "descripcion": "Curso intensivo de fotografía digital",
-                "montoTotal": 300,
-                "estado": "Finalizado",
-                "participantes": [
-                    "Juan Perez",
-                    "Maria Gomez"
-                ]
-            },
-            {
-                "id": 4,
-                "nombre": "Mantenimiento del Auto",
-                "descripcion": "Servicios y reparaciones del vehículo",
-                "montoTotal": 800,
-                "estado": "En progreso",
-                "participantes": [
-                    "Lautaro Jimenez",
-                    "Maria Gomez"
-                ]
-            },
-            {
-                "id": 5,
-                "nombre": "Mudanza a Nueva Casa",
-                "descripcion": "Gastos asociados con la mudanza",
-                "montoTotal": 2000,
-                "estado": "Finalizado",
-                "participantes": [
-                    "Agustin Grigaliunas",
-                    "Juan Perez"
-                ]
-            },
-            {
-                "id": 6,
-                "nombre": "Vacaciones en Europa",
-                "descripcion": "Viaje de vacaciones a varios países europeos",
-                "montoTotal": 4500,
-                "estado": "En progreso",
-                "participantes": [
-                    "Maria Gomez",
-                    "Juan Perez",
-                    "Agustin Grigaliunas"
-                ]
-            },
-            {
-                "id": 7,
-                "nombre": "Clases de Yoga",
-                "descripcion": "Inscripción para un año de clases de yoga",
-                "montoTotal": 600,
-                "estado": "Finalizado",
-                "participantes": [
-                    "Juan Perez",
-                    "Lautaro Jimenez"
-                ]
-            },
-            {
-                "id": 8,
-                "nombre": "Curso de Desarrollo Web",
-                "descripcion": "Curso online de desarrollo web avanzado",
-                "montoTotal": 400,
-                "estado": "En progreso",
-                "participantes": [
-                    "Lautaro Jimenez",
-                    "Maria Gomez"
-                ]
-            },
-            {
-                "id": 9,
-                "nombre": "Compra de Muebles",
-                "descripcion": "Adquisición de muebles para la sala de estar",
-                "montoTotal": 1200,
-                "estado": "Finalizado",
-                "participantes": [
-                    "Agustin Grigaliunas",
-                    "Maria Gomez"
-                ]
-            },
-            {
-                "id": 10,
-                "nombre": "Fiesta de Cumpleaños",
-                "descripcion": "Organización y gastos para fiesta de cumpleaños",
-                "montoTotal": 700,
-                "estado": "En progreso",
-                "participantes": [
-                    "Juan Perez",
-                    "Lautaro Jimenez",
-                    "Maria Gomez"
-                ]
-            }
-        ],
-    "sections": [
+  "proyectos": [
+    {
+      "id": "1",
+      "nombre": "Viaje MDQ",
+      "descripcion": "Viaje con la familia",
+      "montoTotal": 1400,
+      "estado": "Finalizado",
+      "participantes": [
+        "Agustin Grigaliunas",
+        "Juan Perez"
+      ]
+    },
+    {
+      "id": "2",
+      "nombre": "Renovación de Cocina",
+      "descripcion": "Remodelación completa de la cocina",
+      "montoTotal": 5000,
+      "estado": "En progreso",
+      "participantes": [
+        "Lautaro Jimenez",
+        "Maria Gomez",
+        "Agustin Grigaliunas"
+      ]
+    },
+    {
+      "id": "3",
+      "nombre": "Curso de Fotografía",
+      "descripcion": "Curso intensivo de fotografía digital",
+      "montoTotal": 300,
+      "estado": "Finalizado",
+      "participantes": [
+        "Juan Perez",
+        "Maria Gomez"
+      ]
+    },
+    {
+      "id": "4",
+      "nombre": "Mantenimiento del Auto",
+      "descripcion": "Servicios y reparaciones del vehículo",
+      "montoTotal": 800,
+      "estado": "En progreso",
+      "participantes": [
+        "Lautaro Jimenez",
+        "Maria Gomez"
+      ]
+    },
+    {
+      "id": "5",
+      "nombre": "Mudanza a Nueva Casa",
+      "descripcion": "Gastos asociados con la mudanza",
+      "montoTotal": 2000,
+      "estado": "Finalizado",
+      "participantes": [
+        "Agustin Grigaliunas",
+        "Juan Perez"
+      ]
+    },
+    {
+      "id": "6",
+      "nombre": "Vacaciones en Europa",
+      "descripcion": "Viaje de vacaciones a varios países europeos",
+      "montoTotal": 4500,
+      "estado": "En progreso",
+      "participantes": [
+        "Maria Gomez",
+        "Juan Perez",
+        "Agustin Grigaliunas"
+      ]
+    },
+    {
+      "id": "7",
+      "nombre": "Clases de Yoga",
+      "descripcion": "Inscripción para un año de clases de yoga",
+      "montoTotal": 600,
+      "estado": "Finalizado",
+      "participantes": [
+        "Juan Perez",
+        "Lautaro Jimenez"
+      ]
+    },
+    {
+      "id": "8",
+      "nombre": "Curso de Desarrollo Web",
+      "descripcion": "Curso online de desarrollo web avanzado",
+      "montoTotal": 400,
+      "estado": "En progreso",
+      "participantes": [
+        "Lautaro Jimenez",
+        "Maria Gomez"
+      ]
+    },
+    {
+      "id": "9",
+      "nombre": "Compra de Muebles",
+      "descripcion": "Adquisición de muebles para la sala de estar",
+      "montoTotal": 1200,
+      "estado": "Finalizado",
+      "participantes": [
+        "Agustin Grigaliunas",
+        "Maria Gomez"
+      ]
+    },
+    {
+      "id": "10",
+      "nombre": "Fiesta de Cumpleaños",
+      "descripcion": "Organización y gastos para fiesta de cumpleaños",
+      "montoTotal": 700,
+      "estado": "En progreso",
+      "participantes": [
+        "Juan Perez",
+        "Lautaro Jimenez",
+        "Maria Gomez"
+      ]
+    },
+    {
+      "id": "2",
+      "nombre": "Renovación de Cocina"
+    },
+    {
+      "id": "2",
+      "nombre": "Renovación de Cocina"
+    },
+    {
+      "id": "2",
+      "nombre": "Renovación de Cocina"
+    },
+    {
+      "id": "2",
+      "nombre": "Renovación de Cocina"
+    },
+    {
+      "id": "9014"
+    },
+    {
+      "id": "9703"
+    },
+    {
+      "id": "efb6"
+    },
+    {
+      "id": "9153"
+    },
+    {
+      "id": "2",
+      "nombre": "Renovación de Cocina"
+    },
+    {
+      "id": "2",
+      "nombre": "Renovación de Cocina"
+    },
+    {
+      "id": "2",
+      "nombre": "Renovación de Cocina"
+    },
+    {
+      "id": "2",
+      "nombre": "Renovación de Cocina"
+    },
+    {
+      "id": "2",
+      "nombre": "Renovación de Cocina"
+    },
+    {
+      "id": "2",
+      "nombre": "Renovación de Cocina"
+    },
+    {
+      "id": "15c0"
+    },
+    {
+      "id": "8513"
+    },
+    {
+      "id": "4646"
+    },
+    {
+      "id": "2dd3"
+    },
+    {
+      "id": "2",
+      "nombre": "Renovación de Cocina"
+    },
+    {
+      "id": "2",
+      "nombre": "Renovación de Cocina"
+    },
+    {
+      "id": "2",
+      "nombre": "Renovación de Cocina"
+    },
+    {
+      "id": "2",
+      "nombre": "Renovación de Cocina"
+    },
+    {
+      "id": "2",
+      "nombre": "Renovación de Cocina"
+    },
+    {
+      "id": "2",
+      "nombre": "Renovación de Cocina"
+    },
+    {
+      "id": "2",
+      "nombre": "Renovación de Cocina"
+    },
+    {
+      "id": "2",
+      "nombre": "Renovación de Cocina"
+    },
+    {
+      "id": "2",
+      "nombre": "Renovación de Cocina"
+    },
+    {
+      "id": "2",
+      "nombre": "Renovación de Cocina"
+    },
+    {
+      "id": "2",
+      "nombre": "Renovación de Cocina"
+    },
+    {
+      "id": "2",
+      "nombre": "Renovación de Cocina"
+    },
+    {
+      "id": "2",
+      "nombre": "Renovación de Cocina"
+    },
+    {
+      "id": "2",
+      "nombre": "Renovación de Cocina"
+    },
+    {
+      "id": "e5f0"
+    },
+    {
+      "id": "5530"
+    },
+    {
+      "id": "5b9c"
+    },
+    {
+      "id": "573f"
+    },
+    {
+      "id": "2",
+      "nombre": "Renovación de Cocina"
+    },
+    {
+      "id": "2",
+      "nombre": "Renovación de Cocina"
+    },
+    {
+      "id": "2",
+      "nombre": "Renovación de Cocina"
+    },
+    {
+      "id": "2",
+      "nombre": "Renovación de Cocina"
+    },
+    {
+      "id": "7341"
+    },
+    {
+      "id": "bcf8"
+    },
+    {
+      "id": "e8d1"
+    },
+    {
+      "id": "2b1c"
+    },
+    {
+      "id": "2",
+      "nombre": "Renovación de Cocina"
+    },
+    {
+      "id": "2",
+      "nombre": "Renovación de Cocina"
+    },
+    {
+      "id": "2",
+      "nombre": "Renovación de Cocina"
+    },
+    {
+      "id": "2",
+      "nombre": "Renovación de Cocina"
+    },
+    {
+      "id": "2",
+      "nombre": "Renovación de Cocina"
+    },
+    {
+      "id": "2",
+      "nombre": "Renovación de Cocina"
+    },
+    {
+      "id": "dd0e"
+    },
+    {
+      "id": "70a7"
+    },
+    {
+      "id": "ae0e"
+    },
+    {
+      "id": "aadb"
+    },
+    {
+      "id": "2",
+      "nombre": "Renovación de Cocina"
+    },
+    {
+      "id": "2",
+      "nombre": "Renovación de Cocina"
+    },
+    {
+      "id": "2",
+      "nombre": "Renovación de Cocina"
+    },
+    {
+      "id": "2",
+      "nombre": "Renovación de Cocina"
+    },
+    {
+      "id": "2",
+      "nombre": "Renovación de Cocina"
+    },
+    {
+      "id": "2",
+      "nombre": "Renovación de Cocina"
+    },
+    {
+      "id": "044c"
+    },
+    {
+      "id": "dc80"
+    },
+    {
+      "id": "4c44"
+    },
+    {
+      "id": "a59a"
+    },
+    {
+      "id": "2",
+      "nombre": "Renovación de Cocina"
+    },
+    {
+      "id": "2",
+      "nombre": "Renovación de Cocina"
+    },
+    {
+      "id": "2",
+      "nombre": "Renovación de Cocina"
+    },
+    {
+      "id": "2",
+      "nombre": "Renovación de Cocina"
+    },
+    {
+      "id": "83a3"
+    },
+    {
+      "id": "3244"
+    },
+    {
+      "id": "a5d5"
+    },
+    {
+      "id": "6b43"
+    },
+    {
+      "id": "4",
+      "nombre": "Mantenimiento del Auto"
+    },
+    {
+      "id": "4",
+      "nombre": "Mantenimiento del Auto"
+    },
+    {
+      "id": "4",
+      "nombre": "Mantenimiento del Auto"
+    },
+    {
+      "id": "4",
+      "nombre": "Mantenimiento del Auto"
+    },
+    {
+      "id": "4",
+      "nombre": "Mantenimiento del Auto"
+    },
+    {
+      "id": "4",
+      "nombre": "Mantenimiento del Auto"
+    },
+    {
+      "id": "1023"
+    },
+    {
+      "id": "4ff6"
+    },
+    {
+      "id": "94a9"
+    },
+    {
+      "id": "01e4"
+    },
+    {
+      "id": "6",
+      "nombre": "Vacaciones en Europa"
+    },
+    {
+      "id": "6",
+      "nombre": "Vacaciones en Europa"
+    },
+    {
+      "id": "6",
+      "nombre": "Vacaciones en Europa"
+    },
+    {
+      "id": "6",
+      "nombre": "Vacaciones en Europa"
+    },
+    {
+      "id": "6",
+      "nombre": "Vacaciones en Europa"
+    },
+    {
+      "id": "6",
+      "nombre": "Vacaciones en Europa"
+    },
+    {
+      "id": "09da"
+    },
+    {
+      "id": "db62"
+    },
+    {
+      "id": "6",
+      "nombre": "Vacaciones en Europa"
+    },
+    {
+      "id": "6",
+      "nombre": "Vacaciones en Europa"
+    },
+    {
+      "id": "6",
+      "nombre": "Vacaciones en Europa"
+    },
+    {
+      "id": "6",
+      "nombre": "Vacaciones en Europa"
+    },
+    {
+      "id": "2",
+      "nombre": "Renovación de Cocina"
+    }
+  ],
+  "sections": [
+    {
+      "step": 0,
+      "title": "Información personal",
+      "icon": "infoAccount",
+      "labels": [
         {
-            "step": 0,
-            "title": "Información personal",
-            "icon": "infoAccount",
-            "labels": [
-                {
-                    "title": "Nombre",
-                    "placeholder": "Ingrese nombre...",
-                    "type": "text"
-                },
-                {
-                    "title": "Apellido",
-                    "placeholder": "Ingrese apellido...",
-                    "type": "text"
-                },
-                {
-                    "title": "Correo electrónico",
-                    "placeholder": "Ingrese correo electrónico...",
-                    "type": "email"
-                }
-            ],
-            "button": "Actualizar información",
-            "buttonColor": "bg-brandblue"
+          "title": "Nombre",
+          "placeholder": "Ingrese nombre...",
+          "type": "text"
         },
         {
-            "step": 1,
-            "title": "Seguridad",
-            "icon": "padlock",
-            "labels": [
-                {
-                    "title": "Contraseña actual",
-                    "placeholder": "Ingrese contraseña actual...",
-                    "type": "password"
-                },
-                {
-                    "title": "Nueva contraseña",
-                    "placeholder": "Ingrese nueva contraseña...",
-                    "type": "password"
-                },
-                {
-                    "title": "Repetir nueva contraseña",
-                    "placeholder": "Ingrese nueva contraseña...",
-                    "type": "password"
-                }
-            ],
-            "button": "Actualizar contraseña",
-            "buttonColor": "bg-brandblue"
+          "title": "Apellido",
+          "placeholder": "Ingrese apellido...",
+          "type": "text"
         },
         {
-            "step": 2,
-            "title": "Zona peligrosa",
-            "icon": "danger",
-            "labels": [
-                {
-                    "title": "⚠️ ¡Atención! ¡Esta acción no tiene vuelta atrás!",
-                    "placeholder": "Ingrese contraseña para eliminar la cuenta...",
-                    "type": "password"
-                }
-            ],
-            "button": "Eliminar cuenta",
-            "buttonColor": "bg-red-600"
+          "title": "Correo electrónico",
+          "placeholder": "Ingrese correo electrónico...",
+          "type": "email"
         }
-    ]
+      ],
+      "button": "Actualizar información",
+      "buttonColor": "bg-brandblue",
+      "id": "45b5"
+    },
+    {
+      "step": 1,
+      "title": "Seguridad",
+      "icon": "padlock",
+      "labels": [
+        {
+          "title": "Contraseña actual",
+          "placeholder": "Ingrese contraseña actual...",
+          "type": "password"
+        },
+        {
+          "title": "Nueva contraseña",
+          "placeholder": "Ingrese nueva contraseña...",
+          "type": "password"
+        },
+        {
+          "title": "Repetir nueva contraseña",
+          "placeholder": "Ingrese nueva contraseña...",
+          "type": "password"
+        }
+      ],
+      "button": "Actualizar contraseña",
+      "buttonColor": "bg-brandblue",
+      "id": "a7dd"
+    },
+    {
+      "step": 2,
+      "title": "Zona peligrosa",
+      "icon": "danger",
+      "labels": [
+        {
+          "title": "⚠️ ¡Atención! ¡Esta acción no tiene vuelta atrás!",
+          "placeholder": "Ingrese contraseña para eliminar la cuenta...",
+          "type": "password"
+        }
+      ],
+      "button": "Eliminar cuenta",
+      "buttonColor": "bg-red-600",
+      "id": "58ac"
+    }
+  ]
 }
