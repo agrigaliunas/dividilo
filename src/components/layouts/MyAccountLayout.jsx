@@ -84,7 +84,7 @@ const MyAccountLayout = () => {
   }, [clearForm]);
 
   return (
-    <div className="flex flex-col p-6 w-[90vw] h-[80vh] lg:w-[30vw] border border-1 border-[#e9e9ef] rounded-md shadow-sm gap-6">
+    <div className="flex flex-col p-6 w-[90vw] h-[80vh] lg:w-[auto] border border-1 border-[#e9e9ef] rounded-md shadow-sm gap-6">
       <h2 className="text-3xl font-semibold text-center">Mi cuenta</h2>
       <div className='flex flex-col justify-center w-full gap-4 lg:flex-row'>
         {sections.map(s => (
