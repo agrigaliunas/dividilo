@@ -35,7 +35,6 @@ export const ProjectInfo = ({ project }) => {
   };
 
   const handleSaveNombre = async () => {
-    alert("as");
     await fetch("http://localhost:8000/proyectos/" + project.id, {
       method: "PUT",
       headers: {
@@ -63,7 +62,7 @@ export const ProjectInfo = ({ project }) => {
   return (
     <div className="bg-white w-[80vw] p-4 rounded-xl flex flex-col gap-5">
       <div className="flex flex-col gap-3 justify-center">
-        <div className="flex flex-row gap-2 justify-center items-center border rounded-full p-1">
+        <div className="flex flex-row gap-2 items-center p-1">
           <input
             disabled={disableEditNombre}
             onChange={handleEditNombre}

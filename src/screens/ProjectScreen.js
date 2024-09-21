@@ -10,7 +10,7 @@ export const ProjectScreen = () => {
 
   return user ? (
     <MainCenter>
-      <ProjectLayout />
+      <ProjectLayout projectId={id}/>
     </MainCenter>
   ) : (
     <Navigate to="/register" />

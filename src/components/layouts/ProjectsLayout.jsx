@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import { ChevronDown } from "../icons/ChevronDown.jsx";
 import { ProjectsGrid } from "../ProjectsGrid.jsx";
 import { ChevronUp } from "../icons/ChevronUp.jsx";
+import { NewProjectModal } from "../modals/NewProjectModal.jsx";
 
 const ProjectsLayout = () => {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [modalIsOpen, setModalIsOpen] = useState(false)
 
   const [toggleInProgress, setToggleInProgress] = useState(false);
   const [toggleFinished, setToggleFinished] = useState(false);
@@ -26,6 +28,14 @@ const ProjectsLayout = () => {
     loadProjects();
   }, []);
 
+  const openModal = () => {
+    setModalIsOpen(true)
+  }
+
+  const closeModal = () => {
+    setModalIsOpen(false)
+  }
+
   const handleToggleInProgress = () => {
     setToggleInProgress(!toggleInProgress);
   };
@@ -35,11 +45,18 @@ const ProjectsLayout = () => {
   };
 
   return (
+    <>
+    {
+      modalIsOpen && (<NewProjectModal closeModal={closeModal}/>)
+    }
+
     <div className="py-16">
       <div className="bg-white rounded-xl p-4 flex flex-col lg:gap-10 gap-5 w-[90vw] ">
         <div className="flex lg:flex-row flex-col lg:gap-5 gap-2 lg:items-end items-start justify-center lg:justify-start">
           <h2 className="lg:text-5xl text-4xl font-semibold">Proyectos</h2>
-          <button className="p-2 bg-brandblue text-white rounded-xl hover:opacity-85 h-fit text-xs lg:text-base">
+          <button 
+          onClick={openModal}
+          className="p-2 bg-brandblue text-white rounded-xl hover:opacity-85 h-fit text-xs lg:text-base">
             Crear nuevo proyecto
           </button>
         </div>
@@ -85,6 +102,7 @@ const ProjectsLayout = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
