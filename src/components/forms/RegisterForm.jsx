@@ -44,7 +44,7 @@ const RegisterForm = () => {
 
   return (
     <div className="h-screen flex justify-center items-center">
-      <div className="flex flex-col p-6 w-[90vw] lg:h-[80vh] lg:w-[30vw] overflow-hidden bg-white rounded-xl">
+      <div className="flex flex-col p-6 w-[90vw] lg:h-[80vh] lg:w-[40vw] overflow-hidden bg-white rounded-xl">
         <div className="w-full flex flex-col gap-8">
           <div className="flex flex-col gap-1">
             <FormTitle title='Crear una cuenta'></FormTitle>

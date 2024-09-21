@@ -2,6 +2,22 @@ import React, { useState, useEffect } from "react";
 import { EditIcon } from "./icons/EditIcon";
 import { PaperAirplane } from "./icons/PaperAirplane";
 
+
+/*
+
+TODO:
+    - fecha del proyecto
+    - debes
+    - te deben
+    (VER SPLITWISE)
+    - cuanto debe cada uno
+        - en % y en $
+    
+    - tickets de compra
+
+*/
+
+
 export const ProjectInfo = ({ project }) => {
   const [projectNombre, setProjectNombre] = useState("");
   const [disableEditNombre, setDisableEditNombre] = useState(true);

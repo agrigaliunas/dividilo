@@ -48,17 +48,16 @@ const MyAccountLayout = () => {
   }, [])
 
   return (
-    <div className="flex flex-col p-6 w-[90vw] h-[80vh] lg:w-[30vw] gap-6 bg-white rounded-xl overflow-hidden">
+    <div className="flex flex-col p-6 w-[90vw] h-[80vh] lg:w-[90vw] gap-6 bg-white rounded-xl overflow-hidden">
       <div className="flex flex-col gap-1">
         <FormTitle title='Mi cuenta'></FormTitle>
         <SubTitle subtitle='¡Seleccioná una opción para mas detalles!'></SubTitle>
       </div>
-      <div className='flex flex-row justify-left w-full gap-4'>
+      <div className='flex lg:flex-row flex-col justify-left w-full gap-4'>
         {sections.map(s => (
           <MyAccountSectionTitle section={s} icon={iconComponents[s.icon]} actualStep={step} changeStep={handleChangeStep} />
         ))}
       </div>
-      {console.log(sections[step])}
       {!loading && sections.length > 0 && (
         <MyAccountSection
           section={sections[step]}
