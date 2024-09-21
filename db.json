@@ -15,6 +15,22 @@
       "email": "lauta.jimenez@gmail.com",
       "password": "1234",
       "rol": "admin"
+    },
+    {
+      "id": "3",
+      "nombre": "Maria",
+      "apellido": "Gomez",
+      "email": "maria.gomez@gmail.com",
+      "password": "1234",
+      "rol": "usuario"
+    },
+    {
+      "id": "4",
+      "nombre": "Juan",
+      "apellido": "Perez",
+      "email": "juan.perez@gmail.com",
+      "password": "1234",
+      "rol": "usuario"
     }
   ],
   "proyectos": [
@@ -25,8 +41,64 @@
       "montoTotal": 1400,
       "estado": "Finalizado",
       "participantes": [
-        "Agustin Grigaliunas",
-        "Juan Perez"
+        "agustingrigaliunas@gmail.com",
+        "juanperez@gmail.com"
+      ],
+      "gastos": [
+        {
+          "id": "1",
+          "descripcion": "Hotel en MDQ",
+          "monto": 1000,
+          "fecha": "2024-01-01",
+          "divididoEquitativamente": true,
+          "tickets": [
+            {
+              "id": "1",
+              "montoTotal": 1000,
+              "fecha": "2024-01-01",
+              "imagen": "url_a_la_imagen_del_ticket"
+            }
+          ]
+        },
+        {
+          "id": "2",
+          "descripcion": "Cena en restaurante",
+          "monto": 400,
+          "fecha": "2024-01-02",
+          "divididoEquitativamente": true,
+          "tickets": [
+            {
+              "id": "2",
+              "montoTotal": 400,
+              "fecha": "2024-01-02",
+              "imagen": "url_a_la_imagen_del_ticket"
+            }
+          ]
+        }
+      ],
+      "historialYReportes": {
+        "detalleDeGastos": [
+          {
+            "participante": "agustingrigaliunas@gmail.com",
+            "saldo": -700
+          },
+          {
+            "participante": "juanperez@gmail.com",
+            "saldo": -700
+          }
+        ]
+      },
+      "notificaciones": [
+        {
+          "id": "1",
+          "mensaje": "Tienes un saldo pendiente de $700",
+          "enviadoA": "agustingrigaliunas@gmail.com"
+        },
+        {
+          "id": "2",
+          "mensaje": "Tienes un saldo pendiente de $700",
+          "enviadoA": "juanperez@gmail.com"
+        }
       ]
     },
     {
@@ -36,167 +108,80 @@
       "montoTotal": 5000,
       "estado": "En progreso",
       "participantes": [
-        "Lautaro Jimenez",
-        "Maria Gomez",
-        "Agustin Grigaliunas"
-      ]
-    },
-    {
-      "id": "3",
-      "nombre": "Curso de Fotografía",
-      "descripcion": "Curso intensivo de fotografía digital",
-      "montoTotal": 300,
-      "estado": "Finalizado",
-      "participantes": [
-        "Juan Perez",
-        "Maria Gomez"
-      ]
-    },
-    {
-      "id": "4",
-      "nombre": "Mantenimiento del Auto",
-      "descripcion": "Servicios y reparaciones del vehículo",
-      "montoTotal": 800,
-      "estado": "En progreso",
-      "participantes": [
-        "Lautaro Jimenez",
-        "Maria Gomez"
-      ]
-    },
-    {
-      "id": "5",
-      "nombre": "Mudanza a Nueva Casa",
-      "descripcion": "Gastos asociados con la mudanza",
-      "montoTotal": 2000,
-      "estado": "Finalizado",
-      "participantes": [
-        "Agustin Grigaliunas",
-        "Juan Perez"
-      ]
-    },
-    {
-      "id": "6",
-      "nombre": "Vacaciones en Europa",
-      "descripcion": "Viaje de vacaciones a varios países europeos",
-      "montoTotal": 4500,
-      "estado": "En progreso",
-      "participantes": [
-        "Maria Gomez",
-        "Juan Perez",
-        "Agustin Grigaliunas"
-      ]
-    },
-    {
-      "id": "7",
-      "nombre": "Clases de Yoga",
-      "descripcion": "Inscripción para un año de clases de yoga",
-      "montoTotal": 600,
-      "estado": "Finalizado",
-      "participantes": [
-        "Juan Perez",
-        "Lautaro Jimenez"
-      ]
-    },
-    {
-      "id": "8",
-      "nombre": "Curso de Desarrollo Web",
-      "descripcion": "Curso online de desarrollo web avanzado",
-      "montoTotal": 400,
-      "estado": "En progreso",
-      "participantes": [
-        "Lautaro Jimenez",
-        "Maria Gomez"
-      ]
-    },
-    {
-      "id": "9",
-      "nombre": "Compra de Muebles",
-      "descripcion": "Adquisición de muebles para la sala de estar",
-      "montoTotal": 1200,
-      "estado": "Finalizado",
-      "participantes": [
-        "Agustin Grigaliunas",
-        "Maria Gomez"
-      ]
-    },
-    {
-      "id": "10",
-      "nombre": "Fiesta de Cumpleaños",
-      "descripcion": "Organización y gastos para fiesta de cumpleaños",
-      "montoTotal": 700,
-      "estado": "En progreso",
-      "participantes": [
-        "Juan Perez",
-        "Lautaro Jimenez",
-        "Maria Gomez"
-      ]
-    }
-  ],
-  "sections": [
-    {
-      "step": 0,
-      "title": "Información personal",
-      "icon": "infoAccount",
-      "labels": [
+        "lauta.jimenez@gmail.com",
+        "maria.gomez@gmail.com",
+        "agustingrigaliunas@gmail.com"
+      ],
+      "gastos": [
         {
-          "title": "Nombre",
-          "placeholder": "Ingrese nombre...",
-          "type": "text"
+          "id": "3",
+          "descripcion": "Materiales de construcción",
+          "monto": 3000,
+          "fecha": "2024-01-05",
+          "divididoEquitativamente": false,
+          "porcentajes": {
+            "lauta.jimenez@gmail.com": 50,
+            "maria.gomez@gmail.com": 30,
+            "agustingrigaliunas@gmail.com": 20
+          },
+          "tickets": [
+            {
+              "id": "3",
+              "montoTotal": 3000,
+              "fecha": "2024-01-05",
+              "imagen": "url_a_la_imagen_del_ticket"
+            }
+          ]
         },
         {
-          "title": "Apellido",
-          "placeholder": "Ingrese apellido...",
-          "type": "text"
-        },
-        {
-          "title": "Correo electrónico",
-          "placeholder": "Ingrese correo electrónico...",
-          "type": "email"
+          "id": "4",
+          "descripcion": "Mano de obra",
+          "monto": 2000,
+          "fecha": "2024-01-10",
+          "divididoEquitativamente": true,
+          "tickets": [
+            {
+              "id": "4",
+              "montoTotal": 2000,
+              "fecha": "2024-01-10",
+              "imagen": "url_a_la_imagen_del_ticket"
+            }
+          ]
         }
       ],
-      "button": "Actualizar información",
-      "buttonColor": "bg-brandblue",
-      "id": "45b5"
-    },
-    {
-      "step": 1,
-      "title": "Seguridad",
-      "icon": "padlock",
-      "labels": [
+      "historialYReportes": {
+        "detalleDeGastos": [
+          {
+            "participante": "lauta.jimenez@gmail.com",
+            "saldo": -2500
+          },
+          {
+            "participante": "maria.gomez@gmail.com",
+            "saldo": -1500
+          },
+          {
+            "participante": "agustingrigaliunas@gmail.com",
+            "saldo": -1000
+          }
+        ]
+      },
+      "notificaciones": [
         {
-          "title": "Contraseña actual",
-          "placeholder": "Ingrese contraseña actual...",
-          "type": "password"
+          "id": "3",
+          "mensaje": "Tienes un saldo pendiente de $2500",
+          "enviadoA": "lauta.jimenez@gmail.com"
         },
         {
-          "title": "Nueva contraseña",
-          "placeholder": "Ingrese nueva contraseña...",
-          "type": "password"
+          "id": "4",
+          "mensaje": "Tienes un saldo pendiente de $1500",
+          "enviadoA": "maria.gomez@gmail.com"
         },
         {
-          "title": "Repetir nueva contraseña",
-          "placeholder": "Ingrese nueva contraseña...",
-          "type": "password"
+          "id": "5",
+          "mensaje": "Tienes un saldo pendiente de $1000",
+          "enviadoA": "agustingrigaliunas@gmail.com"
         }
-      ],
-      "button": "Actualizar contraseña",
-      "buttonColor": "bg-brandblue",
-      "id": "a7dd"
-    },
-    {
-      "step": 2,
-      "title": "Zona peligrosa",
-      "icon": "danger",
-      "labels": [
-        {
-          "title": "⚠️ ¡Atención! ¡Esta acción no tiene vuelta atrás!",
-          "placeholder": "Ingrese contraseña para eliminar la cuenta...",
-          "type": "password"
-        }
-      ],
-      "button": "Eliminar cuenta",
-      "buttonColor": "bg-red-600",
-      "id": "58ac"
+      ]
     }
   ]
 }
