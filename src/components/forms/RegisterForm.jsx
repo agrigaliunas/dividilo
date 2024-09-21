@@ -44,11 +44,11 @@ const RegisterForm = () => {
 
   return (
     <div className="h-screen flex justify-center items-center">
-      <div className="flex flex-col p-6 w-[90vw] lg:h-[80vh] lg:w-[30vw] overflow-hidden bg-white rounded-xl">
+      <div className="flex flex-col p-6 w-[90vw] lg:h-[80vh] lg:w-[40vw] overflow-hidden bg-white rounded-xl">
         <div className="w-full flex flex-col gap-8">
           <div className="flex flex-col gap-1">
-          <FormTitle title='Crear una cuenta'></FormTitle>
-          <SubTitle subtitle='¡Bienvenido! 👋'></SubTitle>
+            <FormTitle title='Crear una cuenta'></FormTitle>
+            <SubTitle subtitle='¡Bienvenido! 👋'></SubTitle>
           </div>
           <div>
             <form action="" className="flex flex-col gap-3">
@@ -89,13 +89,13 @@ const RegisterForm = () => {
                 <div className="flex flex-row border border-1 border-[#e9e9ef] justify-between items-center w-full px-2 shadow-sm rounded-md ">
                   <input
                     className="py-3 text-sm outline-none w-full"
-                    type= {viewPassword ? "text": "password" }
+                    type={viewPassword ? "text" : "password"}
                     placeholder="Ingrese contraseña..."
                     onChange={handleSetPassword}
                     value={password}
                   />
                   <button onClick={handleViewPassword}>
-                    {viewPassword ?<Eye/>: <EyeSlash/>}
+                    {viewPassword ? <Eye /> : <EyeSlash />}
                   </button>
                 </div>
               </div>
@@ -104,13 +104,13 @@ const RegisterForm = () => {
                 <div className="flex flex-row border border-1 border-[#e9e9ef] justify-between items-center w-full px-2 shadow-sm rounded-md ">
                   <input
                     className="py-3 text-sm outline-none w-full"
-                    type= {viewPassword ? "text": "password" }
+                    type={viewPassword ? "text" : "password"}
                     placeholder="Reingrese contraseña..."
                     onChange={handleSetConfirmedPassword}
                     value={confirmedPassword}
                   />
                   <button onClick={handleViewPassword}>
-                    {viewPassword ?<Eye/>: <EyeSlash/>}
+                    {viewPassword ? <Eye /> : <EyeSlash />}
                   </button>
                 </div>
               </div>
