@@ -1,22 +1,73 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { MyAccountSection } from '../sections/MyAccountSection';
 import { MyAccountSectionTitle } from '../MyAccountSectionTitle';
 import { InfoAccount } from '../icons/InfoAccount.jsx'
 import { Padlock } from '../icons/Padlock.jsx';
 import { Danger } from '../icons/Danger.jsx';
-import { FormTitle } from '../forms/FormTitle.jsx';
-import { SubTitle } from '../forms/SubTitle.jsx';
 
-const iconComponents = {
-  infoAccount: <InfoAccount />,
-  padlock: <Padlock />,
-  danger: <Danger />
-};
+
+const sections = [{
+  step: 0,
+  title: "Información personal",
+  icon: <InfoAccount />,
+  labels: [{
+    title: "Nombre",
+    placeholder: "Ingrese nombre...",
+    type: "text"
+  },
+  {
+    title: "Apellido",
+    placeholder: "Ingrese apellido...",
+    type: "text"
+  },
+  {
+    title: "Correo electrónico",
+    placeholder: "Ingrese correo electrónico...",
+    type: "email"
+  }
+  ],
+  button: "Actualizar información",
+  buttonColor: "bg-brandblue"
+},
+{
+  step: 1,
+  title: "Seguridad",
+  icon: <Padlock />,
+  labels: [{
+    title: "Contraseña actual",
+    placeholder: "Ingrese contraseña actual...",
+    type: "password"
+  },
+  {
+    title: "Nueva contraseña",
+    placeholder: "Ingrese nueva contraseña...",
+    type: "password"
+  },
+  {
+    title: "Repetir nueva contraseña",
+    placeholder: "Ingrese nueva contraseña...",
+    type: "password"
+  }
+  ],
+  button: "Actualizar contraseña",
+  buttonColor: "bg-brandblue"
+},
+{
+  step: 2,
+  title: "Zona peligrosa",
+  icon: <Danger />,
+  labels: [{
+    title: "¡Atención! ¡Esta acción no tiene vuelta atrás!",
+    placeholder: "Ingrese contraseña para eliminar la cuenta...",
+    type: "password"
+  },
+  ],
+  button: "Eliminar cuenta",
+  buttonColor: "bg-red-600	"
+}]
 
 const MyAccountLayout = () => {
 
-  const [sections, setSections] = useState([])
-  const [loading, setLoading] = useState(true)
 
   const [step, setStep] = useState(0);
   const [clearForm, setClearForm] = useState(false);
@@ -26,44 +77,24 @@ const MyAccountLayout = () => {
     setClearForm(true);
   }
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (clearForm) {
       setClearForm(false);
     }
   }, [clearForm]);
 
-  const fetchSections = async () => {
-    const data = await fetch("http://localhost:8000/sections").then(data => data.json())
-    return data;
-  }
-
-
-  useEffect(() => {
-    const loadSections = async () => {
-      const SectionsData = await fetchSections()
-      setSections(SectionsData)
-      setLoading(false)
-    };
-    loadSections();
-  }, [])
-
   return (
-    <div className="flex flex-col p-6 w-[90vw] h-[80vh] lg:w-[90vw] gap-6 bg-white rounded-xl overflow-hidden">
-      <div className="flex flex-col gap-1">
-        <FormTitle title='Mi cuenta'></FormTitle>
-        <SubTitle subtitle='¡Seleccioná una opción para mas detalles!'></SubTitle>
-      </div>
-      <div className='flex lg:flex-row flex-col justify-left w-full gap-4'>
+    <div className="flex flex-col p-6 w-[90vw] h-[80vh] lg:w-[30vw] border border-1 border-[#e9e9ef] rounded-md shadow-sm gap-6">
+      <h2 className="text-3xl font-semibold text-center">Mi cuenta</h2>
+      <div className='flex flex-col justify-center w-full gap-4 lg:flex-row'>
         {sections.map(s => (
-          <MyAccountSectionTitle section={s} icon={iconComponents[s.icon]} actualStep={step} changeStep={handleChangeStep} />
+          <MyAccountSectionTitle section={s} actualStep={step} icon={s.icon} changeStep={handleChangeStep} />
         ))}
       </div>
-      {!loading && sections.length > 0 && (
-        <MyAccountSection
-          section={sections[step]}
-          clearForm={clearForm}
-        />
-      )}
+      <MyAccountSection
+        section={sections[step]}
+        clearForm={clearForm}
+      />
     </div>
   )
 }
