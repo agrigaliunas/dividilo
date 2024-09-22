@@ -128,7 +128,7 @@ const AdminPanelLayout = () => {
               {usuarios.map((usuario) => (
                 <div
                   key={usuario.id}
-                  className="shadow-md border w-[50vw] border-gray-300 flex flex-col gap-1 rounded-lg justify-center p-3"
+                  className="shadow-md border border-gray-300 flex flex-col gap-1 rounded-lg justify-center p-3 w-full"
                 >
                   {usuarioEditando && usuarioEditando.id === usuario.id ? (
                     <div className="flex flex-col gap-2">
