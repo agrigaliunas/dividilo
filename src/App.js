@@ -7,6 +7,7 @@ import { Header } from './components/headers/Header.jsx';
 import { Navbar } from './components/navbar/Navbar.jsx';
 import { ProjectsScreen } from './screens/ProjectsScreen.js';
 import { ProjectScreen } from './screens/ProjectScreen.js';
+import { AdminPanelScreen } from './screens/AdminPanelScreen.js';
 
 
 function App() {
@@ -19,9 +20,8 @@ function App() {
         <Route path="/register" element={<RegisterScreen />} exact />
         <Route path="/account" element={<AccountScreen />} exact />
         <Route path="/dashboard" element={<ProjectsScreen />} exact />
+        <Route path="/admin-panel" element={<AdminPanelScreen />} exact />
         <Route path="/projects/:id" element={<ProjectScreen />} />
-
-
       </Routes>
     </>
   );
