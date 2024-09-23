@@ -41,8 +41,8 @@
       "montoTotal": 1400,
       "estado": "Finalizado",
       "participantes": [
-        "agustingrigaliunas@gmail.com",
-        "juanperez@gmail.com"
+        "1",
+        "4"
       ],
       "gastos": [
         {
@@ -79,11 +79,11 @@
       "historialYReportes": {
         "detalleDeGastos": [
           {
-            "participante": "agustingrigaliunas@gmail.com",
+            "participante": "1",
             "saldo": -700
           },
           {
-            "participante": "juanperez@gmail.com",
+            "participante": "4",
             "saldo": -700
           }
         ]
@@ -92,7 +92,7 @@
         {
           "id": "1",
           "mensaje": "Tienes un saldo pendiente de $700",
-          "enviadoA": "agustingrigaliunas@gmail.com"
+          "enviadoA": "1"
         },
         {
           "id": "2",
@@ -108,9 +108,9 @@
       "montoTotal": 5000,
       "estado": "En progreso",
       "participantes": [
-        "lauta.jimenez@gmail.com",
-        "maria.gomez@gmail.com",
-        "agustingrigaliunas@gmail.com"
+        "2",
+        "3",
+        "1"
       ]
     }
   ]

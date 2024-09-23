@@ -2,78 +2,60 @@ import React, { useState, useEffect } from "react";
 import { EditIcon } from "./icons/EditIcon";
 import { PaperAirplane } from "./icons/PaperAirplane";
 
+export const ProjectInfo = ({ project, usuarios }) => {
+  const [projectData, setProjectData] = useState({
+    nombre: "",
+    descripcion: "",
+    montoTotal: "",
+    fecha: "",
+    participantes: []
+  });
 
-/*
-
-TODO:
-    - fecha del proyecto
-    - debes
-    - te deben
-    (VER SPLITWISE)
-    - cuanto debe cada uno
-        - en % y en $
-    
-    - tickets de compra
-
-*/
-
-
-export const ProjectInfo = ({ project }) => {
-  const [projectNombre, setProjectNombre] = useState("");
-  const [projectDescription, setProjectDescription] = useState("");
-  const [projectMonto, setProjectMonto] = useState("");
-  const [disableEditNombre, setDisableEditNombre] = useState(true);
-  const [editandoProyecto, setEditandoProyecto] = useState(null);
-
+  const [editandoProyecto, setEditandoProyecto] = useState(false);
 
   useEffect(() => {
-    setProjectNombre(project.nombre);
-  }, [project.nombre]);
-
-  useEffect(() => {
-    setProjectDescription(project.descripcion);
-  }, [project.descripcion]);
-
-  useEffect(() => {
-    setProjectMonto(project.monto);
-  }, [project.monto]);
-
-
-  const handleEditNombre = (e) => {
-    setProjectNombre(e.target.value);
-  };
-
-  const handleEnableEditNombre = () => {
-    setDisableEditNombre(false);
-  };
-
-  const handleSaveNombre = async () => {
-    await fetch("http://localhost:8000/proyectos/" + project.id, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        id: project.id,
-        nombre: projectNombre,
+    if (project) {
+      setProjectData({
+        nombre: project.nombre,
         descripcion: project.descripcion,
         montoTotal: project.montoTotal,
-        estado: project.estado,
-        participantes: project.participantes,
-      }),
-    });
-  };
-
-  const handleNameClick = () => {
-    if (disableEditNombre) {
-      handleEnableEditNombre();
-    } else {
-      handleSaveNombre();
+        participantes: project.participantes || [] // Aseguramos que sea un arreglo
+      });
     }
+  }, [project]);
+
+  // Mapeo de participantes con sus nombres y apellidos de usuarios
+  const getParticipanteInfo = (participanteId) => {
+    if(usuarios ) {
+      const usuario = usuarios.find(user => user.id === participanteId);
+      return usuario && `${usuario.nombre} ${usuario.apellido}`
+    } 
+    return "Desconocido";
   };
 
-  const handleEditarClick = (project) => {
-    setEditandoProyecto(project);
+  // Actualiza el nombre del proyecto en el estado
+  const handleEditNombre = (e) => {
+    setProjectData({ ...projectData, nombre: e.target.value });
+  };
+
+  // Actualiza la descripción del proyecto en el estado
+  const handleEditDescripcion = (e) => {
+    setProjectData({ ...projectData, descripcion: e.target.value });
+  };
+
+  // Actualiza el monto total del proyecto en el estado
+  const handleEditMontoTotal = (e) => {
+    setProjectData({ ...projectData, montoTotal: e.target.value });
+  };
+
+  const handleEditarClick = () => {
+    setEditandoProyecto(!editandoProyecto); // Alterna entre editar y no editar
+  };
+
+  const handleSaveProyecto = () => {
+    // Aquí iría la lógica para guardar los cambios, como una llamada a una API
+    console.log("Datos del proyecto guardados", projectData);
+    setEditandoProyecto(false); // Finaliza el modo de edición
   };
 
   return (
@@ -83,44 +65,68 @@ export const ProjectInfo = ({ project }) => {
           <>
             <div className="flex flex-row gap-2 items-center justify-center p-1">
               <input
-                disabled={disableEditNombre}
                 onChange={handleEditNombre}
                 className="text-4xl font-semibold bg-white text-center border-b-2"
-                value={projectNombre}
-                placeholder={projectNombre} />
+                value={projectData.nombre}
+                placeholder="Nombre del proyecto"
+              />
             </div>
-            <span>Descripción:
+            <div className="text-lg flex flex-row gap-1">
+              <span className="font-semibold">Descripción:</span>
               <input
-                className="text-lg border-b-2"
-                value={projectDescription}
+                className="text-lg border-b-2 w-full"
+                onChange={handleEditDescripcion}
+                value={projectData.descripcion}
+                placeholder="Descripción del proyecto"
               />
-            </span>
-            <span>
-              Monto:
+            </div>
+            <div className="text-lg flex flex-row gap-1">
+              <span className="font-semibold">Monto total: </span>
               <input
-                value={projectMonto}
+                className="border-b-2"
+                onChange={handleEditMontoTotal}
+                value={projectData.montoTotal}
+                placeholder="Monto total"
               />
-            </span>
+            </div>
           </>
-
         ) : (
           <>
-            <span className="text-4xl font-semibold text-center">{projectNombre}</span>
-            <span className="text-lg">Descripción: {projectDescription}</span>
+            <span className="text-4xl font-semibold text-center">{projectData.nombre}</span>
+            <div className="flex flex-row gap-1">
+              <span className="text-lg font-semibold">Descripción: </span>
+              <span className="text-lg">{projectData.descripcion}</span>
+            </div>
+            <div className="flex flex-row gap-1">
+              <span className="text-lg font-semibold">Monto total: </span>
+              <span className="text-lg">${projectData.montoTotal}</span>
+            </div>
+            <div className="flex flex-row gap-1">
+              <span className="text-lg font-semibold">Participantes: </span>
+              <ul>
+                {projectData.participantes.length > 0 ? (
+                  projectData.participantes.map((participanteId, index) => (
+                    <li key={index} className="flex items-center gap-2">
+                      <span>• {getParticipanteInfo(participanteId)}</span> {/* Renderizamos nombre y apellido */}
+                    </li>
+                  ))
+                ) : (
+                  <span>No hay participantes.</span>
+                )}
+              </ul>
+            </div>
           </>
         )}
         <button
-          onClick={handleEditarClick}
-          className={`rounded-md p-1 ${disableEditNombre ? "bg-gray-200" : "bg-green-200"
-            } hover:opacity-80 flex items-center justify-center gap-2`}
+          onClick={editandoProyecto ? handleSaveProyecto : handleEditarClick}
+          className={`rounded-md p-1 ${editandoProyecto ? "bg-green-200" : "bg-gray-200"} hover:opacity-80 flex items-center justify-center gap-2`}
         >
           <span className="text-xs">
-            {!disableEditNombre ? "Guardar" : "Editar"}
+            {editandoProyecto ? "Guardar" : "Editar"}
           </span>
-          {disableEditNombre ? <EditIcon /> : <PaperAirplane />}
+          {editandoProyecto ? <PaperAirplane /> : <EditIcon />}
         </button>
       </div>
-    </div >
-
+    </div>
   );
 };
