@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { NewAccountModal } from "../modals/NewAccountModal.jsx";
 
 const AdminPanelLayout = () => {
   const [usuarios, setUsuarios] = useState([]);
   const [mensajeExito, setMensajeExito] = useState("");
   const [usuarioEditando, setUsuarioEditando] = useState(null);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const fetchUsuarios = async () => {
     const response = await fetch("http://localhost:8000/usuarios");
@@ -106,13 +108,48 @@ const AdminPanelLayout = () => {
     setUsuarioEditando(usuario);
   };
 
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUsuarioEditando({ ...usuarioEditando, [name]: value });
   };
 
+
+  const createAccount = async (nuevoUsuario) => {
+    try {
+      const response = await fetch(`http://localhost:8000/usuarios`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(nuevoUsuario),
+      });
+  
+      if (response.ok) {
+        const createdUser = await response.json();
+        setUsuarios([...usuarios, createdUser]); 
+        setMensajeExito("Usuario creado con éxito.");
+        setTimeout(() => setMensajeExito(""), 3000);
+      } else {
+        console.error("Error al crear el usuario.");
+      }
+      closeModal();
+    } catch (error) {
+      console.error("Error en la solicitud de creación:", error);
+    }
+  };
+  
+
   return (
     <>
+      {modalIsOpen && <NewAccountModal closeModal={closeModal} handleCreateAccount={createAccount}/>}
       {mensajeExito && (
         <div className="absolute w-[50vw] left-[25%] top-[15%] bg-green-100 text-green-700 opacity-80 p-4 rounded-full text-center text-xl">
           {mensajeExito}
@@ -125,6 +162,15 @@ const AdminPanelLayout = () => {
           </h2>
           <div>
             <div className="flex flex-col text-xs gap-2 items-center justify-center">
+              <button
+                className="bg-brandblue text-white rounded px-4 py-2 hover:bg-opacity-90 w-full"
+                onClick={openModal}
+              >
+                Crear nueva cuenta
+              </button>
+              <span className="text-left w-full text-lg font-medium">
+                Usuarios existentes:
+              </span>
               {usuarios.map((usuario) => (
                 <div
                   key={usuario.id}
