@@ -29,7 +29,7 @@
       "nombre": "Juan",
       "apellido": "Perez",
       "email": "juan.perez@gmail.com",
-      "password": "1234",
+      "password": "123456",
       "rol": "usuario"
     }
   ],
