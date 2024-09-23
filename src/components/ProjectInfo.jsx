@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { EditIcon } from "./icons/EditIcon";
 import { PaperAirplane } from "./icons/PaperAirplane";
+import { Trash } from "./icons/Trash";
+import { UserPlus } from "./icons/UserPlus";
 
 export const ProjectInfo = ({ project, usuarios }) => {
   const [projectData, setProjectData] = useState({
@@ -26,10 +28,10 @@ export const ProjectInfo = ({ project, usuarios }) => {
 
   // Mapeo de participantes con sus nombres y apellidos de usuarios
   const getParticipanteInfo = (participanteId) => {
-    if(usuarios ) {
+    if (usuarios) {
       const usuario = usuarios.find(user => user.id === participanteId);
       return usuario && `${usuario.nombre} ${usuario.apellido}`
-    } 
+    }
     return "Desconocido";
   };
 
@@ -59,74 +61,9 @@ export const ProjectInfo = ({ project, usuarios }) => {
   };
 
   return (
-    <div className="bg-white w-[80vw] p-4 rounded-xl flex flex-col gap-5">
-      <div className="flex flex-col gap-3 justify-center">
-        {editandoProyecto ? (
-          <>
-            <div className="flex flex-row gap-2 items-center justify-center p-1">
-              <input
-                onChange={handleEditNombre}
-                className="text-4xl font-semibold bg-white text-center border-b-2"
-                value={projectData.nombre}
-                placeholder="Nombre del proyecto"
-              />
-            </div>
-            <div className="text-lg flex flex-row gap-1">
-              <span className="font-semibold">Descripción:</span>
-              <input
-                className="text-lg border-b-2 w-full"
-                onChange={handleEditDescripcion}
-                value={projectData.descripcion}
-                placeholder="Descripción del proyecto"
-              />
-            </div>
-            <div className="text-lg flex flex-row gap-1">
-              <span className="font-semibold">Monto total: </span>
-              <input
-                className="border-b-2"
-                onChange={handleEditMontoTotal}
-                value={projectData.montoTotal}
-                placeholder="Monto total"
-              />
-            </div>
-          </>
-        ) : (
-          <>
-            <span className="text-4xl font-semibold text-center">{projectData.nombre}</span>
-            <div className="flex flex-row gap-1">
-              <span className="text-lg font-semibold">Descripción: </span>
-              <span className="text-lg">{projectData.descripcion}</span>
-            </div>
-            <div className="flex flex-row gap-1">
-              <span className="text-lg font-semibold">Monto total: </span>
-              <span className="text-lg">${projectData.montoTotal}</span>
-            </div>
-            <div className="flex flex-row gap-1">
-              <span className="text-lg font-semibold">Participantes: </span>
-              <ul>
-                {projectData.participantes.length > 0 ? (
-                  projectData.participantes.map((participanteId, index) => (
-                    <li key={index} className="flex items-center gap-2">
-                      <span>• {getParticipanteInfo(participanteId)}</span> {/* Renderizamos nombre y apellido */}
-                    </li>
-                  ))
-                ) : (
-                  <span>No hay participantes.</span>
-                )}
-              </ul>
-            </div>
-          </>
-        )}
-        <button
-          onClick={editandoProyecto ? handleSaveProyecto : handleEditarClick}
-          className={`rounded-md p-1 ${editandoProyecto ? "bg-green-200" : "bg-gray-200"} hover:opacity-80 flex items-center justify-center gap-2`}
-        >
-          <span className="text-xs">
-            {editandoProyecto ? "Guardar" : "Editar"}
-          </span>
-          {editandoProyecto ? <PaperAirplane /> : <EditIcon />}
-        </button>
-      </div>
+    <div>
+
+      
     </div>
   );
 };

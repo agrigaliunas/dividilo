@@ -17,7 +17,6 @@ const ProjectLayout = ({ projectId }) => {
     const data = await fetch("http://localhost:8000/usuarios").then((data) =>
       data.json()
     );
-    // console.log(data)
     return data
   };
 
