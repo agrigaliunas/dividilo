@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { X } from "../icons/X";
 
-export const NewAccountModal = ({ children, handleCreateAccount, onClose }) => {
+export const NewAccountModal = ({ children, handleCreateAccount, closeModal }) => {
   const [email, setEmail] = useState("");
   const [nombre, setNombre] = useState("");
   const [apellido, setApellido] = useState("");
   const [rol, setRol] = useState("Elige un rol");
+
+  const isDisabled = !email || !nombre || !apellido || rol === "Elige un rol";
 
   const handleSubmit = () => {
     const newAccount = {
@@ -16,6 +18,7 @@ export const NewAccountModal = ({ children, handleCreateAccount, onClose }) => {
       password: "123456",
     };
     handleCreateAccount(newAccount);
+    closeModal();
   };
 
   return (
@@ -69,13 +72,18 @@ export const NewAccountModal = ({ children, handleCreateAccount, onClose }) => {
           <p className="text-xs">La contraseña por default será "123456"</p>
           <button
             onClick={handleSubmit}
-            className="rounded-lg w-full text-center bg-green-500 p-2 text-white hover:bg-opacity-90"
+            disabled={isDisabled} 
+            className={`rounded-lg w-full text-center p-2 text-white ${
+              isDisabled
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-green-500 hover:bg-opacity-90"
+            }`}
           >
             Crear cuenta
           </button>
         </div>
         <button
-          onClick={handleCreateAccount}
+          onClick={closeModal}
           className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
         >
           <X />
