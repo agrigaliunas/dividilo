@@ -7,11 +7,11 @@ import { Navigate } from 'react-router-dom';
 const LoginScreen = () => {
   const {user} = useAuth()
   return user ? (
-    <MainCenter>
       <Navigate to="/dashboard" />
-    </MainCenter>
   ) : (
-    <LoginForm />
+    <MainCenter>
+      <LoginForm />
+    </MainCenter>
   );
 };
 

@@ -7,11 +7,11 @@ import { useAuth } from "../contexts/AuthContext.js";
 const RegisterScreen = () => {
   const { user } = useAuth();
   return user ? (
-    <MainCenter>
-      <Navigate to="/dashboard" />
-    </MainCenter>
+    <Navigate to="/dashboard" />
   ) : (
-    <RegisterForm />
+    <MainCenter>
+      <RegisterForm />
+    </MainCenter>
   );
 };
 

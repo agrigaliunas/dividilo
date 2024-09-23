@@ -9,6 +9,10 @@ import { Logout } from "../icons/Logout";
 import { DocumentText } from "../icons/DocumentText";
 import { Currency } from "../icons/Currency";
 import { UserPlus } from "../icons/UserPlus.jsx";
+import { Adjustment } from "../icons/Adjustment.jsx";
+
+const ROLE_ADMIN = "admin";
+
 
 export const Navbar = () => {
   const { isMenuOpen, closeMenu } = useMenu();
@@ -18,7 +22,6 @@ export const Navbar = () => {
     await logout();
     <Navigate to="/register" />
   }
-
 
   return (
     <nav
@@ -37,6 +40,18 @@ export const Navbar = () => {
           <Cross />
         </button>
         <div className="flex flex-col text-2xl text-left gap-4 w-full px-3">
+          {(user && (user.rol === ROLE_ADMIN)) && (
+            <Link
+            to="/admin-panel"
+            className="hover:bg-gray-100 w-full py-1 rounded-md px-4"
+            onClick={closeMenu}
+          >
+            <span className="flex flex-row gap-1 items-center">
+              <Adjustment />
+              Panel admin
+            </span>
+          </Link>
+          )}
           {user ? (
             <>
               <Link
