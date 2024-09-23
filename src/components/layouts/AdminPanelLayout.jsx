@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { NewAccountModal } from "../modals/NewAccountModal.jsx";
 
 const AdminPanelLayout = () => {
   const [usuarios, setUsuarios] = useState([]);
   const [mensajeExito, setMensajeExito] = useState("");
   const [usuarioEditando, setUsuarioEditando] = useState(null);
+  const [usuarioOriginal, setUsuarioOriginal] = useState(null);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const fetchUsuarios = async () => {
     const response = await fetch("http://localhost:8000/usuarios");
@@ -103,7 +106,16 @@ const AdminPanelLayout = () => {
   };
 
   const handleEditarClick = (usuario) => {
-    setUsuarioEditando(usuario);
+    setUsuarioOriginal(usuario);
+    setUsuarioEditando(usuario); 
+  };
+
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
   };
 
   const handleInputChange = (e) => {
@@ -111,8 +123,41 @@ const AdminPanelLayout = () => {
     setUsuarioEditando({ ...usuarioEditando, [name]: value });
   };
 
+  const hasChanges = () => {
+    return (
+      usuarioEditando?.email !== usuarioOriginal?.email ||
+      usuarioEditando?.nombre !== usuarioOriginal?.nombre ||
+      usuarioEditando?.apellido !== usuarioOriginal?.apellido
+    );
+  };
+
+  const createAccount = async (nuevoUsuario) => {
+    try {
+      const response = await fetch(`http://localhost:8000/usuarios`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(nuevoUsuario),
+      });
+  
+      if (response.ok) {
+        const createdUser = await response.json();
+        setUsuarios([...usuarios, createdUser]); 
+        setMensajeExito("Usuario creado con éxito.");
+        setTimeout(() => setMensajeExito(""), 3000);
+      } else {
+        console.error("Error al crear el usuario.");
+      }
+      closeModal();
+    } catch (error) {
+      console.error("Error en la solicitud de creación:", error);
+    }
+  };
+
   return (
     <>
+      {modalIsOpen && <NewAccountModal closeModal={closeModal} handleCreateAccount={createAccount} />}
       {mensajeExito && (
         <div className="absolute w-[50vw] left-[25%] top-[15%] bg-green-100 text-green-700 opacity-80 p-4 rounded-full text-center text-xl">
           {mensajeExito}
@@ -125,6 +170,15 @@ const AdminPanelLayout = () => {
           </h2>
           <div>
             <div className="flex flex-col text-xs gap-2 items-center justify-center">
+              <button
+                className="bg-brandblue bg-opacity-80 text-white rounded px-4 py-2 hover:bg-opacity-70 w-full"
+                onClick={openModal}
+              >
+                Crear nueva cuenta
+              </button>
+              <span className="text-left w-full text-lg font-medium">
+                Usuarios existentes:
+              </span>
               {usuarios.map((usuario) => (
                 <div
                   key={usuario.id}
@@ -175,7 +229,8 @@ const AdminPanelLayout = () => {
                       </div>
                       <button
                         onClick={() => actualizarUsuario(usuarioEditando)}
-                        className="mt-2 bg-green-500 text-white rounded px-4 py-2 hover:bg-opacity-90"
+                        disabled={!hasChanges()}
+                        className={`mt-2 rounded px-4 py-2 ${hasChanges() ? 'bg-green-500 text-white hover:bg-opacity-90' : 'bg-gray-300 text-gray-600 cursor-not-allowed'}`}
                       >
                         Guardar cambios
                       </button>
@@ -198,20 +253,25 @@ const AdminPanelLayout = () => {
                         <span className="font-semibold text-sm">
                           Contraseña:
                         </span>
-                        <span className="text-sm">********</span>
-                      </div>
-                      <div className="flex flex-col gap-1">
                         <button
-                          onClick={() => handleEditarClick(usuario)}
-                          className="mt-2 bg-gray-500 text-white rounded px-4 py-2 hover:bg-opacity-90"
+                          className="p-1 text-center bg-brandblue text-white rounded"
+                          onClick={() => restorePassword(usuario.id)}
                         >
-                          Modificar datos
+                          Reestablecer
+                        </button>
+                      </div>
+                      <div className="flex flex-row gap-4 justify-end mt-2">
+                        <button
+                          className="rounded bg-red-500 hover:bg-opacity-90 text-white text-sm px-4 py-2"
+                          onClick={() => eliminarUsuario(usuario.id)}
+                        >
+                          Eliminar
                         </button>
                         <button
-                          onClick={() => eliminarUsuario(usuario.id)}
-                          className="mt-2 bg-red-500 text-white rounded px-4 py-2 hover:bg-opacity-90"
+                          className="rounded bg-yellow-500 hover:bg-opacity-90 text-white text-sm px-4 py-2"
+                          onClick={() => handleEditarClick(usuario)}
                         >
-                          Eliminar cuenta
+                          Modificar datos
                         </button>
                       </div>
                     </div>
