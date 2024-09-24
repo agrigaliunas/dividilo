@@ -72,7 +72,7 @@ export const ProjectInfo = ({ project, usuarios }) => {
       });
     });
 
-    const balance = (proyecto.montoTotalProyecto / 2 - totalGasto);
+    const balance = (proyecto.montoTotalProyecto / (proyecto.participantes).length - totalGasto);
 
     if (balance < 0) {
       return { texto: `+ $${(balance*-1).toFixed(2)}`, color: "text-green-500" }; 
