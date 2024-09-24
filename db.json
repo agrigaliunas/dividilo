@@ -201,6 +201,204 @@
           ]
         }
       ]
+    },
+    {
+      "id": "3",
+      "nombre": "Fiesta de Cumpleaños",
+      "descripcion": "Organización de la fiesta de cumpleaños de Maria",
+      "montoTotalProyecto": 1500,
+      "estado": "Finalizado",
+      "participantes": ["3", "4"],
+      "gastos": [
+        {
+          "id": "5",
+          "descripcion": "Decoraciones",
+          "montoTotalGasto": 500,
+          "tickets": [
+            {
+              "id": "8",
+              "montoTotalTicket": 500,
+              "descripcion": "Globos y guirnaldas",
+              "fecha": "2024-10-01",
+              "imagen": "url_a_la_imagen_del_ticket",
+              "split": [
+                {
+                  "participanteId": "3",
+                  "porcentaje": 60
+                },
+                {
+                  "participanteId": "4",
+                  "porcentaje": 40
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "6",
+          "descripcion": "Comida y bebida",
+          "montoTotalGasto": 1000,
+          "tickets": [
+            {
+              "id": "9",
+              "montoTotalTicket": 1000,
+              "descripcion": "Catering para 20 personas",
+              "fecha": "2024-10-02",
+              "imagen": "url_a_la_imagen_del_ticket",
+              "split": [
+                {
+                  "participanteId": "3",
+                  "porcentaje": 70
+                },
+                {
+                  "participanteId": "4",
+                  "porcentaje": 30
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "4",
+      "nombre": "Viaje a Bariloche",
+      "descripcion": "Viaje grupal a Bariloche con amigos",
+      "montoTotalProyecto": 5000,
+      "estado": "Finalizado",
+      "participantes": ["1", "2", "4"],
+      "gastos": [
+        {
+          "id": "7",
+          "descripcion": "Transporte",
+          "montoTotalGasto": 2500,
+          "tickets": [
+            {
+              "id": "10",
+              "montoTotalTicket": 2500,
+              "descripcion": "Pasajes de avión",
+              "fecha": "2024-12-01",
+              "imagen": "url_a_la_imagen_del_ticket",
+              "split": [
+                {
+                  "participanteId": "1",
+                  "porcentaje": 40
+                },
+                {
+                  "participanteId": "2",
+                  "porcentaje": 40
+                },
+                {
+                  "participanteId": "4",
+                  "porcentaje": 20
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "8",
+          "descripcion": "Alojamiento",
+          "montoTotalGasto": 2500,
+          "tickets": [
+            {
+              "id": "11",
+              "montoTotalTicket": 2500,
+              "descripcion": "Cabaña para 7 días",
+              "fecha": "2024-12-02",
+              "imagen": "url_a_la_imagen_del_ticket",
+              "split": [
+                {
+                  "participanteId": "1",
+                  "porcentaje": 50
+                },
+                {
+                  "participanteId": "2",
+                  "porcentaje": 30
+                },
+                {
+                  "participanteId": "4",
+                  "porcentaje": 20
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "5",
+      "nombre": "Proyecto de trabajo colaborativo",
+      "descripcion": "Desarrollo de una app con el equipo",
+      "montoTotalProyecto": 8000,
+      "estado": "En progreso",
+      "participantes": ["1", "2", "3", "4"],
+      "gastos": [
+        {
+          "id": "9",
+          "descripcion": "Licencias de software",
+          "montoTotalGasto": 3000,
+          "tickets": [
+            {
+              "id": "12",
+              "montoTotalTicket": 3000,
+              "descripcion": "Licencias para herramientas de desarrollo",
+              "fecha": "2024-11-01",
+              "imagen": "url_a_la_imagen_del_ticket",
+              "split": [
+                {
+                  "participanteId": "1",
+                  "porcentaje": 25
+                },
+                {
+                  "participanteId": "2",
+                  "porcentaje": 25
+                },
+                {
+                  "participanteId": "3",
+                  "porcentaje": 25
+                },
+                {
+                  "participanteId": "4",
+                  "porcentaje": 25
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "10",
+          "descripcion": "Diseño gráfico",
+          "montoTotalGasto": 5000,
+          "tickets": [
+            {
+              "id": "13",
+              "montoTotalTicket": 5000,
+              "descripcion": "Contratación de un diseñador freelance",
+              "fecha": "2024-11-10",
+              "imagen": "url_a_la_imagen_del_ticket",
+              "split": [
+                {
+                  "participanteId": "1",
+                  "porcentaje": 30
+                },
+                {
+                  "participanteId": "2",
+                  "porcentaje": 30
+                },
+                {
+                  "participanteId": "3",
+                  "porcentaje": 20
+                },
+                {
+                  "participanteId": "4",
+                  "porcentaje": 20
+                }
+              ]
+            }
+          ]
+        }
+      ]
     }
   ]
 }
