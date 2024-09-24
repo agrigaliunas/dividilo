@@ -258,7 +258,7 @@ export const ProjectInfo = ({ project, usuarios }) => {
           <div className="flex flex-col gap-3 border border-1 bg-white p-5 rounded-xl shadow-md">
             <div className="flex flex-row lg:justify-between gap-5">
               <input
-                className="lg:text-4xl text-xl text-left font-extrabold w-[50%] border-b"
+                className="lg:text-4xl text-xl text-left font-extrabold w-[auto] border-b"
                 value={projectData.nombre}
                 onChange={handleEditNombre}
                 placeholder="Ingrese título del proyecto..." />
@@ -273,7 +273,7 @@ export const ProjectInfo = ({ project, usuarios }) => {
               )}
             </div>
             <input
-              className="text-gray-500 font-medium w-[50%] border-b"
+              className="text-gray-500 font-medium w-[auto] border-b"
               value={projectData.descripcion}
               onChange={handleEditDescripcion}
               placeholder="Ingrese descripción del proyecto..." />
