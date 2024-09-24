@@ -113,14 +113,14 @@
       "id": "2",
       "nombre": "Remodelación cocina",
       "descripcion": "Remodelando la cocina del departamento",
-      "montoTotalProyecto": 7000,
+      "montoTotalProyecto": 6000,
       "estado": "En progreso",
       "participantes": ["1", "3"],
       "gastos": [
         {
           "id": "3",
           "descripcion": "Heladera y cocina",
-          "montoTotalGasto": 4000,
+          "montoTotalGasto": 3000,
           "tickets": [
             {
               "id": "4",
@@ -190,7 +190,7 @@
               "split": [
                 {
                   "participanteId": "1",
-                  "porcentaje": 59
+                  "porcentaje": 50
                 },
                 {
                   "participanteId": "3",

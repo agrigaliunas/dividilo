@@ -16,7 +16,7 @@ export const ProjectInfo = ({ project, usuarios }) => {
   });
 
   const [editandoProyecto, setEditandoProyecto] = useState(false);
-  const [gastosExpandidos, setGastosExpandidos] = useState({}); 
+  const [gastosExpandidos, setGastosExpandidos] = useState({});
 
   useEffect(() => {
     if (project) {
@@ -56,6 +56,29 @@ export const ProjectInfo = ({ project, usuarios }) => {
       }
     }
     return "??";
+  };
+
+  const calcularGastoParticipante = (proyecto, participanteId) => {
+    let totalGasto = 0;
+
+    proyecto.gastos.forEach((gasto) => {
+      gasto.tickets.forEach((ticket) => {
+        const splitParticipante = ticket.split.find(
+          (split) => split.participanteId === participanteId
+        );
+        if (splitParticipante) {
+          totalGasto += (ticket.montoTotalTicket * splitParticipante.porcentaje) / 100;
+        }
+      });
+    });
+
+    const balance = (proyecto.montoTotalProyecto / 2 - totalGasto);
+
+    if (balance < 0) {
+      return { texto: `+ $${(balance*-1).toFixed(2)}`, color: "text-green-500" }; 
+    } else {
+      return { texto: `- $${balance.toFixed(2)}`, color: "text-red-500" }; 
+    }
   };
 
   const handleEditNombre = (e) => {
@@ -101,90 +124,119 @@ export const ProjectInfo = ({ project, usuarios }) => {
         <span className="text-gray-500 font-medium">{projectData.descripcion}</span>
       </div>
 
-      <div className="flex flex-row gap-4">
-        <div className="flex flex-col border border-1 bg-white rounded-xl shadow-md p-5 w-[50%]">
+      <div className="flex flex-col lg:flex-row gap-4">
+        <div className="flex flex-col w-full border border-1 bg-white rounded-xl shadow-md p-5 lg:w-[50%]">
           <h2 className="text-2xl text-left font-bold">Monto total gastado</h2>
           <span className="text-4xl font-bold mt-4">
             ${projectData.montoTotalProyecto && projectData.montoTotalProyecto.toFixed(2)}
           </span>
         </div>
-        <div className="border border-1 bg-white rounded-xl shadow-md p-5 w-[50%]">
-          <div className="flex flex-col gap-4">
-            <h2 className="text-2xl text-left font-bold">Participantes</h2>
-            <span className="text-4xl font-bold">{projectData.participantes.length || "1"}</span>
-            <div className="flex flex-row gap-4">
-              {projectData.participantes.length > 0 &&
-                projectData.participantes.map((p, index) => (
-                  <span key={index} className="rounded-full w-12 h-12 flex items-center justify-center border border-1 border-gray-400 bg-brandblue text-white font-semibold p-2">
-                    {getInicialesParticipante(p)}
-                  </span>
-                ))}
-              <button className="rounded-full w-12 h-12 flex items-center justify-center border border-1 border-gray-400 bg-white text-black hover:bg-gray-50 font-semibold p-2">
-                <UserPlus />
-              </button>
-            </div>
+        <div className="flex flex-col w-full border border-1 bg-white rounded-xl shadow-md p-5 lg:w-[50%] gap-4">
+          <h2 className="text-2xl text-left font-bold">Participantes</h2>
+          <span className="text-4xl font-bold">{projectData.participantes.length || "1"}</span>
+          <div className="flex flex-row gap-4">
+            {projectData.participantes.length > 0 &&
+              projectData.participantes.map((p, index) => (
+                <span key={index} className="rounded-full w-12 h-12 flex items-center justify-center border border-1 border-gray-400 bg-brandblue text-white font-semibold p-2">
+                  {getInicialesParticipante(p)}
+                </span>
+              ))}
+            <button className="rounded-full w-12 h-12 flex items-center justify-center border border-1 border-gray-400 bg-white text-black hover:bg-gray-50 font-semibold p-2">
+              <UserPlus />
+            </button>
           </div>
         </div>
       </div>
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-4 border border-1 bg-white p-5 rounded-xl shadow-md">
-          <div className="flex flex-row justify-between pr-12 items-center">
+          <div className="flex flex-row justify-between items-center">
             <h2 className="text-2xl text-left font-bold">Gastos del proyecto</h2>
             <button className="border-2 border-brandblue text-brandblue rounded-lg py-2 px-4 hover:opacity-80">
               Agregar gasto
             </button>
           </div>
+          <div className={`flex flex-col gap-2`}>
+            {projectData.gastos.length > 0 ? (
+              projectData.gastos.map((gasto, index) => (
+                <div key={index} className="flex flex-col items-center border-2 rounded-xl gap-2 w-full">
+                  <div className="flex flex-col gap-3 items-left bg-white p-5 rounded-xl shadow-md w-full">
+                    <div className="flex flex-row gap-2 items-center">
+                      <button onClick={() => toggleGasto(index)} className="bg-gray-200 rounded-full p-1 hover:opacity-80">
+                        <ChevronDown />
+                      </button>
+                      <span className="font-semibold text-xl lg:text-2xl rounded-lg">
+                        {gasto.descripcion}
+                      </span>
+                      <span className="font-bold text-xl lg:text-2xl rounded-lg ml-auto">${gasto.montoTotalGasto.toFixed(2)}</span>
+                    </div>
+                    {gastosExpandidos[index] && (
+                      <>
+                        {gasto.tickets?.length > 0 && (
+                          gasto.tickets.map((ticket, ticketIndex) => (
+                            <div key={ticketIndex} className="flex flex-col gap-5 bg-gray-100 border-2 rounded-lg w-full text-base px-5 py-2 justify-center">
+                              <div className="flex flex-row gap-4">
+                                <span className="font-extrabold text-xl">{ticket.descripcion}</span>
+                                <span className="border border-1 border-gray-300 rounded-xl p-2 bg-white  text-md ml-auto">{ticket.fecha}</span>
+                              </div>
+                              <div className="flex flex-col gap-1 w-full">
+                                {ticket.split?.length > 0 &&
+                                  ticket.split.map((sp, spIndex) => (
+                                    <div key={spIndex} className="flex flex-row gap-2 w-full justify-between">
+                                      <span className="font-semibold">{getParticipanteNombreApellido(sp.participanteId)}</span>
+                                      <div className="space-x-1">
+                                        <span className="font-semibold">Gastó ${ticket.montoTotalTicket * (sp.porcentaje / 100)}</span>
+                                        <span className="text-red-500">({sp.porcentaje}%)</span>
+                                      </div>
+                                    </div>
+                                  ))}
+                                <span className="font-bold text-lg ml-auto">Total: ${ticket.montoTotalTicket.toFixed(2)}</span>
+
+                              </div>
+                            </div>
+                          ))
+                        )}
+                        <div className="border border-1 bg-white p-5 rounded-xl shadow-md w-full text-center">
+                          <span className="font-bold text-2xl">Total: ${gasto.montoTotalGasto.toFixed(2)}</span>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </div>
+              ))
+            ) : (
+              <span className="text-gray-500">No hay gastos registrados.</span>
+            )}
+          </div>
         </div>
-        <div className={`flex flex-col gap-2`}>
-          {projectData.gastos.length > 0 ? (
-            projectData.gastos.map((gasto, index) => (
-              <div key={index} className="flex flex-col items-center border-2 rounded-lg gap-2 w-full">
-                <div className="flex flex-col gap-3 items-left border border-1 bg-white p-5 rounded-xl shadow-md w-full">
-                  <div className="flex flex-row gap-2 items-center">
-                    <button onClick={() => toggleGasto(index)} className="bg-gray-200 rounded-full p-1 hover:opacity-80">
-                      <ChevronDown />
-                    </button>
-                    <span className="font-bold text-2xl rounded-lg">
-                      {gasto.descripcion}
+
+      </div>
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 border border-1 bg-white p-5 rounded-xl shadow-md">
+          <h2 className="text-2xl text-left font-bold">Balances</h2>
+          <div className="flex flex-col gap-2">
+            {projectData.participantes?.length > 0 ? (
+              projectData.participantes.map((participante, participanteIndex) => {
+                const { texto, color } = calcularGastoParticipante(projectData, participante);
+                return (
+                  <div key={participanteIndex} className="flex flex-row bg-white p-5 rounded-xl shadow-md">
+                    <span className="text-lg lg:text-2xl font-semibold">
+                      {getParticipanteNombreApellido(participante)}
+                    </span>
+                    <span className={`text-lg lg:text-2xl font-bold ml-auto ${color}`}>
+                      {texto}
                     </span>
                   </div>
-                  {gastosExpandidos[index] && (
-                    <>
-                      {gasto.tickets?.length > 0 && (
-                        gasto.tickets.map((ticket, ticketIndex) => (
-                          <div key={ticketIndex} className="flex flex-col gap-5 bg-gray-100 border-2 rounded-lg w-full text-base px-5 py-2 justify-center">
-                            <div className="flex flex-row gap-4">
-                              <span className="font-extrabold text-lg">{ticket.descripcion}:</span>
-                              <span className="font-medium text-lg">Total: ${ticket.montoTotalTicket.toFixed(2)}</span>
-                            </div>
-                            <div className="flex flex-col gap-1 w-full">
-                              {ticket.split?.length > 0 &&
-                                ticket.split.map((sp, spIndex) => (
-                                  <div key={spIndex} className="flex flex-row gap-2 w-full justify-between">
-                                    <span className="font-semibold">{getParticipanteNombreApellido(sp.participanteId)}</span>
-                                    <div className="space-x-1">
-                                      <span className="font-semibold">Gastó ${ticket.montoTotalTicket * (sp.porcentaje / 100)}</span>
-                                      <span className="text-red-500">({sp.porcentaje}%)</span>
-                                    </div>
-                                  </div>
-                                ))}
-                            </div>
-                          </div>
-                        ))
-                      )}
-                      <div className="border border-1 bg-white p-5 rounded-xl shadow-md w-full text-center">
-                        <span className="font-bold text-2xl">Total: ${gasto.montoTotalGasto.toFixed(2)}</span>
-                      </div>
-                    </>
-                  )}
-                </div>
-              </div>
-            ))
-          ) : (
-            <span className="text-gray-500">No hay gastos registrados.</span>
-          )}
+                );
+              })
+            ) : (
+              <span>No hay participantes</span>
+            )}
+          </div>
         </div>
       </div>
+
+
+
     </div>
   );
 };
