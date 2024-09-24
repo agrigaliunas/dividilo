@@ -15,6 +15,6 @@ export const AdminPanelScreen = () => {
       <AdminPanelLayout />
     </MainCenter>
   ) : (
-    <Navigate to="/register" />
+    <Navigate to="/dashboard" />
   );
 };
