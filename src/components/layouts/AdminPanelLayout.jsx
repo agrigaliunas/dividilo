@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { NewAccountModal } from "../modals/NewAccountModal.jsx";
+import { fetchUsuarios } from "../../services/UserService.js";
+import { crearCuenta, restaurarPassword } from "../../services/AuthService.js";
 
 const AdminPanelLayout = () => {
   const [usuarios, setUsuarios] = useState([]);
@@ -8,22 +10,13 @@ const AdminPanelLayout = () => {
   const [usuarioOriginal, setUsuarioOriginal] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  const fetchUsuarios = async () => {
-    const response = await fetch("http://localhost:8000/usuarios");
-    const data = await response.json();
-    return data;
-  };
-
   useEffect(() => {
     fetchUsuarios().then(setUsuarios);
   }, []);
 
   const eliminarUsuario = async (id) => {
     try {
-      const response = await fetch(`http://localhost:8000/usuarios/${id}`, {
-        method: "DELETE",
-      });
-
+      const response = await eliminarUsuario();
       if (response.ok) {
         setUsuarios((prevUsuarios) =>
           prevUsuarios.filter((usuario) => usuario.id !== id)
@@ -41,19 +34,8 @@ const AdminPanelLayout = () => {
   const restorePassword = async (id) => {
     try {
       const usuarioOriginal = usuarios.find((usuario) => usuario.id === id);
-
-      const datosActualizados = {
-        ...usuarioOriginal,
-        password: "123456",
-      };
-
-      const response = await fetch(`http://localhost:8000/usuarios/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(datosActualizados),
-      });
+      
+      const response = await restaurarPassword(id, usuarioOriginal)
 
       if (response.ok) {
         setUsuarios((prevUsuarios) =>
@@ -77,16 +59,7 @@ const AdminPanelLayout = () => {
 
   const actualizarUsuario = async (usuarioActualizado) => {
     try {
-      const response = await fetch(
-        `http://localhost:8000/usuarios/${usuarioActualizado.id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(usuarioActualizado),
-        }
-      );
+      const response = await actualizarUsuario(usuarioActualizado);
 
       if (response.ok) {
         setUsuarios((prevUsuarios) =>
@@ -107,7 +80,7 @@ const AdminPanelLayout = () => {
 
   const handleEditarClick = (usuario) => {
     setUsuarioOriginal(usuario);
-    setUsuarioEditando(usuario); 
+    setUsuarioEditando(usuario);
   };
 
   const openModal = () => {
@@ -133,17 +106,11 @@ const AdminPanelLayout = () => {
 
   const createAccount = async (nuevoUsuario) => {
     try {
-      const response = await fetch(`http://localhost:8000/usuarios`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(nuevoUsuario),
-      });
-  
+      const response = await crearCuenta(nuevoUsuario);
+
       if (response.ok) {
         const createdUser = await response.json();
-        setUsuarios([...usuarios, createdUser]); 
+        setUsuarios([...usuarios, createdUser]);
         setMensajeExito("Usuario creado con éxito.");
         setTimeout(() => setMensajeExito(""), 3000);
       } else {
@@ -157,7 +124,12 @@ const AdminPanelLayout = () => {
 
   return (
     <>
-      {modalIsOpen && <NewAccountModal closeModal={closeModal} handleCreateAccount={createAccount} />}
+      {modalIsOpen && (
+        <NewAccountModal
+          closeModal={closeModal}
+          handleCreateAccount={createAccount}
+        />
+      )}
       {mensajeExito && (
         <div className="absolute w-[50vw] left-[25%] top-[15%] bg-green-100 text-green-700 opacity-80 p-4 rounded-full text-center text-xl">
           {mensajeExito}
@@ -230,7 +202,11 @@ const AdminPanelLayout = () => {
                       <button
                         onClick={() => actualizarUsuario(usuarioEditando)}
                         disabled={!hasChanges()}
-                        className={`mt-2 rounded px-4 py-2 ${hasChanges() ? 'bg-green-500 text-white hover:bg-opacity-90' : 'bg-gray-300 text-gray-600 cursor-not-allowed'}`}
+                        className={`mt-2 rounded px-4 py-2 ${
+                          hasChanges()
+                            ? "bg-green-500 text-white hover:bg-opacity-90"
+                            : "bg-gray-300 text-gray-600 cursor-not-allowed"
+                        }`}
                       >
                         Guardar cambios
                       </button>

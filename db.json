@@ -416,18 +416,6 @@
           ]
         }
       ]
-    },
-    {
-      "id": "8128",
-      "nombre": "asdasd",
-      "descripcion": "asdasd",
-      "participantes": [
-        "2",
-        "1"
-      ],
-      "montoTotalProyecto": 0,
-      "gastos": [],
-      "estado": "En progreso"
     }
   ]
 }

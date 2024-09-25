@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { X } from "../icons/X";
 import { UserPlus } from "../icons/UserPlus";
 import { Trash } from "../icons/Trash";
+import { createProject } from "../../services/ProjectService.js";
+import { checkEmailExists } from "../../services/AuthService.js";
 
 export const NewProjectModal = ({ closeModal }) => {
   const [nombre, setNombre] = useState("");
@@ -26,9 +28,7 @@ export const NewProjectModal = ({ closeModal }) => {
   };
 
   const checkEmailExiste = async (email) => {
-    const usuarios = await fetch("http://localhost:8000/usuarios").then((data) => data.json());
-
-    const usuario = usuarios.find((usuario) => usuario.email === email);
+    const usuario = await checkEmailExists(email);
 
     if (usuario) {
       if (!usuariosId.includes(usuario.id)) {
@@ -62,23 +62,8 @@ export const NewProjectModal = ({ closeModal }) => {
 
   const handleCrearProyecto = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/proyectos`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          nombre: nombre,
-          descripcion: descripcion,
-          participantes: usuariosId, 
-          montoTotalProyecto: 0,
-          gastos: [],
-          estado: "En progreso"
-        }),
-      });
-
+      const response = await createProject(nombre, descripcion, usuariosId)
       if (response.ok) {
-        console.log(response)
         window.location.reload();
       } else {
         console.error("Error al crear el proyecto.");
@@ -102,37 +87,37 @@ export const NewProjectModal = ({ closeModal }) => {
           <X />
         </button>
         <div className="flex flex-col gap-5">
-          <h2 className="lg:text-4xl text-3xl font-bold">Creando proyecto nuevo</h2>
+          <h2 className="lg:text-4xl text-2xl font-bold">Creando proyecto nuevo</h2>
           <div className="flex flex-row gap-2">
             <div className="flex flex-col justify-center gap-1 w-[50%]">
-              <label className="text-2xl font-semibold">Ingresa un nombre</label>
+              <label className="lg:text-2xl text-lg font-semibold">Ingresa un nombre</label>
               <input
                 onChange={(e) => setNombre(e.target.value)}
                 value={nombre}
                 type="text"
-                className="p-2 border rounded"
+                className="p-2 border rounded text-sm"
                 placeholder="Viaje a New York"
               />
             </div>
             <div className="flex flex-col justify-center gap-1 w-[50%]">
-              <label className="text-2xl font-semibold">Ingresa una descripcion</label>
+              <label className="lg:text-2xl text-lg font-semibold">Ingresa una descripcion</label>
               <input
                 onChange={(e) => setDescripcion(e.target.value)}
                 value={descripcion}
-                className="p-2 border rounded"
+                className="p-2 border rounded text-sm"
                 placeholder="Viaje con la familia en 2026"
               />
             </div>
           </div>
           <div className="flex flex-row gap-2">
             <div className="flex flex-col w-[50%]">
-              <span className="text-2xl font-semibold">Agrega participantes</span>
-              <span className="text-gray-400">Escribe el email de cada participante</span>
+              <span className="lg:text-2xl text-lg font-semibold">Agrega participantes</span>
+              <span className="text-gray-400 lg:text-base text-sm">Escribe el email de cada participante</span>
               <div className="flex flex-row border rounded w-fit items-center mt-2">
                 <input
                   onChange={handleEmailChange}
                   value={participanteAgregando}
-                  className="p-2"
+                  className="p-2 text-sm"
                   type="email"
                   placeholder="ejemplo@gmail.com"
                 />
@@ -145,16 +130,16 @@ export const NewProjectModal = ({ closeModal }) => {
                 </button>
               </div>
               {participanteNoExiste && participanteAgregando && (
-                <span className="text-red-500">El usuario no existe.</span>
+                <span className="text-red-500 text-xs p-1">El usuario ingresado no existe...</span>
               )}
             </div>
             <div className="flex flex-col w-[50%]">
-              <span className="text-2xl font-semibold">Participantes agregados</span>
+              <span className="lg:text-2xl text-lg font-semibold">Participantes agregados</span>
               {participantes && participantes.length > 0 && (
                 <>
                   {participantes.map((email, index) => (
                     <div className="flex flex-row gap-1 items-center" key={index}>
-                      <span className="text-gray-500 font-medium text-lg">{email}</span>
+                      <span className="text-gray-500 font-medium text-xs">{email}</span>
                       <button
                         className="hover:opacity-70"
                         onClick={() => deleteParticipant(email)}
@@ -169,8 +154,9 @@ export const NewProjectModal = ({ closeModal }) => {
           </div>
           <button
             onClick={handleCrearProyecto}
-            className="text-white p-2 w-full hover:opacity-90 bg-green-500 rounded-lg"
-          >
+            disabled={!nombre || !descripcion}
+            className={`text-white p-2 w-full hover:opacity-90 ${nombre && descripcion ? "bg-green-500" : "bg-gray-500"} rounded-lg`}
+            >
             Crear proyecto
           </button>
         </div>

@@ -1,27 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { ProjectInfo } from "../ProjectInfo";
+import { fetchProjects } from "../../services/ProjectService";
+import { fetchUsuarios } from "../../services/UserService.js";
 
 const ProjectLayout = ({ projectId }) => {
   const [project, setProject] = useState({});
   const [usuarios, setUsuarios] = useState([]);
 
-  const fetchProject = async () => {
-    const data = await fetch("http://localhost:8000/proyectos").then((data) =>
-      data.json()
-    );
+  const getProject = async () => {
+    const data = await fetchProjects()
     return data.filter((proj) => proj.id === projectId)[0];
-  };
-
-  const fetchUsuarios = async () => {
-    const data = await fetch("http://localhost:8000/usuarios").then((data) =>
-      data.json()
-    );
-    return data
   };
 
   useEffect(() => {
     const loadProject = async () => {
-      const projectData = await fetchProject();
+      const projectData = await getProject();
       setProject(projectData);
     };
     loadProject();
