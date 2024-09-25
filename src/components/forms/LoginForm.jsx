@@ -29,6 +29,7 @@ const LoginForm = () => {
 
   const loginUser = () => {
     const userData = {
+      "id": "2",
       "email": "lauta.jimenez@gmail.com",
       "nombre": "Lautaro",
       "apellido": "Jimenez",

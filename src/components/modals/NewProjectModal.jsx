@@ -9,29 +9,42 @@ export const NewProjectModal = ({ closeModal }) => {
   const [participanteAgregando, setParticipanteAgregando] = useState("");
   const [participanteNoExiste, setParticipanteNoExiste] = useState(true);
   const [participantes, setParticipantes] = useState([]);
+  const [usuariosId, setUsuariosId] = useState([]); // Lista para almacenar IDs de los usuarios
 
   useEffect(() => {
     const loggedUser = JSON.parse(localStorage.getItem("user"));
     if (loggedUser && loggedUser.email && !participantes.includes(loggedUser.email)) {
       setParticipantes([loggedUser.email]);
+      setUsuariosId([loggedUser.id])
     }
   }, []);
 
   const deleteParticipant = (email) => {
     setParticipantes(participantes.filter((part) => part !== email));
+
+    setUsuariosId(usuariosId.filter((id, index) => participantes[index] !== email));
   };
 
   const checkEmailExiste = async (email) => {
     const usuarios = await fetch("http://localhost:8000/usuarios").then((data) => data.json());
-    return usuarios.some((usuario) => usuario.email === email);
+
+    const usuario = usuarios.find((usuario) => usuario.email === email);
+
+    if (usuario) {
+      if (!usuariosId.includes(usuario.id)) {
+        setUsuariosId((prevIds) => [...prevIds, usuario.id]);
+      }
+      return true;
+    }
+    return false;
   };
 
   const handleAddParticipant = async () => {
     const participanteExiste = await checkEmailExiste(participanteAgregando);
     if (participanteExiste && !participantes.includes(participanteAgregando)) {
       setParticipanteAgregando("");
-      setParticipanteNoExiste(true); 
-      setParticipantes([...participantes, participanteAgregando])
+      setParticipanteNoExiste(true);
+      setParticipantes([...participantes, participanteAgregando]);
     }
   };
 
@@ -43,10 +56,9 @@ export const NewProjectModal = ({ closeModal }) => {
       const existe = await checkEmailExiste(email);
       setParticipanteNoExiste(!existe);
     } else {
-      setParticipanteNoExiste(true); 
+      setParticipanteNoExiste(true);
     }
   };
-
 
   const handleCrearProyecto = async () => {
     try {
@@ -56,25 +68,26 @@ export const NewProjectModal = ({ closeModal }) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          "nombre": nombre,
-          "descripcion": descripcion,
-          "participantes": participantes,
-          "montoTotalProyecto": 0,
-          "gastos": [],
-          "estado": "En progreso"
+          nombre: nombre,
+          descripcion: descripcion,
+          participantes: usuariosId, 
+          montoTotalProyecto: 0,
+          gastos: [],
+          estado: "En progreso"
         }),
       });
-  
+
       if (response.ok) {
-        window.location.reload()
+        console.log(response)
+        window.location.reload();
       } else {
-        console.error("Error al crear el usuario.");
+        console.error("Error al crear el proyecto.");
       }
       closeModal();
     } catch (error) {
       console.error("Error en la solicitud de creación:", error);
     }
-  }
+  };
 
   return (
     <div
@@ -89,26 +102,20 @@ export const NewProjectModal = ({ closeModal }) => {
           <X />
         </button>
         <div className="flex flex-col gap-5">
-          <h2 className="lg:text-4xl text-3xl font-bold">
-            Creando proyecto nuevo
-          </h2>
+          <h2 className="lg:text-4xl text-3xl font-bold">Creando proyecto nuevo</h2>
           <div className="flex flex-row gap-2">
             <div className="flex flex-col justify-center gap-1 w-[50%]">
-              <label className="text-2xl font-semibold">
-                Ingresa un nombre
-              </label>
+              <label className="text-2xl font-semibold">Ingresa un nombre</label>
               <input
-              onChange={(e) => setNombre(e.target.value)}
-              value={nombre}
+                onChange={(e) => setNombre(e.target.value)}
+                value={nombre}
                 type="text"
                 className="p-2 border rounded"
                 placeholder="Viaje a New York"
               />
             </div>
             <div className="flex flex-col justify-center gap-1 w-[50%]">
-              <label className="text-2xl font-semibold">
-                Ingresa una descripcion
-              </label>
+              <label className="text-2xl font-semibold">Ingresa una descripcion</label>
               <input
                 onChange={(e) => setDescripcion(e.target.value)}
                 value={descripcion}
@@ -119,12 +126,8 @@ export const NewProjectModal = ({ closeModal }) => {
           </div>
           <div className="flex flex-row gap-2">
             <div className="flex flex-col w-[50%]">
-              <span className="text-2xl font-semibold">
-                Agrega participantes
-              </span>
-              <span className="text-gray-400">
-                Escribe el email de cada participante
-              </span>
+              <span className="text-2xl font-semibold">Agrega participantes</span>
+              <span className="text-gray-400">Escribe el email de cada participante</span>
               <div className="flex flex-row border rounded w-fit items-center mt-2">
                 <input
                   onChange={handleEmailChange}
@@ -146,16 +149,12 @@ export const NewProjectModal = ({ closeModal }) => {
               )}
             </div>
             <div className="flex flex-col w-[50%]">
-              <span className="text-2xl font-semibold">
-                Participantes agregados
-              </span>
+              <span className="text-2xl font-semibold">Participantes agregados</span>
               {participantes && participantes.length > 0 && (
                 <>
                   {participantes.map((email, index) => (
                     <div className="flex flex-row gap-1 items-center" key={index}>
-                      <span className="text-gray-500 font-medium text-lg">
-                        {email}
-                      </span>
+                      <span className="text-gray-500 font-medium text-lg">{email}</span>
                       <button
                         className="hover:opacity-70"
                         onClick={() => deleteParticipant(email)}
@@ -168,9 +167,10 @@ export const NewProjectModal = ({ closeModal }) => {
               )}
             </div>
           </div>
-          <button 
-          onClick={handleCrearProyecto}
-          className="text-white p-2 w-full hover:opacity-90 bg-green-500 rounded-lg">
+          <button
+            onClick={handleCrearProyecto}
+            className="text-white p-2 w-full hover:opacity-90 bg-green-500 rounded-lg"
+          >
             Crear proyecto
           </button>
         </div>
