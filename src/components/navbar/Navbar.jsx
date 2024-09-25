@@ -19,7 +19,7 @@ export const Navbar = () => {
 
   const logoutUser = async () => {
     await logout();
-    <Navigate to="/register" />;
+    <Navigate to="/" />;
   };
 
   return (
