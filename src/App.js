@@ -9,6 +9,7 @@ import { ProjectsScreen } from './screens/ProjectsScreen.js';
 import { ProjectScreen } from './screens/ProjectScreen.js';
 import { AdminPanelScreen } from './screens/AdminPanelScreen.js';
 import ForgotPasswordScreen from './screens/ForgotPasswordScreen.js';
+import LandingPage from './screens/LandingPage.js';
 
 
 function App() {
@@ -17,6 +18,9 @@ function App() {
       <Navbar />
       <Header />
       <Routes>
+        <Route path='*' element={<LandingPage />} />
+        <Route path="/home" element={<LandingPage />} exact />
+        <Route path="/" element={<LandingPage />} exact />
         <Route path="/login" element={<LoginScreen />} exact />
         <Route path="/register" element={<RegisterScreen />} exact />
         <Route path="/account" element={<AccountScreen />} exact />
