@@ -3,6 +3,7 @@ import { ChevronDown } from "../icons/ChevronDown.jsx";
 import { ProjectsGrid } from "../ProjectsGrid.jsx";
 import { ChevronUp } from "../icons/ChevronUp.jsx";
 import { NewProjectModal } from "../modals/NewProjectModal.jsx";
+import { fetchProjects } from "../../services/ProjectService.js";
 
 const ProjectsLayout = () => {
   const [projects, setProjects] = useState([]);
@@ -11,13 +12,6 @@ const ProjectsLayout = () => {
 
   const [toggleInProgress, setToggleInProgress] = useState(false);
   const [toggleFinished, setToggleFinished] = useState(false);
-
-  const fetchProjects = async () => {
-    const data = await fetch("http://localhost:8000/proyectos").then((data) =>
-      data.json()
-    );
-    return data;
-  };
 
   useEffect(() => {
     const loadProjects = async () => {
