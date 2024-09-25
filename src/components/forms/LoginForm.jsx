@@ -73,7 +73,7 @@ const LoginForm = () => {
                 </div>
               </div>
               <div className="flex flex-row justify-end">
-                <button className="text-brandblue font-semibold">Olvidé mi contraseña</button>
+                <Link to="/forgot-password" className="text-brandblue font-semibold">Olvidé mi contraseña</Link>
               </div>
               <button className="bg-brandblue text-white p-2 rounded-md hover:opacity-85">Iniciar Sesión</button>
               <Link to="/register" className="bg-white text-center text-brandblue border border-brandblue p-2 rounded-md">Registrarse</Link>

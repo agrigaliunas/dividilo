@@ -8,6 +8,7 @@ import { Navbar } from './components/navbar/Navbar.jsx';
 import { ProjectsScreen } from './screens/ProjectsScreen.js';
 import { ProjectScreen } from './screens/ProjectScreen.js';
 import { AdminPanelScreen } from './screens/AdminPanelScreen.js';
+import ForgotPasswordScreen from './screens/ForgotPasswordScreen.js';
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
         <Route path="/dashboard" element={<ProjectsScreen />} exact />
         <Route path="/admin-panel" element={<AdminPanelScreen />} exact />
         <Route path="/projects/:id" element={<ProjectScreen />} />
+        <Route path="/forgot-password" element={<ForgotPasswordScreen />} exact />
       </Routes>
     </>
   );
