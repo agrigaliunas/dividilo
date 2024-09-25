@@ -4,6 +4,8 @@ import { ProjectsGrid } from "../ProjectsGrid.jsx";
 import { ChevronUp } from "../icons/ChevronUp.jsx";
 import { NewProjectModal } from "../modals/NewProjectModal.jsx";
 import { fetchProjects } from "../../services/ProjectService.js";
+import { useAuth } from "../../contexts/AuthContext";
+
 
 const ProjectsLayout = () => {
   const [projects, setProjects] = useState([]);
@@ -13,9 +15,22 @@ const ProjectsLayout = () => {
   const [toggleInProgress, setToggleInProgress] = useState(false);
   const [toggleFinished, setToggleFinished] = useState(false);
 
+  const {user} = useAuth()
+
   useEffect(() => {
     const loadProjects = async () => {
       const projectsData = await fetchProjects();
+
+      // feature flag: mostrar solo los proyectos del usuario
+      // cuando esté el back esa logica se implementa ahi y no acá, ya que
+      // sino hacemos fetch de todos los proyectos (no seguro y está mal =D )
+      const showLoggedUserProjects = true;
+      if (showLoggedUserProjects) {
+        setProjects(projectsData.filter(proj => proj.participantes.includes(user.id)))
+        setLoading(false);
+        return;
+      }
+
       setProjects(projectsData);
       setLoading(false);
     };
