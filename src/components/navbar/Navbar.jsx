@@ -13,15 +13,14 @@ import { Adjustment } from "../icons/Adjustment.jsx";
 
 const ROLE_ADMIN = "admin";
 
-
 export const Navbar = () => {
   const { isMenuOpen, closeMenu } = useMenu();
   const { user, logout } = useAuth();
 
   const logoutUser = async () => {
     await logout();
-    <Navigate to="/register" />
-  }
+    <Navigate to="/register" />;
+  };
 
   return (
     <nav
@@ -40,17 +39,17 @@ export const Navbar = () => {
           <Cross />
         </button>
         <div className="flex flex-col text-2xl text-left gap-4 w-full px-3">
-          {(user && (user.rol === ROLE_ADMIN)) && (
+          {user && user.rol === ROLE_ADMIN && (
             <Link
-            to="/admin-panel"
-            className="hover:bg-gray-100 w-full py-1 rounded-md px-4"
-            onClick={closeMenu}
-          >
-            <span className="flex flex-row gap-1 items-center">
-              <Adjustment />
-              Panel admin
-            </span>
-          </Link>
+              to="/admin-panel"
+              className="hover:bg-gray-100 w-full py-1 rounded-md px-4"
+              onClick={closeMenu}
+            >
+              <span className="flex flex-row gap-1 items-center">
+                <Adjustment />
+                Panel admin
+              </span>
+            </Link>
           )}
           {user ? (
             <>
@@ -96,7 +95,10 @@ export const Navbar = () => {
                 className="hover:bg-gray-100 w-full py-1 rounded-md px-4"
                 onClick={closeMenu}
               >
-                <button onClick={logoutUser} className="flex flex-row gap-1 items-center">
+                <button
+                  onClick={logoutUser}
+                  className="flex flex-row gap-1 items-center"
+                >
                   <Logout />
                   Cerrar sesión
                 </button>
@@ -104,7 +106,7 @@ export const Navbar = () => {
             </>
           ) : (
             <>
-            <Link
+              <Link
                 to="/login"
                 className="hover:bg-gray-100 w-full py-1 rounded-md px-4"
                 onClick={closeMenu}
@@ -120,7 +122,7 @@ export const Navbar = () => {
                 onClick={closeMenu}
               >
                 <span className="flex flex-row gap-1 items-center">
-                  <UserPlus />
+                  <UserPlus style="size-6"/>
                   Registrarse
                 </span>
               </Link>
