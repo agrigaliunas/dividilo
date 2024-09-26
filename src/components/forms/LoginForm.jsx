@@ -8,11 +8,13 @@ import { useAuth } from "../../contexts/AuthContext";
 
 const LoginForm = () => {
 
-  const {login} = useAuth()
+  const { login } = useAuth()
 
   const [viewPassword, setViewPassword] = useState(false)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [emailError, setEmailError] = useState("")
+  const [passwordError, setPasswordError] = useState("")
 
   const handleViewPassword = (e) => {
     e.preventDefault()
@@ -21,13 +23,37 @@ const LoginForm = () => {
 
   const handleSetEmail = (e) => {
     setEmail(e.target.value)
+    validateEmail(e.target.value)
   }
 
   const handleSetPassword = (e) => {
     setPassword(e.target.value)
+    validatePassword(e.target.value)
   }
 
-  const loginUser = () => {
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setEmailError("Ingrese un correo válido.")
+    } else {
+      setEmailError("")
+    }
+  }
+
+  const validatePassword = (password) => {
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+    if (!passwordRegex.test(password)) {
+      setPasswordError("La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número.")
+    } else {
+      setPasswordError("")
+    }
+  }
+
+  const loginUser = (e) => {
+    e.preventDefault()
+    if (emailError || passwordError || !email || !password) {
+      return;
+    }
     const userData = {
       "id": "2",
       "email": "lauta.jimenez@gmail.com",
@@ -51,16 +77,17 @@ const LoginForm = () => {
               <div className="flex flex-col gap-1">
                 <label>Correo electrónico</label>
                 <input
-                  className="px-2 py-3 border border-1 border-[#e9e9ef] shadow-sm outline-none rounded-md text-sm"
+                  className={`px-2 py-3 border ${emailError ? 'border-red-600' : 'border-[#e9e9ef]'} shadow-sm outline-none rounded-md text-sm`}
                   type="email"
                   placeholder="Ingrese correo electrónico..."
                   onChange={handleSetEmail}
                   value={email}
                 />
+                {emailError && <p className="text-red-600 text-sm">{emailError}</p>}
               </div>
               <div className="flex flex-col gap-1">
                 <label>Contraseña</label>
-                <div className="flex flex-row border border-1 border-[#e9e9ef] justify-between items-center w-full px-2 shadow-sm rounded-md ">
+                <div className={`flex flex-row border ${passwordError ? 'border-red-600' : 'border-[#e9e9ef]'} justify-between items-center w-full px-2 shadow-sm rounded-md`}>
                   <input
                     className="py-3 text-sm outline-none w-full"
                     type={viewPassword ? "text" : "password"}
@@ -72,6 +99,7 @@ const LoginForm = () => {
                     {viewPassword ? <Eye /> : <EyeSlash />}
                   </button>
                 </div>
+                {passwordError && <p className="text-red-600 text-sm">{passwordError}</p>}
               </div>
               <div className="flex flex-row justify-end">
                 <Link to="/forgot-password" className="text-brandblue font-semibold">Olvidé mi contraseña</Link>

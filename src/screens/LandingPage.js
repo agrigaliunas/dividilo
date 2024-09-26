@@ -10,8 +10,8 @@ const LandingPage = () => {
       <Navigate to="/dashboard" />
     ) : (
       <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-5">
-        <div className="w-full max-w-6xl mx-auto text-center flex flex-col gap-2 items-center">
-          <h1 className="text-4xl font-bold text-gray-800 mb-4">Dividilo</h1>
+        <div className="w-full max-w-6xl mx-auto text-center flex flex-col gap-5 items-center">
+          <h1 className="text-6xl font-bold text-gray-800 mb-4">Dividilo</h1>
           <p className="text-xl text-gray-600">
             Organizá tus proyectos, dividí gastos y mantené a todos al tanto de
             cuánto deben.

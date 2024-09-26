@@ -5,7 +5,7 @@
       "nombre": "Agustin",
       "apellido": "Grigaliunas",
       "email": "agustingrigaliunas@gmail.com",
-      "password": "123456",
+      "password": "Contraseña123",
       "rol": "usuario"
     },
     {
@@ -13,7 +13,7 @@
       "nombre": "Lautaro",
       "apellido": "Jimenez",
       "email": "lauta.jimenez@gmail.com",
-      "password": "1234",
+      "password": "Contraseña123",
       "rol": "admin"
     },
     {
@@ -21,7 +21,7 @@
       "nombre": "Maria",
       "apellido": "Gomez",
       "email": "maria.gomez@gmail.com",
-      "password": "1234",
+      "password": "Contraseña123",
       "rol": "usuario"
     },
     {
@@ -29,7 +29,7 @@
       "nombre": "Juan",
       "apellido": "Perez",
       "email": "juan.perez@gmail.com",
-      "password": "123456",
+      "password": "Contraseña123",
       "rol": "usuario"
     }
   ],

@@ -4,6 +4,7 @@ import { PaperAirplane } from "./icons/PaperAirplane";
 import { Trash } from "./icons/Trash";
 import { UserPlus } from "./icons/UserPlus";
 import { ChevronDown } from "./icons/ChevronDown";
+import NewParticipantModal from "./modals/NewParcitipantModal";
 
 export const ProjectInfo = ({ project, usuarios }) => {
   const [projectData, setProjectData] = useState({
@@ -17,6 +18,7 @@ export const ProjectInfo = ({ project, usuarios }) => {
 
   const [editandoProyecto, setEditandoProyecto] = useState(false);
   const [gastosExpandidos, setGastosExpandidos] = useState({});
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   useEffect(() => {
     if (project) {
@@ -100,6 +102,18 @@ export const ProjectInfo = ({ project, usuarios }) => {
 
   const handleSaveProyecto = () => {
     setEditandoProyecto(false);
+  };
+
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
+
+  const handleAddParticipant = (email) => {
+    console.log("Nuevo participante agregado: ", email);
   };
 
   return (
@@ -303,10 +317,14 @@ export const ProjectInfo = ({ project, usuarios }) => {
       )}
       {editandoProyecto == true && (
         <>
+          {
+            <NewParticipantModal
+              isOpen={modalIsOpen}
+              onClose={closeModal}
+              onAddParticipant={handleAddParticipant}
+            />
+          }
           <div className="flex flex-col gap-1">
-            <span className="text-2xl text-left font-semibold">
-              Editando proyecto
-            </span>
             <div className="flex flex-row gap-2">
               <button
                 onClick={handleSaveProyecto}
@@ -319,6 +337,11 @@ export const ProjectInfo = ({ project, usuarios }) => {
                 className="flex flex-row bg-red-600 rounded-xl border border-1 w-fit p-3 gap-2 hover:bg-opacity-80"
               >
                 <span className="text-white text-sm">Cancelar edición</span>
+              </button>
+              <button
+                className="flex flex-row bg-red-600 rounded-xl border border-1 w-fit p-3 gap-2 hover:bg-opacity-80 ml-auto"
+              >
+                <span className="text-white font-semibold text-sm">¡Eliminar proyecto!</span>
               </button>
             </div>
           </div>
@@ -375,7 +398,9 @@ export const ProjectInfo = ({ project, usuarios }) => {
                       {getInicialesParticipante(p)}
                     </span>
                   ))}
-                <button className="rounded-full w-12 h-12 flex items-center justify-center border border-1 border-gray-400 bg-white text-black hover:bg-gray-50 font-semibold p-2">
+                <button
+                  onClick={openModal}
+                  className="rounded-full w-12 h-12 flex items-center justify-center border border-1 border-gray-400 bg-white text-black hover:bg-gray-50 font-semibold p-2">
                   <UserPlus />
                 </button>
               </div>

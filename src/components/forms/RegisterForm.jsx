@@ -13,21 +13,55 @@ const RegisterForm = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [confirmedPassword, setConfirmedPassword] = useState("")
+  
+  const [emailError, setEmailError] = useState("")
+  const [passwordError, setPasswordError] = useState("")
+  const [confirmedPasswordError, setConfirmedPasswordError] = useState("")
 
   const handleViewPassword = (e) => {
-
     e.preventDefault()
-
     setViewPassword(!viewPassword)
-
   }
 
   const handleSetEmail = (e) => {
     setEmail(e.target.value)
+    validateEmail(e.target.value)
   }
 
   const handleSetPassword = (e) => {
     setPassword(e.target.value)
+    validatePassword(e.target.value)
+  }
+
+  const handleSetConfirmedPassword = (e) => {
+    setConfirmedPassword(e.target.value)
+    validateConfirmedPassword(password, e.target.value)
+  }
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setEmailError("Ingrese un correo válido.")
+    } else {
+      setEmailError("")
+    }
+  }
+
+  const validatePassword = (password) => {
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+    if (!passwordRegex.test(password)) {
+      setPasswordError("La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número.")
+    } else {
+      setPasswordError("")
+    }
+  }
+
+  const validateConfirmedPassword = (password, confirmedPassword) => {
+    if (password !== confirmedPassword) {
+      setConfirmedPasswordError("Las contraseñas no coinciden.")
+    } else {
+      setConfirmedPasswordError("")
+    }
   }
 
   const handleSetName = (e) => {
@@ -38,8 +72,12 @@ const RegisterForm = () => {
     setSurname(e.target.value)
   }
 
-  const handleSetConfirmedPassword = (e) => {
-    setConfirmedPassword(e.target.value)
+  const registerUser = (e) => {
+    e.preventDefault()
+    if (emailError || passwordError || confirmedPasswordError || !email || !password || !confirmedPassword) {
+      return;
+    }
+    // Acá va el código para registrar al usuario
   }
 
   return (
@@ -51,7 +89,7 @@ const RegisterForm = () => {
             <SubTitle subtitle='¡Bienvenido! 👋'></SubTitle>
           </div>
           <div>
-            <form action="" className="flex flex-col gap-3">
+            <form action="" className="flex flex-col gap-3" onSubmit={registerUser}>
               <div className="flex flex-row gap-1 w-full">
                 <div className="flex flex-col gap-1 w-[50%]">
                   <label>Nombre</label>
@@ -77,16 +115,17 @@ const RegisterForm = () => {
               <div className="flex flex-col gap-1">
                 <label>Correo electrónico</label>
                 <input
-                  className="px-2 py-3 border border-1 border-[#e9e9ef] shadow-sm outline-none rounded-md text-sm"
+                  className={`px-2 py-3 border ${emailError ? 'border-red-600' : 'border-[#e9e9ef]'} shadow-sm outline-none rounded-md text-sm`}
                   type="email"
                   placeholder="Ingrese correo electrónico..."
                   onChange={handleSetEmail}
                   value={email}
                 />
+                {emailError && <p className="text-red-600 text-sm">{emailError}</p>}
               </div>
               <div className="flex flex-col gap-1">
                 <label>Contraseña</label>
-                <div className="flex flex-row border border-1 border-[#e9e9ef] justify-between items-center w-full px-2 shadow-sm rounded-md ">
+                <div className={`flex flex-row border ${passwordError ? 'border-red-600' : 'border-[#e9e9ef]'} justify-between items-center w-full px-2 shadow-sm rounded-md `}>
                   <input
                     className="py-3 text-sm outline-none w-full"
                     type={viewPassword ? "text" : "password"}
@@ -98,10 +137,11 @@ const RegisterForm = () => {
                     {viewPassword ? <Eye /> : <EyeSlash />}
                   </button>
                 </div>
+                {passwordError && <p className="text-red-600 text-sm">{passwordError}</p>}
               </div>
               <div className="flex flex-col gap-1">
                 <label>Confirmar contraseña</label>
-                <div className="flex flex-row border border-1 border-[#e9e9ef] justify-between items-center w-full px-2 shadow-sm rounded-md ">
+                <div className={`flex flex-row border ${confirmedPasswordError ? 'border-red-600' : 'border-[#e9e9ef]'} justify-between items-center w-full px-2 shadow-sm rounded-md`}>
                   <input
                     className="py-3 text-sm outline-none w-full"
                     type={viewPassword ? "text" : "password"}
@@ -113,6 +153,7 @@ const RegisterForm = () => {
                     {viewPassword ? <Eye /> : <EyeSlash />}
                   </button>
                 </div>
+                {confirmedPasswordError && <p className="text-red-600 text-sm">{confirmedPasswordError}</p>}
               </div>
               <button className="bg-brandblue text-white p-2 rounded-md hover:opacity-85">Registrarse</button>
               <Link to="/login" className="bg-white text-center text-brandblue border border-brandblue p-2 rounded-md">Ya tengo una cuenta</Link>

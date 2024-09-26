@@ -34,7 +34,7 @@ const AdminPanelLayout = () => {
   const restorePassword = async (id) => {
     try {
       const usuarioOriginal = usuarios.find((usuario) => usuario.id === id);
-      
+
       const response = await restaurarPassword(id, usuarioOriginal)
 
       if (response.ok) {
@@ -202,11 +202,10 @@ const AdminPanelLayout = () => {
                       <button
                         onClick={() => actualizarUsuario(usuarioEditando)}
                         disabled={!hasChanges()}
-                        className={`mt-2 rounded px-4 py-2 ${
-                          hasChanges()
+                        className={`mt-2 rounded px-4 py-2 ${hasChanges()
                             ? "bg-green-500 text-white hover:bg-opacity-90"
                             : "bg-gray-300 text-gray-600 cursor-not-allowed"
-                        }`}
+                          }`}
                       >
                         Guardar cambios
                       </button>
