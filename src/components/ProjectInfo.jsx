@@ -22,6 +22,7 @@ export const ProjectInfo = ({ project, usuarios }) => {
   const [gastosExpandidos, setGastosExpandidos] = useState({});
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [showTicketImagen, setShowTicketImagen] = useState(false);
+  const [projectStatus, setProjectStatus] = useState(null)
 
   useEffect(() => {
     if (project) {
@@ -33,6 +34,7 @@ export const ProjectInfo = ({ project, usuarios }) => {
         participantes: project.participantes || [],
         gastos: project.gastos || [],
       });
+      setProjectStatus(projectData.estado)
     }
   }, [project]);
 
@@ -100,6 +102,7 @@ export const ProjectInfo = ({ project, usuarios }) => {
   };
 
   const handleEditarClick = () => {
+    setProjectStatus(projectData.estado)
     setEditandoProyecto(!editandoProyecto);
   };
 
@@ -137,7 +140,7 @@ export const ProjectInfo = ({ project, usuarios }) => {
               <h1 className="lg:text-4xl text-xl text-left font-extrabold">
                 {projectData.nombre}
               </h1>
-              {projectData.estado === "En progreso" ? (
+              {projectStatus === "En progreso" ? (
                 <span className="font-semibold flex items-center justify-center text-center lg:p-3 p-1.5 bg-orange-600 bg-opacity-40 rounded-xl text-gray-800 cursor-default select-none text-xs lg:text-sm">
                   En progreso
                 </span>
@@ -428,18 +431,22 @@ export const ProjectInfo = ({ project, usuarios }) => {
                 onChange={handleEditNombre}
                 placeholder="Ingrese título del proyecto..."
               />
-              {projectData.estado === "En progreso" ? (
+              {projectStatus === "En progreso" ? (
                 <div className="flex flex-row gap-1 bg-orange-600 lg:p-3 p-1.5 bg-opacity-40 rounded-xl text-gray-800 cursor-default select-none text-xs lg:text-sm">
-                  <button className="bg-orange-600 bg-opacity-10 rounded-full p-1 hover:opacity-80">
+                  <button
+                    onClick={() => setProjectStatus("Finalizado")}
+                    className="bg-orange-600 bg-opacity-10 rounded-full p-1 hover:opacity-80">
                     <ArrowsUpDown />
                   </button>
                   <span className="font-semibold flex items-center justify-center text-center ">
-                    Finalizado
+                    En progreso
                   </span>
                 </div>
               ) : (
                 <div className="flex flex-row gap-1 bg-green-600 lg:p-3 p-1.5  bg-opacity-40 rounded-xl text-gray-800 cursor-default select-none text-xs lg:text-sm">
-                  <button className="bg-green-600 bg-opacity-10 rounded-full p-1 hover:opacity-80">
+                  <button 
+                    onClick={() => setProjectStatus("En progreso")}
+                    className="bg-green-600 bg-opacity-10 rounded-full p-1 hover:opacity-80">
                     <ArrowsUpDown />
                   </button>
                   <span className="font-semibold flex items-center justify-center text-center">
