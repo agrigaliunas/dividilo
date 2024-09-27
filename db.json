@@ -55,7 +55,7 @@
               "montoTotalTicket": 1000,
               "descripcion": "Spa del hotel",
               "fecha": "2024-01-01",
-              "imagen": "url_a_la_imagen_del_ticket",
+              "imagen": "https://marketplace.canva.com/EAFC1OcYOM0/2/0/1131w/canva-black-white-minimalist-simple-creative-freelancer-invoice-pyLVaYlAk1o.jpg",
               "split": [
                 {
                   "participanteId": "2",
@@ -72,7 +72,7 @@
               "montoTotalTicket": 2000,
               "descripcion": "Habitacion",
               "fecha": "2024-01-01",
-              "imagen": "url_a_la_imagen_del_ticket",
+              "imagen": "https://marketplace.canva.com/EAFC1OcYOM0/2/0/1131w/canva-black-white-minimalist-simple-creative-freelancer-invoice-pyLVaYlAk1o.jpg",
               "split": [
                 {
                   "participanteId": "2",
@@ -96,7 +96,7 @@
               "montoTotalTicket": 100,
               "descripcion": "Estacionamos 6hs",
               "fecha": "2024-01-02",
-              "imagen": "url_a_la_imagen_del_ticket",
+              "imagen": "https://marketplace.canva.com/EAFC1OcYOM0/2/0/1131w/canva-black-white-minimalist-simple-creative-freelancer-invoice-pyLVaYlAk1o.jpg",
               "split": [
                 {
                   "participanteId": "2",
@@ -133,7 +133,7 @@
               "montoTotalTicket": 1700,
               "descripcion": "Heladera",
               "fecha": "2024-09-20",
-              "imagen": "url_a_la_imagen_del_ticket",
+              "imagen": "https://marketplace.canva.com/EAFC1OcYOM0/2/0/1131w/canva-black-white-minimalist-simple-creative-freelancer-invoice-pyLVaYlAk1o.jpg",
               "split": [
                 {
                   "participanteId": "1",
@@ -150,7 +150,7 @@
               "montoTotalTicket": 1300,
               "descripcion": "Cocina",
               "fecha": "2024-09-21",
-              "imagen": "url_a_la_imagen_del_ticket",
+              "imagen": "https://marketplace.canva.com/EAFC1OcYOM0/2/0/1131w/canva-black-white-minimalist-simple-creative-freelancer-invoice-pyLVaYlAk1o.jpg",
               "split": [
                 {
                   "participanteId": "1",
@@ -174,7 +174,7 @@
               "montoTotalTicket": 2500,
               "descripcion": "Marmol",
               "fecha": "2024-09-24",
-              "imagen": "url_a_la_imagen_del_ticket",
+              "imagen": "https://marketplace.canva.com/EAFC1OcYOM0/2/0/1131w/canva-black-white-minimalist-simple-creative-freelancer-invoice-pyLVaYlAk1o.jpg",
               "split": [
                 {
                   "participanteId": "1",
@@ -191,7 +191,7 @@
               "montoTotalTicket": 500,
               "descripcion": "Bajomesada",
               "fecha": "2024-09-24",
-              "imagen": "url_a_la_imagen_del_ticket",
+              "imagen": "https://marketplace.canva.com/EAFC1OcYOM0/2/0/1131w/canva-black-white-minimalist-simple-creative-freelancer-invoice-pyLVaYlAk1o.jpg",
               "split": [
                 {
                   "participanteId": "1",
@@ -228,7 +228,7 @@
               "montoTotalTicket": 500,
               "descripcion": "Globos y guirnaldas",
               "fecha": "2024-10-01",
-              "imagen": "url_a_la_imagen_del_ticket",
+              "imagen": "https://marketplace.canva.com/EAFC1OcYOM0/2/0/1131w/canva-black-white-minimalist-simple-creative-freelancer-invoice-pyLVaYlAk1o.jpg",
               "split": [
                 {
                   "participanteId": "3",
@@ -252,7 +252,7 @@
               "montoTotalTicket": 1000,
               "descripcion": "Catering para 20 personas",
               "fecha": "2024-10-02",
-              "imagen": "url_a_la_imagen_del_ticket",
+              "imagen": "https://marketplace.canva.com/EAFC1OcYOM0/2/0/1131w/canva-black-white-minimalist-simple-creative-freelancer-invoice-pyLVaYlAk1o.jpg",
               "split": [
                 {
                   "participanteId": "3",
@@ -290,7 +290,7 @@
               "montoTotalTicket": 2500,
               "descripcion": "Pasajes de avión",
               "fecha": "2024-12-01",
-              "imagen": "url_a_la_imagen_del_ticket",
+              "imagen": "https://marketplace.canva.com/EAFC1OcYOM0/2/0/1131w/canva-black-white-minimalist-simple-creative-freelancer-invoice-pyLVaYlAk1o.jpg",
               "split": [
                 {
                   "participanteId": "1",
@@ -318,7 +318,7 @@
               "montoTotalTicket": 2500,
               "descripcion": "Cabaña para 7 días",
               "fecha": "2024-12-02",
-              "imagen": "url_a_la_imagen_del_ticket",
+              "imagen": "https://marketplace.canva.com/EAFC1OcYOM0/2/0/1131w/canva-black-white-minimalist-simple-creative-freelancer-invoice-pyLVaYlAk1o.jpg",
               "split": [
                 {
                   "participanteId": "1",
@@ -361,7 +361,7 @@
               "montoTotalTicket": 3000,
               "descripcion": "Licencias para herramientas de desarrollo",
               "fecha": "2024-11-01",
-              "imagen": "url_a_la_imagen_del_ticket",
+              "imagen": "https://marketplace.canva.com/EAFC1OcYOM0/2/0/1131w/canva-black-white-minimalist-simple-creative-freelancer-invoice-pyLVaYlAk1o.jpg",
               "split": [
                 {
                   "participanteId": "1",
@@ -393,7 +393,7 @@
               "montoTotalTicket": 5000,
               "descripcion": "Contratación de un diseñador freelance",
               "fecha": "2024-11-10",
-              "imagen": "url_a_la_imagen_del_ticket",
+              "imagen": "https://marketplace.canva.com/EAFC1OcYOM0/2/0/1131w/canva-black-white-minimalist-simple-creative-freelancer-invoice-pyLVaYlAk1o.jpg",
               "split": [
                 {
                   "participanteId": "1",

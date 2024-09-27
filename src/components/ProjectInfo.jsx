@@ -20,6 +20,7 @@ export const ProjectInfo = ({ project, usuarios }) => {
   const [editandoProyecto, setEditandoProyecto] = useState(false);
   const [gastosExpandidos, setGastosExpandidos] = useState({});
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [showTicketImagen, setShowTicketImagen] = useState(false)
 
   useEffect(() => {
     if (project) {
@@ -226,7 +227,7 @@ export const ProjectInfo = ({ project, usuarios }) => {
                                     <span className="font-extrabold text-xl">
                                       {ticket.descripcion}
                                     </span>
-                                    <span className="border border-1 border-gray-300 text-gray-500 rounded-xl p-2 bg-white text-sm ml-auto">
+                                    <span className="text-gray-500 bg-white text-sm ml-auto">
                                       {ticket.fecha}
                                     </span>
                                   </div>
@@ -260,6 +261,16 @@ export const ProjectInfo = ({ project, usuarios }) => {
                                       {ticket.montoTotalTicket.toFixed(2)}
                                     </span>
                                   </div>
+                                  {ticket.imagen && (
+                                    <>
+                                    <button 
+                                      onClick={() => setShowTicketImagen(!showTicketImagen)}
+                                      className="text-left underline text-xs hover:opacity-90 text-brandblue">
+                                      {showTicketImagen ? 'Esconder imagen del ticket' : 'Ver imagen del ticket'}
+                                    </button>
+                                    {showTicketImagen && <img src={ticket.imagen} className="w-96 h-96"/>}
+                                    </>
+                                  )}
                                 </div>
                               ))}
                             <button className="my-3 w-full border-2 border-brandblue text-brandblue rounded-lg py-2 px-4 hover:opacity-80">
@@ -465,7 +476,7 @@ export const ProjectInfo = ({ project, usuarios }) => {
                                     <span className="font-extrabold text-xl">
                                       {ticket.descripcion}
                                     </span>
-                                    <span className="border border-1 border-gray-300 rounded-xl p-2 bg-white  text-md ml-auto">
+                                    <span className="text-gray-500 bg-white text-md ml-auto">
                                       {ticket.fecha}
                                     </span>
                                   </div>
