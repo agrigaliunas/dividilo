@@ -1,5 +1,5 @@
 import React from 'react';
-import { ProjectCard } from './ProjectCard';
+import { ProjectCard } from './cards/ProjectCard';
 
 export const ProjectsGrid = ({ projects, estado }) => {
     return (

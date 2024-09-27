@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { EditIcon } from "./icons/EditIcon";
-import { PaperAirplane } from "./icons/PaperAirplane";
-import { Trash } from "./icons/Trash";
+import { Cross } from "./icons/Cross";
 import { UserPlus } from "./icons/UserPlus";
 import { ChevronDown } from "./icons/ChevronDown";
 import NewParticipantModal from "./modals/NewParcitipantModal";
 import { ArrowsUpDown } from "./icons/ArrowsUpDown";
-import { deleteProject, updateProject } from "../services/ProjectService";
+import { deleteProject } from "../services/ProjectService";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { ProjectParticipantRounded } from "./ProjectParticipantRounded";
-import { checkEmailExists } from "../services/AuthService";
+import { CrossButton } from "./buttons/CrossButton";
 import { NewGastoModal } from "./modals/NewGastoModal";
 
 export const ProjectInfo = ({ project, usuarios }) => {
@@ -30,7 +29,7 @@ export const ProjectInfo = ({ project, usuarios }) => {
   const [modalParticipanteIsOpen, setModalParticipanteIsOpen] = useState(false);
   const [modalGastoIsOpen, setModalGastoIsOpen] = useState(false);
   const [showTicketImagen, setShowTicketImagen] = useState(false);
-  const [projectStatus, setProjectStatus] = useState(null)
+  const [projectStatus, setProjectStatus] = useState(null);
 
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -46,36 +45,29 @@ export const ProjectInfo = ({ project, usuarios }) => {
         participantes: project.participantes || [],
         gastos: project.gastos || [],
       });
-      setProjectStatus(projectData.estado)
+      setProjectStatus(projectData.estado);
     }
   }, [project]);
 
   const eliminarParticipante = (participanteId) => {
-    const nuevosParticipantes = projectData.participantes
-      .filter(
-        (id) => id !== participanteId
-      );
+    const nuevosParticipantes = projectData.participantes.filter(
+      (id) => id !== participanteId
+    );
 
     setProjectData((prevData) => ({
       ...prevData,
-      participantes: nuevosParticipantes
+      participantes: nuevosParticipantes,
     }));
-
   };
 
   const eliminarGasto = (gastoId) => {
-    const nuevosGastos = projectData.gastos
-      .filter(
-        (id) => id !== gastoId
-      );
+    const nuevosGastos = projectData.gastos.filter((id) => id !== gastoId);
 
     setProjectData((prevData) => ({
       ...prevData,
-      gastos: nuevosGastos
+      gastos: nuevosGastos,
     }));
-
   };
-
 
   const toggleGasto = (index) => {
     setGastosExpandidos((prev) => ({
@@ -141,25 +133,18 @@ export const ProjectInfo = ({ project, usuarios }) => {
   };
 
   const handleEditarClick = () => {
-    setProjectStatus(projectData.estado)
+    setProjectStatus(projectData.estado);
     setEditandoProyecto(!editandoProyecto);
   };
 
-
   const eliminarProyecto = async () => {
-    await deleteProject(projectData.id)
-    navigate('/dashboard')
-  }
-
-  const handleSaveProyecto = async () => {
-    try {
-      setEditandoProyecto(false);
-    }
-    catch (error) {
-      console.error('Error al actualizar el proyecto:', error);
-    }
+    await deleteProject(projectData.id);
+    navigate("/dashboard");
   };
 
+  const handleSaveProyecto = async () => {
+    setEditandoProyecto(false);
+  };
 
   const openParticipanteModal = () => {
     setModalParticipanteIsOpen(true);
@@ -180,7 +165,7 @@ export const ProjectInfo = ({ project, usuarios }) => {
   const handleAddParticipant = async (participanteAgregando) => {
     setProjectData((prevData) => ({
       ...prevData,
-      participantes: participanteAgregando
+      participantes: participanteAgregando,
     }));
   };
 
@@ -244,9 +229,7 @@ export const ProjectInfo = ({ project, usuarios }) => {
               <div className="flex flex-row gap-4">
                 {projectData.participantes.length > 0 &&
                   projectData.participantes.map((p, index) => (
-                    <ProjectParticipantRounded
-                      participant={p}
-                    />
+                    <ProjectParticipantRounded participant={p} />
                   ))}
               </div>
             </div>
@@ -288,57 +271,13 @@ export const ProjectInfo = ({ project, usuarios }) => {
                                   key={ticketIndex}
                                   className="flex flex-col gap-2 bg-gray-100 border-2 rounded-lg w-full text-base px-5 py-2 justify-center"
                                 >
-                                  {editandoTicket !== ticket && (
-                                    <button
-                                      onClick={() => setEditandoTicket(ticket)}
-                                      className="w-fit border-2 text-gray-500 rounded-lg py-2 px-4 hover:opacity-80 text-xs"
-                                    >
-                                      Editar ticket
-                                    </button>
-                                  )}
-
-                                  {editandoTicket === ticket && (
-                                    <div className="flex flex-row gap-1">
-                                      <button
-                                        onClick={() => setEditandoTicket(null)}
-                                        className="w-fit border-2 border-red-400 text-red-400 rounded-lg py-2 px-4 hover:opacity-80 text-xs"
-                                      >
-                                        Cancelar edición
-                                      </button>
-                                      <button
-                                        onClick={() => alert("actualizado")}
-                                        className="w-fit border-2 border-green-500 text-green-500 rounded-lg py-2 px-4 hover:opacity-80 text-xs"
-                                      >
-                                        Actualizar ticket
-                                      </button>
-                                    </div>
-                                  )}
-
                                   <div className="flex flex-row gap-4">
-                                    {editandoTicket === ticket ? (
-                                      <>
-                                        <input
-                                          type="text"
-                                          className="font-extrabold text-xl w-[80%] border-b border-black border-dashed"
-                                          value={ticket.descripcion}
-                                          placeholder={ticket.descripcion}
-                                        />
-                                        <input
-                                          type="date"
-                                          className="text-black text-sm ml-auto"
-                                          value={ticket.fecha}
-                                        />
-                                      </>
-                                    ) : (
-                                      <>
-                                        <span className="font-extrabold text-xl">
-                                          {ticket.descripcion}
-                                        </span>
-                                        <span className="text-black text-sm ml-auto">
-                                          {ticket.fecha}
-                                        </span>
-                                      </>
-                                    )}
+                                    <span className="font-extrabold text-xl">
+                                      {ticket.descripcion}
+                                    </span>
+                                    <span className="text-black text-sm ml-auto">
+                                      {ticket.fecha}
+                                    </span>
                                   </div>
                                   <div className="flex flex-col gap-1 w-full">
                                     {ticket.split?.length > 0 &&
@@ -356,68 +295,39 @@ export const ProjectInfo = ({ project, usuarios }) => {
                                             <div className="space-x-1">
                                               <span className="font-semibold">
                                                 Gastó $
-                                                {editandoTicket === ticket ? (
-                                                  <input
-                                                    type="number"
-                                                    value={sp.montoParticipante.toFixed(2)}
-                                                    placeholder={sp.montoParticipante.toFixed(2)}
-                                                    className="w-[30%] border-b border-black border-dashed"
-
-                                                  />
-                                                ) : (
-                                                  sp.montoParticipante.toFixed(
-                                                    2
-                                                  )
+                                                {sp.montoParticipante.toFixed(
+                                                  2
                                                 )}
                                               </span>
                                               <span className="text-red-500">
                                                 ({sp.porcentaje}%)
                                               </span>
                                             </div>
-
                                           </div>
-
                                         </div>
-
                                       ))}
                                     <span className="font-bold text-lg ml-auto">
                                       Total ticket: $
                                       {ticket.montoTotalTicket.toFixed(2)}
                                     </span>
                                   </div>
-                                  {ticket.imagen ? (
-                                    <>
-                                      <button
-                                        onClick={() =>
-                                          setShowTicketImagen(!showTicketImagen)
-                                        }
-                                        className="text-left underline text-xs hover:opacity-90 text-brandblue"
-                                      >
-                                        {showTicketImagen
-                                          ? "Esconder imagen del ticket"
-                                          : "Ver imagen del ticket"}
-                                      </button>
-                                      {showTicketImagen && (
-                                        <img
-                                          src={ticket.imagen}
-                                          className="w-96 h-96"
-                                        />
-                                      )}
-                                      <button
-                                        onClick={() =>
-                                          // handleDeleteTicketImage()
-                                          alert("Imagen borrada")
-                                        }
-                                        className="text-left underline text-xs hover:opacity-90 text-brandblue"
-                                      >Borrar imagen del ticket</button>
-                                    </>
-                                  ) : (
+                                  {ticket.imagen && (
                                     <button
-                                      onClick={() => alert("Imagen agregada")}
+                                      onClick={() =>
+                                        setShowTicketImagen(!showTicketImagen)
+                                      }
                                       className="text-left underline text-xs hover:opacity-90 text-brandblue"
                                     >
-                                      Agregar imagen del ticket
+                                      {showTicketImagen
+                                        ? "Esconder imagen del ticket"
+                                        : "Ver imagen del ticket"}
                                     </button>
+                                  )}
+                                  {ticket.imagen && showTicketImagen && (
+                                    <img
+                                      src={ticket.imagen}
+                                      className="w-96 h-96"
+                                    />
                                   )}
                                 </div>
                               ))}
@@ -501,12 +411,14 @@ export const ProjectInfo = ({ project, usuarios }) => {
               </button>
               <button
                 onClick={handleEditarClick}
-                className="flex flex-row bg-red-600 rounded-xl border border-1 w-fit p-3 gap-2 hover:bg-opacity-80"
+                className="flex flex-row bg-white border-red-600 rounded-xl border-2 w-fit p-3 gap-2 hover:bg-opacity-80"
               >
-                <span className="text-white text-sm">Cancelar edición</span>
+                <span className=" text-red-600  text-sm">Cancelar edición</span>
               </button>
-              <button className="flex flex-row bg-red-600 rounded-xl border border-1 w-fit p-3 gap-2 hover:bg-opacity-80 ml-auto"
-                onClick={eliminarProyecto}>
+              <button
+                className="flex flex-row bg-red-600 rounded-xl border border-1 w-fit p-3 gap-2 hover:bg-opacity-80 ml-auto"
+                onClick={eliminarProyecto}
+              >
                 <span className="text-white font-semibold text-sm">
                   ¡Eliminar proyecto!
                 </span>
@@ -516,12 +428,12 @@ export const ProjectInfo = ({ project, usuarios }) => {
 
           <div className="flex flex-col gap-3 border border-1 bg-white p-5 rounded-xl shadow-md">
             <div className="flex flex-col lg:justify-between gap-5">
-
               {projectStatus === "En progreso" ? (
                 <div className="flex flex-row gap-1 bg-orange-600 w-fit lg:p-3 p-1.5 bg-opacity-40 rounded-xl text-gray-800 cursor-default select-none text-xs lg:text-sm">
                   <button
                     onClick={() => setProjectStatus("Finalizado")}
-                    className="bg-orange-600 bg-opacity-10 rounded-full p-1 hover:opacity-80">
+                    className="bg-orange-600 bg-opacity-10 rounded-full p-1 hover:opacity-80"
+                  >
                     <ArrowsUpDown />
                   </button>
                   <span className="font-semibold flex items-center justify-center text-center ">
@@ -532,7 +444,8 @@ export const ProjectInfo = ({ project, usuarios }) => {
                 <div className="flex flex-row gap-1 bg-green-600 w-fit lg:p-3 p-1.5  bg-opacity-40 rounded-xl text-gray-800 cursor-default select-none text-xs lg:text-sm">
                   <button
                     onClick={() => setProjectStatus("En progreso")}
-                    className="bg-green-600 bg-opacity-10 rounded-full p-1 hover:opacity-80">
+                    className="bg-green-600 bg-opacity-10 rounded-full p-1 hover:opacity-80"
+                  >
                     <ArrowsUpDown />
                   </button>
                   <span className="font-semibold flex items-center justify-center text-center">
@@ -541,14 +454,14 @@ export const ProjectInfo = ({ project, usuarios }) => {
                 </div>
               )}
               <input
-                className="lg:text-4xl text-xl text-left font-extrabold w-[auto] border-b"
+                className="lg:text-4xl text-xl text-left font-extrabold w-[auto] border-b border-black bg-transparent border-dashed border-spacing-3"
                 value={projectData.nombre}
                 onChange={handleEditNombre}
                 placeholder="Ingrese título del proyecto..."
               />
             </div>
             <input
-              className="text-gray-500 font-medium w-[auto] border-b"
+              className="text-gray-500 font-medium w-[auto] border-b border-black bg-transparent border-dashed border-spacing-3"
               value={projectData.descripcion}
               onChange={handleEditDescripcion}
               placeholder="Ingrese descripción del proyecto..."
@@ -575,20 +488,12 @@ export const ProjectInfo = ({ project, usuarios }) => {
                 {projectData.participantes.length > 0 &&
                   projectData.participantes.map((p, index) => (
                     <div className="relative inline-block">
-                      <ProjectParticipantRounded
-                        participant={p}
-                      />
-                      {
-                        p !== user.id && (
-
-                          <button
-                            onClick={() => eliminarParticipante(p)}
-                            className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs"
-                          >
-                            &times;
-                          </button>
-                        )
-                      }
+                      <ProjectParticipantRounded participant={p} />
+                      {p !== user.id && (
+                        <CrossButton
+                          handleFunction={() => eliminarParticipante(p)}
+                        />
+                      )}
                     </div>
                   ))}
                 <button
@@ -620,14 +525,10 @@ export const ProjectInfo = ({ project, usuarios }) => {
                       key={index}
                       className="relative flex flex-col items-center border-2 rounded-xl gap-2 w-full "
                     >
-                      <button
-                        onClick={() => eliminarGasto(gasto)}
-                        className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs"
-                      >
-                        &times;
-                      </button>
+                      <CrossButton
+                        handleFunction={() => eliminarGasto(gasto)}
+                      />
                       <div className="flex flex-col gap-3 items-left bg-white p-5 rounded-xl shadow-md w-full">
-
                         <div className="flex flex-row gap-2 items-center">
                           <button
                             onClick={() => toggleGasto(index)}
@@ -650,13 +551,66 @@ export const ProjectInfo = ({ project, usuarios }) => {
                                   key={ticketIndex}
                                   className="flex flex-col gap-5 bg-gray-100 border-2 rounded-lg w-full text-base px-5 py-2 justify-center"
                                 >
+                                  {editandoTicket !== ticket && (
+                                    <div className="flex flex-row justify-end">
+                                      <button
+                                        onClick={() =>
+                                          setEditandoTicket(ticket)
+                                        }
+                                        className="w-fit border-2 text-white bg-brandblue rounded-lg py-2 px-4 hover:opacity-80 text-xs"
+                                      >
+                                        Editar ticket
+                                      </button>
+                                      <button
+                                        // onClick={}
+                                        className="w-fit border-2 text-white bg-red-600 rounded-lg py-2 px-4 hover:opacity-80 text-xs"
+                                      >
+                                        Borrar ticket
+                                      </button>
+                                    </div>
+                                  )}
+                                  {editandoTicket === ticket && (
+                                    <div className="flex flex-row gap-1">
+                                      <button
+                                        onClick={() => alert("actualizado")}
+                                        className="w-fi bg-green-600 text-white rounded-lg py-2 px-4 hover:opacity-80 text-xs"
+                                      >
+                                        Actualizar ticket
+                                      </button>
+                                      <button
+                                        onClick={() => setEditandoTicket(null)}
+                                        className="w-fit border-2 border-red-600 bg-white text-red-600 rounded-lg py-2 px-4 hover:opacity-80 text-xs"
+                                      >
+                                        Cancelar edición
+                                      </button>
+                                    </div>
+                                  )}
                                   <div className="flex flex-row gap-4">
-                                    <span className="font-extrabold text-xl">
-                                      {ticket.descripcion}
-                                    </span>
-                                    <span className="text-black text-md ml-auto">
-                                      {ticket.fecha}
-                                    </span>
+                                    {editandoTicket === ticket ? (
+                                      <input
+                                        type="text"
+                                        className="border-b border-black bg-transparent border-dashed border-spacing-3 w-[60%] font-extrabold text-xl"
+                                        value={ticket.descripcion}
+                                        placeholder={ticket.descripcion}
+                                      />
+                                    ) : (
+                                      <span className="font-extrabold text-xl">
+                                        {ticket.descripcion}
+                                      </span>
+                                    )}
+
+                                    {editandoTicket === ticket ? (
+                                      <input
+                                        type="date"
+                                        className="border-b border-black bg-transparent border-dashed border-spacing-3 w-[15%] ml-auto text-black text-md"
+                                        value={ticket.fecha}
+                                        placeholder={ticket.fecha}
+                                      />
+                                    ) : (
+                                      <span className="text-black text-md ml-auto">
+                                        {ticket.fecha}
+                                      </span>
+                                    )}
                                   </div>
                                   <div className="flex flex-col gap-1 w-full">
                                     {ticket.split?.length > 0 &&
@@ -671,15 +625,81 @@ export const ProjectInfo = ({ project, usuarios }) => {
                                             )}
                                           </span>
                                           <div className="space-x-1">
-                                            <span className="font-semibold">
-                                              Gastó ${sp.montoParticipante}
-                                            </span>
+                                            {editandoTicket === ticket ? (
+                                              <>
+                                                <span className="font-semibold">
+                                                  Gastó $
+                                                </span>
+                                                <input
+                                                  type="number"
+                                                  className="border-b border-black bg-transparent border-dashed border-spacing-3 w-24 font-semibold"
+                                                  value={sp.montoParticipante.toFixed(
+                                                    2
+                                                  )}
+                                                  placeholder={
+                                                    sp.montoParticipante
+                                                  }
+                                                />
+                                              </>
+                                            ) : (
+                                              <span className="font-semibold">
+                                                Gastó $
+                                                {sp.montoParticipante.toFixed(
+                                                  2
+                                                )}
+                                              </span>
+                                            )}
+
                                             <span className="text-red-500">
                                               ({sp.porcentaje}%)
                                             </span>
                                           </div>
                                         </div>
                                       ))}
+                                    {ticket.imagen && (
+                                      <>
+                                        <button
+                                          onClick={() =>
+                                            setShowTicketImagen(
+                                              !showTicketImagen
+                                            )
+                                          }
+                                          className="text-left underline text-xs hover:opacity-90 text-brandblue"
+                                        >
+                                          {showTicketImagen
+                                            ? "Esconder imagen del ticket"
+                                            : "Ver imagen del ticket"}
+                                        </button>
+                                        {showTicketImagen && (
+                                          <img
+                                            src={ticket.imagen}
+                                            className="w-96 h-96"
+                                          />
+                                        )}
+                                      </>
+                                    )}
+
+                                    {ticket.imagen &&
+                                      editandoTicket === ticket && (
+                                        <button
+                                          onClick={() =>
+                                            // handleDeleteTicketImage()
+                                            alert("Imagen borrada")
+                                          }
+                                          className="text-left underline text-xs hover:opacity-90 text-brandblue"
+                                        >
+                                          Borrar imagen del ticket
+                                        </button>
+                                      )}
+
+                                    {!ticket.imagen && editandoTicket && (
+                                      <button
+                                        onClick={() => alert("Imagen agregada")}
+                                        className="text-left underline text-xs hover:opacity-90 text-brandblue"
+                                      >
+                                        Agregar imagen del ticket
+                                      </button>
+                                    )}
                                     <span className="font-bold text-lg ml-auto">
                                       Total ticket: $
                                       {ticket.montoTotalTicket.toFixed(2)}
