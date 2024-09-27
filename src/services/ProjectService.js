@@ -24,3 +24,18 @@ export const createProject = async (nombre, descripcion, usuariosId) => {
   return response;
 };
 
+export const updateProject = async (proyectoActualizado) => {
+  const response = await fetch(
+    `http://localhost:8000/proyectos/${proyectoActualizado.id}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(proyectoActualizado),
+    }
+  );
+
+  return response;
+};
+
