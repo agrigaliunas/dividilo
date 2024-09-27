@@ -10,11 +10,12 @@ export const MyAccountSection = ({ section, clearForm }) => {
           <MyAccountSectionForm
             label={l}
             button={section?.button}
-            clearForm={clearForm} // Pasa la señal de limpieza al formulario
+            clearForm={clearForm}
           ></MyAccountSectionForm>
         ))}
       </div>
       <button
+        onClick={() => alert("Se ha actualizado la informacion correctamente.")}
         className={` ${section.buttonColor} text-white p-2 rounded-md hover:opacity-85`}
       >
         {section?.button}

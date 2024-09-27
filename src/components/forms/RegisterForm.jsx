@@ -1,11 +1,15 @@
 import React, { useState } from "react";
 import { Eye } from "../icons/Eye";
 import { EyeSlash } from "../icons/EyeSlash";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FormTitle } from "./FormTitle";
 import { SubTitle } from "./SubTitle";
+import {crearCuenta} from "../../services/AuthService.js"
+import { useAuth } from "../../contexts/AuthContext";
 
 const RegisterForm = () => {
+
+  const {login} = useAuth()
 
   const [viewPassword, setViewPassword] = useState(false)
   const [name, setName] = useState("")
@@ -17,6 +21,8 @@ const RegisterForm = () => {
   const [emailError, setEmailError] = useState("")
   const [passwordError, setPasswordError] = useState("")
   const [confirmedPasswordError, setConfirmedPasswordError] = useState("")
+
+  const navigate = useNavigate()
 
   const handleViewPassword = (e) => {
     e.preventDefault()
@@ -72,12 +78,35 @@ const RegisterForm = () => {
     setSurname(e.target.value)
   }
 
-  const registerUser = (e) => {
+  const registerUser = async (e) => {
+
+    let id = crypto.randomUUID();
+
     e.preventDefault()
     if (emailError || passwordError || confirmedPasswordError || !email || !password || !confirmedPassword) {
       return;
     }
-    // Acá va el código para registrar al usuario
+    const nuevosDatos = {
+      "id": id,
+      "nombre": name,
+      "apellido": surname,
+      "email": email,
+      "password": password,
+      "rol": "usuario"
+    }
+    await crearCuenta(nuevosDatos)
+    
+    login({
+      "id": id,
+      "nombre": name,
+      "apellido": surname,
+      "email": email,
+      "rol": "usuario"
+    })
+
+
+    navigate("/dashboard")
+    
   }
 
   return (

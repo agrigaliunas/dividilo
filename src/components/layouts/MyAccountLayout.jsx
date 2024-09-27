@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { MyAccountSection } from '../sections/MyAccountSection';
 import { MyAccountSectionTitle } from '../MyAccountSectionTitle';
 import { InfoAccount } from '../icons/InfoAccount.jsx'
@@ -77,7 +77,7 @@ const MyAccountLayout = () => {
     setClearForm(true);
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (clearForm) {
       setClearForm(false);
     }

@@ -120,7 +120,14 @@ export const ProjectInfo = ({ project, usuarios }) => {
         texto: `+ $${(balance * -1).toFixed(2)}`,
         color: "text-green-500",
       };
-    } else {
+    } else if (balance === 0) {
+      return {
+        texto: `$${(balance).toFixed(2)}`,
+        color: "text-gray-500",
+      };
+    }
+    
+    else {
       return { texto: `- $${balance.toFixed(2)}`, color: "text-red-500" };
     }
   };
@@ -175,7 +182,7 @@ export const ProjectInfo = ({ project, usuarios }) => {
   const handleAddParticipant = (participanteAgregando) => {
     setProjectData((prevData) => ({
       ...prevData,
-      participantes: participanteAgregando,
+      participantes: [...prevData.participantes, participanteAgregando],
     }));
   };
 
@@ -270,7 +277,7 @@ export const ProjectInfo = ({ project, usuarios }) => {
               </span>
               <div className="flex flex-row gap-4">
                 {projectData.participantes.length > 0 &&
-                  projectData.participantes.map((p, index) => (
+                  projectData.participantes.map(p => (
                     <ProjectParticipantRounded participant={p} />
                   ))}
               </div>
@@ -342,7 +349,7 @@ export const ProjectInfo = ({ project, usuarios }) => {
                                                 )}
                                               </span>
                                               <span className="text-red-500">
-                                                ({sp.porcentaje}%)
+                                                ({sp.porcentaje.toFixed(2)}%)
                                               </span>
                                             </div>
                                           </div>
@@ -534,7 +541,7 @@ export const ProjectInfo = ({ project, usuarios }) => {
               </span>
               <div className="flex flex-row gap-4">
                 {projectData.participantes.length > 0 &&
-                  projectData.participantes.map((p, index) => (
+                  projectData.participantes.map(p => (
                     <div className="relative inline-block">
                       <ProjectParticipantRounded participant={p} />
                       {p !== user.id && (
@@ -701,7 +708,7 @@ export const ProjectInfo = ({ project, usuarios }) => {
                                             )}
 
                                             <span className="text-red-500">
-                                              ({sp.porcentaje}%)
+                                              ({sp.porcentaje.toFixed(2)}%)
                                             </span>
                                           </div>
                                         </div>

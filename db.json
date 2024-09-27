@@ -31,6 +31,38 @@
       "email": "juan.perez@gmail.com",
       "password": "Contraseña123",
       "rol": "usuario"
+    },
+    {
+      "id": "22bb",
+      "nombre": "Pablo",
+      "apellido": "Pablito",
+      "email": "pablo@gmail.com",
+      "password": "Pablo1234",
+      "rol": "usuario"
+    },
+    {
+      "id": "dbc1c960-5f37-422e-be17-086241c29703",
+      "nombre": "Roberto",
+      "apellido": "Robertoooooo",
+      "email": "rober@gmail.com",
+      "password": "Roberto1234",
+      "rol": "usuario"
+    },
+    {
+      "id": "ce66ce42-e165-4eac-be2d-1778af1f8811",
+      "nombre": "Lola",
+      "apellido": "Lolalalalal",
+      "email": "lola@gmail.com",
+      "password": "Lola1234",
+      "rol": "usuario"
+    },
+    {
+      "id": "93042587-8a65-495c-9ef3-9ad9f28e81c3",
+      "nombre": "Lolo",
+      "apellido": "Lolaloa",
+      "email": "lolo@gmail.com",
+      "password": "Lolo1234",
+      "rol": "usuario"
     }
   ],
   "proyectos": [
@@ -448,6 +480,41 @@
           ]
         }
       ]
+    },
+    {
+      "id": "edf1",
+      "nombre": "Viaje a MDQ",
+      "descripcion": "Viaje con la familia",
+      "participantes": [
+        null,
+        "1"
+      ],
+      "montoTotalProyecto": 0,
+      "gastos": [],
+      "estado": "En progreso"
+    },
+    {
+      "id": "e20e",
+      "nombre": "Viaje a MDQ",
+      "descripcion": "Viaje con la familia",
+      "participantes": [
+        "93042587-8a65-495c-9ef3-9ad9f28e81c3",
+        "1"
+      ],
+      "montoTotalProyecto": 0,
+      "gastos": [],
+      "estado": "En progreso"
+    },
+    {
+      "id": "927e",
+      "nombre": "proyecto test",
+      "descripcion": "asdasd",
+      "participantes": [
+        "93042587-8a65-495c-9ef3-9ad9f28e81c3"
+      ],
+      "montoTotalProyecto": 0,
+      "gastos": [],
+      "estado": "En progreso"
     }
   ]
 }

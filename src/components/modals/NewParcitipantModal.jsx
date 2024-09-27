@@ -10,9 +10,9 @@ const NewParticipantModal = ({ participantesId, isOpen, onClose, onAddParticipan
 
   useEffect(() => {
     const loggedUser = JSON.parse(localStorage.getItem("user"));
-    if (loggedUser && loggedUser.email && !participantesId.includes(loggedUser.email)) {
-      setUsuariosId([loggedUser.id]);
-    }
+    // if (loggedUser && loggedUser.email && !participantesId.includes(loggedUser.email)) {
+      setUsuariosId(participantesId.filter(p => participantesId.includes(p)));
+    // }
   }, []);
 
   const handleEmailChange = async (e) => {
@@ -35,7 +35,10 @@ const NewParticipantModal = ({ participantesId, isOpen, onClose, onAddParticipan
 
     if (usuario) {
       if (!usuariosId.includes(usuario.id)) {
-        setUsuariosId((prevIds) => [...prevIds, usuario.id]);
+        console.log(usuariosId)
+        const newUsers = usuariosId.push(usuario.id)
+        setUsuariosId(newUsers);
+        console.log(usuariosId)
       }
       return true;
     }

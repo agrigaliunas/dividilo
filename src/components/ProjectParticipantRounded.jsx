@@ -6,19 +6,25 @@ export const ProjectParticipantRounded = ({ participant }) => {
   const [usuarios, setUsuarios] = useState([]);
 
   useEffect(() => {
-    fetchUsuarios().then(setUsuarios);
+    const loadUsuarios = async () => {
+      const users = await fetchUsuarios()
+      setUsuarios(users)
+    }
+    loadUsuarios()
   }, []);
 
   const getInicialesParticipante = (participanteId) => {
+    console.log("asd " + participanteId)
     if (usuarios) {
       const usuario = usuarios.find((user) => user.id === participanteId);
+      console.log(usuario)
       if (usuario) {
         const inicialNombre = usuario.nombre.charAt(0).toUpperCase();
         const inicialApellido = usuario.apellido.charAt(0).toUpperCase();
         return `${inicialNombre}${inicialApellido}`;
       }
     }
-    return "??";
+    return "?";
   };
 
   return (
