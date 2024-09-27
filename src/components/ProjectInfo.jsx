@@ -228,9 +228,6 @@ export const ProjectInfo = ({ project, usuarios }) => {
                 <h2 className="text-2xl text-left font-bold">
                   Gastos del proyecto
                 </h2>
-                <button className="border-2 border-brandblue text-brandblue rounded-lg py-2 px-4 hover:opacity-80">
-                  Agregar gasto
-                </button>
               </div>
               <div className={`flex flex-col gap-2`}>
                 {projectData.gastos.length > 0 ? (
@@ -299,7 +296,7 @@ export const ProjectInfo = ({ project, usuarios }) => {
                                         />
                                         <input
                                           type="date"
-                                          className="text-gray-500 bg-white text-sm ml-auto"
+                                          className="text-black text-sm ml-auto"
                                           value={ticket.fecha}
                                         />
                                       </>
@@ -308,7 +305,7 @@ export const ProjectInfo = ({ project, usuarios }) => {
                                         <span className="font-extrabold text-xl">
                                           {ticket.descripcion}
                                         </span>
-                                        <span className="text-gray-500 bg-white text-sm ml-auto">
+                                        <span className="text-black text-sm ml-auto">
                                           {ticket.fecha}
                                         </span>
                                       </>
@@ -319,7 +316,7 @@ export const ProjectInfo = ({ project, usuarios }) => {
                                       ticket.split.map((sp, spIndex) => (
                                         <div
                                           key={spIndex}
-                                          className="flex flex-row gap-2 w-full justify-start items-center"
+                                          className="flex flex-row gap-2 w-full justify-between items-center"
                                         >
                                           <span className="font-semibold w-72">
                                             {getParticipanteNombreApellido(
@@ -348,9 +345,16 @@ export const ProjectInfo = ({ project, usuarios }) => {
                                                 ({sp.porcentaje}%)
                                               </span>
                                             </div>
+                                            
                                           </div>
+                                          
                                         </div>
+                                        
                                       ))}
+                                                                          <span className="font-bold text-lg ml-auto">
+                                      Total ticket: $
+                                      {ticket.montoTotalTicket.toFixed(2)}
+                                    </span>
                                   </div>
                                   {ticket.imagen ? (
                                     <>
@@ -391,11 +395,6 @@ export const ProjectInfo = ({ project, usuarios }) => {
                             <button className="my-3 w-full border-2 border-brandblue text-brandblue rounded-lg py-2 px-4 hover:opacity-80">
                               Agregar ticket
                             </button>
-                            <div className="border border-1 bg-white p-5 rounded-xl shadow-md w-full text-center">
-                              <span className="font-bold text-2xl">
-                                Total: ${gasto.montoTotalGasto.toFixed(2)}
-                              </span>
-                            </div>
                           </>
                         )}
                       </div>
@@ -449,7 +448,7 @@ export const ProjectInfo = ({ project, usuarios }) => {
         <>
           {
             <NewParticipantModal
-              participantesId = {projectData.participantes} 
+              participantesId={projectData.participantes}
               isOpen={modalIsOpen}
               onClose={closeModal}
               onAddParticipant={handleAddParticipant}
@@ -539,7 +538,7 @@ export const ProjectInfo = ({ project, usuarios }) => {
                   projectData.participantes.map((p, index) => (
                     <div className="relative inline-block">
                       <ProjectParticipantRounded
-                      participant={p}
+                        participant={p}
                       />
                       {
                         p !== user.id && (
@@ -607,7 +606,7 @@ export const ProjectInfo = ({ project, usuarios }) => {
                                     <span className="font-extrabold text-xl">
                                       {ticket.descripcion}
                                     </span>
-                                    <span className="text-gray-500 bg-white text-md ml-auto">
+                                    <span className="text-black text-md ml-auto">
                                       {ticket.fecha}
                                     </span>
                                   </div>
@@ -634,16 +633,13 @@ export const ProjectInfo = ({ project, usuarios }) => {
                                         </div>
                                       ))}
                                     <span className="font-bold text-lg ml-auto">
-                                      Total: $
+                                      Total ticket: $
                                       {ticket.montoTotalTicket.toFixed(2)}
                                     </span>
                                   </div>
                                 </div>
                               ))}
                             <div className="border border-1 bg-white p-5 rounded-xl shadow-md w-full text-center">
-                              <span className="font-bold text-2xl">
-                                Total: ${gasto.montoTotalGasto.toFixed(2)}
-                              </span>
                               <button className="w-full border-2 border-brandblue text-brandblue rounded-lg py-2 px-4 hover:opacity-80">
                                 Agregar ticket
                               </button>
