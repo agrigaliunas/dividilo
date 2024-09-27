@@ -55,15 +55,17 @@
               "montoTotalTicket": 1000,
               "descripcion": "Spa del hotel",
               "fecha": "2024-01-01",
-              "imagen": "url_a_la_imagen_del_ticket",
+              "imagen": "https://content.wepik.com/statics/10979914/preview-page0.jpg",
               "split": [
                 {
                   "participanteId": "2",
-                  "porcentaje": 50
+                  "porcentaje": 50,
+                  "montoParticipante": 500
                 },
                 {
                   "participanteId": "4",
-                  "porcentaje": 50
+                  "porcentaje": 50,
+                  "montoParticipante": 500
                 }
               ]
             },
@@ -72,15 +74,17 @@
               "montoTotalTicket": 2000,
               "descripcion": "Habitacion",
               "fecha": "2024-01-01",
-              "imagen": "url_a_la_imagen_del_ticket",
+              "imagen": "https://vencru.com/wp-content/uploads/2020/08/sample-invoice-template.png",
               "split": [
                 {
                   "participanteId": "2",
-                  "porcentaje": 70
+                  "porcentaje": 70,
+                  "montoParticipante": 1400
                 },
                 {
                   "participanteId": "4",
-                  "porcentaje": 30
+                  "porcentaje": 30,
+                  "montoParticipante": 600
                 }
               ]
             }
@@ -96,15 +100,17 @@
               "montoTotalTicket": 100,
               "descripcion": "Estacionamos 6hs",
               "fecha": "2024-01-02",
-              "imagen": "url_a_la_imagen_del_ticket",
+              "imagen": "https://images.picxy.com/cache/2020/2/9/234518585f936e3dfb87407a1448c842.jpg",
               "split": [
                 {
                   "participanteId": "2",
-                  "porcentaje": 100
+                  "porcentaje": 100,
+                  "montoParticipante": 100
                 },
                 {
                   "participanteId": "4",
-                  "porcentaje": 0
+                  "porcentaje": 0,
+                  "montoParticipante": 0
                 }
               ]
             }
@@ -133,15 +139,17 @@
               "montoTotalTicket": 1700,
               "descripcion": "Heladera",
               "fecha": "2024-09-20",
-              "imagen": "url_a_la_imagen_del_ticket",
+              "imagen": "https://imgv2-1-f.scribdassets.com/img/document/308818607/original/bd1fcd3f83/1724997884?v=1",
               "split": [
                 {
                   "participanteId": "1",
-                  "porcentaje": 50
+                  "porcentaje": 50,
+                  "montoParticipante": 850
                 },
                 {
                   "participanteId": "3",
-                  "porcentaje": 50
+                  "porcentaje": 50,
+                  "montoParticipante": 850
                 }
               ]
             },
@@ -150,15 +158,17 @@
               "montoTotalTicket": 1300,
               "descripcion": "Cocina",
               "fecha": "2024-09-21",
-              "imagen": "url_a_la_imagen_del_ticket",
+              "imagen": "https://marketplace.canva.com/EAFC1OcYOM0/2/0/1131w/canva-black-white-minimalist-simple-creative-freelancer-invoice-pyLVaYlAk1o.jpg",
               "split": [
                 {
                   "participanteId": "1",
-                  "porcentaje": 50
+                  "porcentaje": 50,
+                  "montoParticipante": 650
                 },
                 {
                   "participanteId": "3",
-                  "porcentaje": 50
+                  "porcentaje": 50,
+                  "montoParticipante": 650
                 }
               ]
             }
@@ -174,15 +184,17 @@
               "montoTotalTicket": 2500,
               "descripcion": "Marmol",
               "fecha": "2024-09-24",
-              "imagen": "url_a_la_imagen_del_ticket",
+              "imagen": "https://marketplace.canva.com/EAFC1OcYOM0/2/0/1131w/canva-black-white-minimalist-simple-creative-freelancer-invoice-pyLVaYlAk1o.jpg",
               "split": [
                 {
                   "participanteId": "1",
-                  "porcentaje": 20
+                  "porcentaje": 20,
+                  "montoParticipante": 500
                 },
                 {
                   "participanteId": "3",
-                  "porcentaje": 80
+                  "porcentaje": 80,
+                  "montoParticipante": 2000
                 }
               ]
             },
@@ -191,15 +203,17 @@
               "montoTotalTicket": 500,
               "descripcion": "Bajomesada",
               "fecha": "2024-09-24",
-              "imagen": "url_a_la_imagen_del_ticket",
+              "imagen": "https://marketplace.canva.com/EAFC1OcYOM0/2/0/1131w/canva-black-white-minimalist-simple-creative-freelancer-invoice-pyLVaYlAk1o.jpg",
               "split": [
                 {
                   "participanteId": "1",
-                  "porcentaje": 50
+                  "porcentaje": 50,
+                  "montoParticipante": 250
                 },
                 {
                   "participanteId": "3",
-                  "porcentaje": 50
+                  "porcentaje": 50,
+                  "montoParticipante": 250
                 }
               ]
             }
@@ -228,15 +242,17 @@
               "montoTotalTicket": 500,
               "descripcion": "Globos y guirnaldas",
               "fecha": "2024-10-01",
-              "imagen": "url_a_la_imagen_del_ticket",
+              "imagen": "https://marketplace.canva.com/EAFC1OcYOM0/2/0/1131w/canva-black-white-minimalist-simple-creative-freelancer-invoice-pyLVaYlAk1o.jpg",
               "split": [
                 {
                   "participanteId": "3",
-                  "porcentaje": 60
+                  "porcentaje": 60,
+                  "montoParticipante": 300
                 },
                 {
                   "participanteId": "4",
-                  "porcentaje": 40
+                  "porcentaje": 40,
+                  "montoParticipante": 200
                 }
               ]
             }
@@ -252,15 +268,17 @@
               "montoTotalTicket": 1000,
               "descripcion": "Catering para 20 personas",
               "fecha": "2024-10-02",
-              "imagen": "url_a_la_imagen_del_ticket",
+              "imagen": "https://marketplace.canva.com/EAFC1OcYOM0/2/0/1131w/canva-black-white-minimalist-simple-creative-freelancer-invoice-pyLVaYlAk1o.jpg",
               "split": [
                 {
                   "participanteId": "3",
-                  "porcentaje": 70
+                  "porcentaje": 70,
+                  "montoParticipante": 700
                 },
                 {
                   "participanteId": "4",
-                  "porcentaje": 30
+                  "porcentaje": 30,
+                  "montoParticipante": 300
                 }
               ]
             }
@@ -290,19 +308,22 @@
               "montoTotalTicket": 2500,
               "descripcion": "Pasajes de avión",
               "fecha": "2024-12-01",
-              "imagen": "url_a_la_imagen_del_ticket",
+              "imagen": "",
               "split": [
                 {
                   "participanteId": "1",
-                  "porcentaje": 40
+                  "porcentaje": 40,
+                  "montoParticipante": 1000
                 },
                 {
                   "participanteId": "2",
-                  "porcentaje": 40
+                  "porcentaje": 40,
+                  "montoParticipante": 1000
                 },
                 {
                   "participanteId": "4",
-                  "porcentaje": 20
+                  "porcentaje": 20,
+                  "montoParticipante": 500
                 }
               ]
             }
@@ -318,19 +339,22 @@
               "montoTotalTicket": 2500,
               "descripcion": "Cabaña para 7 días",
               "fecha": "2024-12-02",
-              "imagen": "url_a_la_imagen_del_ticket",
+              "imagen": "https://marketplace.canva.com/EAFC1OcYOM0/2/0/1131w/canva-black-white-minimalist-simple-creative-freelancer-invoice-pyLVaYlAk1o.jpg",
               "split": [
                 {
                   "participanteId": "1",
-                  "porcentaje": 50
+                  "porcentaje": 50,
+                  "montoParticipante": 1250
                 },
                 {
                   "participanteId": "2",
-                  "porcentaje": 30
+                  "porcentaje": 30,
+                  "montoParticipante": 750
                 },
                 {
                   "participanteId": "4",
-                  "porcentaje": 20
+                  "porcentaje": 20,
+                  "montoParticipante": 500
                 }
               ]
             }
@@ -361,23 +385,27 @@
               "montoTotalTicket": 3000,
               "descripcion": "Licencias para herramientas de desarrollo",
               "fecha": "2024-11-01",
-              "imagen": "url_a_la_imagen_del_ticket",
+              "imagen": "",
               "split": [
                 {
                   "participanteId": "1",
-                  "porcentaje": 25
+                  "porcentaje": 25,
+                  "montoParticipante": 750
                 },
                 {
                   "participanteId": "2",
-                  "porcentaje": 25
+                  "porcentaje": 25,
+                  "montoParticipante": 750
                 },
                 {
                   "participanteId": "3",
-                  "porcentaje": 25
+                  "porcentaje": 25,
+                  "montoParticipante": 750
                 },
                 {
                   "participanteId": "4",
-                  "porcentaje": 25
+                  "porcentaje": 25,
+                  "montoParticipante": 750
                 }
               ]
             }
@@ -393,23 +421,27 @@
               "montoTotalTicket": 5000,
               "descripcion": "Contratación de un diseñador freelance",
               "fecha": "2024-11-10",
-              "imagen": "url_a_la_imagen_del_ticket",
+              "imagen": "https://marketplace.canva.com/EAFC1OcYOM0/2/0/1131w/canva-black-white-minimalist-simple-creative-freelancer-invoice-pyLVaYlAk1o.jpg",
               "split": [
                 {
                   "participanteId": "1",
-                  "porcentaje": 30
+                  "porcentaje": 30,
+                  "montoParticipante": 1500
                 },
                 {
                   "participanteId": "2",
-                  "porcentaje": 30
+                  "porcentaje": 30,
+                  "montoParticipante": 1500
                 },
                 {
                   "participanteId": "3",
-                  "porcentaje": 20
+                  "porcentaje": 20,
+                  "montoParticipante": 1000
                 },
                 {
                   "participanteId": "4",
-                  "porcentaje": 20
+                  "porcentaje": 20,
+                  "montoParticipante": 1000
                 }
               ]
             }

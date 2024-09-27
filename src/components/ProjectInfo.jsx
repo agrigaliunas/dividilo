@@ -1,13 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { EditIcon } from "./icons/EditIcon";
-import { PaperAirplane } from "./icons/PaperAirplane";
-import { Trash } from "./icons/Trash";
+import { Cross } from "./icons/Cross";
 import { UserPlus } from "./icons/UserPlus";
 import { ChevronDown } from "./icons/ChevronDown";
 import NewParticipantModal from "./modals/NewParcitipantModal";
+import { ArrowsUpDown } from "./icons/ArrowsUpDown";
+import { deleteProject } from "../services/ProjectService";
+import { useAuth } from "../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { ProjectParticipantRounded } from "./ProjectParticipantRounded";
+import { CrossButton } from "./buttons/CrossButton";
+import { NewGastoModal } from "./modals/NewGastoModal";
 
 export const ProjectInfo = ({ project, usuarios }) => {
   const [projectData, setProjectData] = useState({
+    id: "",
     nombre: "",
     descripcion: "",
     montoTotalProyecto: "",
@@ -17,12 +24,20 @@ export const ProjectInfo = ({ project, usuarios }) => {
   });
 
   const [editandoProyecto, setEditandoProyecto] = useState(false);
+  const [editandoTicket, setEditandoTicket] = useState(null);
   const [gastosExpandidos, setGastosExpandidos] = useState({});
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [modalParticipanteIsOpen, setModalParticipanteIsOpen] = useState(false);
+  const [modalGastoIsOpen, setModalGastoIsOpen] = useState(false);
+  const [showTicketImagen, setShowTicketImagen] = useState(false);
+  const [projectStatus, setProjectStatus] = useState(null);
+
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (project) {
       setProjectData({
+        id: project.id,
         nombre: project.nombre,
         descripcion: project.descripcion,
         montoTotalProyecto: project.montoTotalProyecto,
@@ -30,8 +45,29 @@ export const ProjectInfo = ({ project, usuarios }) => {
         participantes: project.participantes || [],
         gastos: project.gastos || [],
       });
+      setProjectStatus(projectData.estado);
     }
   }, [project]);
+
+  const eliminarParticipante = (participanteId) => {
+    const nuevosParticipantes = projectData.participantes.filter(
+      (id) => id !== participanteId
+    );
+
+    setProjectData((prevData) => ({
+      ...prevData,
+      participantes: nuevosParticipantes,
+    }));
+  };
+
+  const eliminarGasto = (gastoId) => {
+    const nuevosGastos = projectData.gastos.filter((id) => id !== gastoId);
+
+    setProjectData((prevData) => ({
+      ...prevData,
+      gastos: nuevosGastos,
+    }));
+  };
 
   const toggleGasto = (index) => {
     setGastosExpandidos((prev) => ({
@@ -97,24 +133,50 @@ export const ProjectInfo = ({ project, usuarios }) => {
   };
 
   const handleEditarClick = () => {
+    setProjectStatus(projectData.estado);
     setEditandoProyecto(!editandoProyecto);
   };
 
-  const handleSaveProyecto = () => {
+  const eliminarProyecto = async () => {
+    await deleteProject(projectData.id);
+    navigate("/dashboard");
+  };
+
+  const handleSaveProyecto = async () => {
     setEditandoProyecto(false);
   };
 
-  const openModal = () => {
-    setModalIsOpen(true);
+  const openParticipanteModal = () => {
+    setModalParticipanteIsOpen(true);
   };
 
-  const closeModal = () => {
-    setModalIsOpen(false);
+  const closeParticipanteModal = () => {
+    setModalParticipanteIsOpen(false);
   };
 
-  const handleAddParticipant = (email) => {
-    console.log("Nuevo participante agregado: ", email);
+  const openGastoModal = () => {
+    setModalGastoIsOpen(true);
   };
+
+  const closeGastoModal = () => {
+    setModalGastoIsOpen(false);
+  };
+
+  const handleAddParticipant = async (participanteAgregando) => {
+    setProjectData((prevData) => ({
+      ...prevData,
+      participantes: participanteAgregando,
+    }));
+  };
+
+  const handleAddGasto = async (gastoAgregando) => {
+
+    setProjectData((prevData) => ({
+      ...prevData,
+      gastos: [...prevData.gastos, gastoAgregando]
+    }));
+  };
+
 
   return (
     <div className="flex flex-col w-full lg:px-[20vw] lg:py-[5vw] px-[5vw] py-[5vw] gap-8">
@@ -130,11 +192,8 @@ export const ProjectInfo = ({ project, usuarios }) => {
             </span>
           </button>
           <div className="flex flex-col gap-3 border border-1 bg-white p-5 rounded-xl shadow-md">
-            <div className="flex flex-row lg:justify-between gap-5">
-              <h1 className="lg:text-4xl text-xl text-left font-extrabold">
-                {projectData.nombre}
-              </h1>
-              {projectData.estado === "En progreso" ? (
+            <div className="flex flex-row w-fit lg:justify-between gap-5">
+              {projectStatus === "En progreso" ? (
                 <span className="font-semibold flex items-center justify-center text-center lg:p-3 p-1.5 bg-orange-600 bg-opacity-40 rounded-xl text-gray-800 cursor-default select-none text-xs lg:text-sm">
                   En progreso
                 </span>
@@ -144,6 +203,9 @@ export const ProjectInfo = ({ project, usuarios }) => {
                 </span>
               )}
             </div>
+            <h1 className="lg:text-4xl text-xl text-left font-extrabold">
+              {projectData.nombre}
+            </h1>
             <span className="text-gray-500 font-medium">
               {projectData.descripcion}
             </span>
@@ -159,10 +221,6 @@ export const ProjectInfo = ({ project, usuarios }) => {
                 {projectData.montoTotalProyecto &&
                   projectData.montoTotalProyecto.toFixed(2)}
               </span>
-              <div className="flex flex-col gap-1">
-                <span className="text-gray-500">Debes $</span>
-                <span className="text-gray-500">Te deben $</span>
-              </div>
             </div>
             <div className="flex flex-col w-full border border-1 bg-white rounded-xl shadow-md p-5 lg:w-[50%] gap-4">
               <h2 className="text-2xl text-left font-bold">Participantes</h2>
@@ -172,12 +230,7 @@ export const ProjectInfo = ({ project, usuarios }) => {
               <div className="flex flex-row gap-4">
                 {projectData.participantes.length > 0 &&
                   projectData.participantes.map((p, index) => (
-                    <span
-                      key={index}
-                      className="rounded-full w-12 h-12 flex items-center justify-center border border-1 border-gray-400 bg-brandblue text-white font-semibold p-2"
-                    >
-                      {getInicialesParticipante(p)}
-                    </span>
+                    <ProjectParticipantRounded participant={p} />
                   ))}
               </div>
             </div>
@@ -188,9 +241,6 @@ export const ProjectInfo = ({ project, usuarios }) => {
                 <h2 className="text-2xl text-left font-bold">
                   Gastos del proyecto
                 </h2>
-                <button className="border-2 border-brandblue text-brandblue rounded-lg py-2 px-4 hover:opacity-80">
-                  Agregar gasto
-                </button>
               </div>
               <div className={`flex flex-col gap-2`}>
                 {projectData.gastos.length > 0 ? (
@@ -220,13 +270,13 @@ export const ProjectInfo = ({ project, usuarios }) => {
                               gasto.tickets.map((ticket, ticketIndex) => (
                                 <div
                                   key={ticketIndex}
-                                  className="flex flex-col gap-5 bg-gray-100 border-2 rounded-lg w-full text-base px-5 py-2 justify-center"
+                                  className="flex flex-col gap-2 bg-gray-100 border-2 rounded-lg w-full text-base px-5 py-2 justify-center"
                                 >
                                   <div className="flex flex-row gap-4">
                                     <span className="font-extrabold text-xl">
                                       {ticket.descripcion}
                                     </span>
-                                    <span className="border border-1 border-gray-300 rounded-xl p-2 bg-white  text-md ml-auto">
+                                    <span className="text-black text-sm ml-auto">
                                       {ticket.fecha}
                                     </span>
                                   </div>
@@ -235,37 +285,56 @@ export const ProjectInfo = ({ project, usuarios }) => {
                                       ticket.split.map((sp, spIndex) => (
                                         <div
                                           key={spIndex}
-                                          className="flex flex-row gap-2 w-full justify-between"
+                                          className="flex flex-row gap-2 w-full justify-between items-center"
                                         >
-                                          <span className="font-semibold">
+                                          <span className="font-semibold w-72">
                                             {getParticipanteNombreApellido(
                                               sp.participanteId
                                             )}
                                           </span>
                                           <div className="space-x-1">
-                                            <span className="font-semibold">
-                                              Gastó $
-                                              {ticket.montoTotalTicket *
-                                                (sp.porcentaje / 100)}
-                                            </span>
-                                            <span className="text-red-500">
-                                              ({sp.porcentaje}%)
-                                            </span>
+                                            <div className="space-x-1">
+                                              <span className="font-semibold">
+                                                Gastó $
+                                                {sp.montoParticipante.toFixed(
+                                                  2
+                                                )}
+                                              </span>
+                                              <span className="text-red-500">
+                                                ({sp.porcentaje}%)
+                                              </span>
+                                            </div>
                                           </div>
                                         </div>
                                       ))}
                                     <span className="font-bold text-lg ml-auto">
-                                      Total: $
+                                      Total ticket: $
                                       {ticket.montoTotalTicket.toFixed(2)}
                                     </span>
                                   </div>
+                                  {ticket.imagen && (
+                                    <button
+                                      onClick={() =>
+                                        setShowTicketImagen(!showTicketImagen)
+                                      }
+                                      className="text-left underline text-xs hover:opacity-90 text-brandblue"
+                                    >
+                                      {showTicketImagen
+                                        ? "Esconder imagen del ticket"
+                                        : "Ver imagen del ticket"}
+                                    </button>
+                                  )}
+                                  {ticket.imagen && showTicketImagen && (
+                                    <img
+                                      src={ticket.imagen}
+                                      className="w-96 h-96"
+                                    />
+                                  )}
                                 </div>
                               ))}
-                            <div className="border border-1 bg-white p-5 rounded-xl shadow-md w-full text-center">
-                              <span className="font-bold text-2xl">
-                                Total: ${gasto.montoTotalGasto.toFixed(2)}
-                              </span>
-                            </div>
+                            <button className="my-3 w-full border-2 border-brandblue text-brandblue rounded-lg py-2 px-4 hover:opacity-80">
+                              Agregar ticket
+                            </button>
                           </>
                         )}
                       </div>
@@ -319,9 +388,18 @@ export const ProjectInfo = ({ project, usuarios }) => {
         <>
           {
             <NewParticipantModal
-              isOpen={modalIsOpen}
-              onClose={closeModal}
+              participantesId={projectData.participantes}
+              isOpen={modalParticipanteIsOpen}
+              onClose={closeParticipanteModal}
               onAddParticipant={handleAddParticipant}
+            />
+          }
+          {
+            <NewGastoModal
+              gastos={projectData.gastos}
+              isOpen={modalGastoIsOpen}
+              onClose={closeGastoModal}
+              onAddGasto={handleAddGasto}
             />
           }
           <div className="flex flex-col gap-1">
@@ -334,38 +412,57 @@ export const ProjectInfo = ({ project, usuarios }) => {
               </button>
               <button
                 onClick={handleEditarClick}
-                className="flex flex-row bg-red-600 rounded-xl border border-1 w-fit p-3 gap-2 hover:bg-opacity-80"
+                className="flex flex-row bg-white border-red-600 rounded-xl border-2 w-fit p-3 gap-2 hover:bg-opacity-80"
               >
-                <span className="text-white text-sm">Cancelar edición</span>
+                <span className=" text-red-600  text-sm">Cancelar edición</span>
               </button>
               <button
                 className="flex flex-row bg-red-600 rounded-xl border border-1 w-fit p-3 gap-2 hover:bg-opacity-80 ml-auto"
+                onClick={eliminarProyecto}
               >
-                <span className="text-white font-semibold text-sm">¡Eliminar proyecto!</span>
+                <span className="text-white font-semibold text-sm">
+                  ¡Eliminar proyecto!
+                </span>
               </button>
             </div>
           </div>
 
           <div className="flex flex-col gap-3 border border-1 bg-white p-5 rounded-xl shadow-md">
-            <div className="flex flex-row lg:justify-between gap-5">
+            <div className="flex flex-col lg:justify-between gap-5">
+              {projectStatus === "En progreso" ? (
+                <div className="flex flex-row gap-1 bg-orange-600 w-fit lg:p-3 p-1.5 bg-opacity-40 rounded-xl text-gray-800 cursor-default select-none text-xs lg:text-sm">
+                  <button
+                    onClick={() => setProjectStatus("Finalizado")}
+                    className="bg-orange-600 bg-opacity-10 rounded-full p-1 hover:opacity-80"
+                  >
+                    <ArrowsUpDown />
+                  </button>
+                  <span className="font-semibold flex items-center justify-center text-center ">
+                    En progreso
+                  </span>
+                </div>
+              ) : (
+                <div className="flex flex-row gap-1 bg-green-600 w-fit lg:p-3 p-1.5  bg-opacity-40 rounded-xl text-gray-800 cursor-default select-none text-xs lg:text-sm">
+                  <button
+                    onClick={() => setProjectStatus("En progreso")}
+                    className="bg-green-600 bg-opacity-10 rounded-full p-1 hover:opacity-80"
+                  >
+                    <ArrowsUpDown />
+                  </button>
+                  <span className="font-semibold flex items-center justify-center text-center">
+                    Finalizado
+                  </span>
+                </div>
+              )}
               <input
-                className="lg:text-4xl text-xl text-left font-extrabold w-[auto] border-b"
+                className="lg:text-4xl text-xl text-left font-extrabold w-[auto] border-b border-black bg-transparent border-dashed border-spacing-3"
                 value={projectData.nombre}
                 onChange={handleEditNombre}
                 placeholder="Ingrese título del proyecto..."
               />
-              {projectData.estado === "En progreso" ? (
-                <span className="font-semibold flex items-center justify-center text-center lg:p-3 p-1.5 bg-orange-600 bg-opacity-40 rounded-xl text-gray-800 cursor-default select-none text-xs lg:text-sm">
-                  En progreso
-                </span>
-              ) : (
-                <span className="font-semibold flex items-center justify-center text-center lg:p-3 p-1.5 bg-green-600 bg-opacity-40 rounded-xl text-gray-800 cursor-default select-none text-xs lg:text-sm">
-                  Finalizado
-                </span>
-              )}
             </div>
             <input
-              className="text-gray-500 font-medium w-[auto] border-b"
+              className="text-gray-500 font-medium w-[auto] border-b border-black bg-transparent border-dashed border-spacing-3"
               value={projectData.descripcion}
               onChange={handleEditDescripcion}
               placeholder="Ingrese descripción del proyecto..."
@@ -391,16 +488,19 @@ export const ProjectInfo = ({ project, usuarios }) => {
               <div className="flex flex-row gap-4">
                 {projectData.participantes.length > 0 &&
                   projectData.participantes.map((p, index) => (
-                    <span
-                      key={index}
-                      className="rounded-full w-12 h-12 flex items-center justify-center border border-1 border-gray-400 bg-brandblue text-white font-semibold p-2"
-                    >
-                      {getInicialesParticipante(p)}
-                    </span>
+                    <div className="relative inline-block">
+                      <ProjectParticipantRounded participant={p} />
+                      {p !== user.id && (
+                        <CrossButton
+                          handleFunction={() => eliminarParticipante(p)}
+                        />
+                      )}
+                    </div>
                   ))}
                 <button
-                  onClick={openModal}
-                  className="rounded-full w-12 h-12 flex items-center justify-center border border-1 border-gray-400 bg-white text-black hover:bg-gray-50 font-semibold p-2">
+                  onClick={openParticipanteModal}
+                  className="rounded-full w-12 h-12 flex items-center justify-center border border-1 border-gray-400 bg-white text-black hover:bg-gray-50 font-semibold p-2"
+                >
                   <UserPlus />
                 </button>
               </div>
@@ -412,7 +512,10 @@ export const ProjectInfo = ({ project, usuarios }) => {
                 <h2 className="text-2xl text-left font-bold">
                   Gastos del proyecto
                 </h2>
-                <button className="border-2 border-brandblue text-brandblue rounded-lg lg:py-2 lg:px-4 p-1 lg:text-base text-sm hover:opacity-80">
+                <button
+                  onClick={openGastoModal}
+                  className="border-2 border-brandblue text-brandblue rounded-lg lg:py-2 lg:px-4 p-1 lg:text-base text-sm hover:opacity-80"
+                >
                   Agregar gasto
                 </button>
               </div>
@@ -421,8 +524,11 @@ export const ProjectInfo = ({ project, usuarios }) => {
                   projectData.gastos.map((gasto, index) => (
                     <div
                       key={index}
-                      className="flex flex-col items-center border-2 rounded-xl gap-2 w-full"
+                      className="relative flex flex-col items-center border-2 rounded-xl gap-2 w-full "
                     >
+                      <CrossButton
+                        handleFunction={() => eliminarGasto(gasto)}
+                      />
                       <div className="flex flex-col gap-3 items-left bg-white p-5 rounded-xl shadow-md w-full">
                         <div className="flex flex-row gap-2 items-center">
                           <button
@@ -446,13 +552,66 @@ export const ProjectInfo = ({ project, usuarios }) => {
                                   key={ticketIndex}
                                   className="flex flex-col gap-5 bg-gray-100 border-2 rounded-lg w-full text-base px-5 py-2 justify-center"
                                 >
+                                  {editandoTicket !== ticket && (
+                                    <div className="flex flex-row justify-end">
+                                      <button
+                                        onClick={() =>
+                                          setEditandoTicket(ticket)
+                                        }
+                                        className="w-fit border-2 text-white bg-brandblue rounded-lg py-2 px-4 hover:opacity-80 text-xs"
+                                      >
+                                        Editar ticket
+                                      </button>
+                                      <button
+                                        // onClick={}
+                                        className="w-fit border-2 text-white bg-red-600 rounded-lg py-2 px-4 hover:opacity-80 text-xs"
+                                      >
+                                        Borrar ticket
+                                      </button>
+                                    </div>
+                                  )}
+                                  {editandoTicket === ticket && (
+                                    <div className="flex flex-row gap-1">
+                                      <button
+                                        onClick={() => alert("actualizado")}
+                                        className="w-fi bg-green-600 text-white rounded-lg py-2 px-4 hover:opacity-80 text-xs"
+                                      >
+                                        Actualizar ticket
+                                      </button>
+                                      <button
+                                        onClick={() => setEditandoTicket(null)}
+                                        className="w-fit border-2 border-red-600 bg-white text-red-600 rounded-lg py-2 px-4 hover:opacity-80 text-xs"
+                                      >
+                                        Cancelar edición
+                                      </button>
+                                    </div>
+                                  )}
                                   <div className="flex flex-row gap-4">
-                                    <span className="font-extrabold text-xl">
-                                      {ticket.descripcion}
-                                    </span>
-                                    <span className="border border-1 border-gray-300 rounded-xl p-2 bg-white  text-md ml-auto">
-                                      {ticket.fecha}
-                                    </span>
+                                    {editandoTicket === ticket ? (
+                                      <input
+                                        type="text"
+                                        className="border-b border-black bg-transparent border-dashed border-spacing-3 w-[60%] font-extrabold text-xl"
+                                        value={ticket.descripcion}
+                                        placeholder={ticket.descripcion}
+                                      />
+                                    ) : (
+                                      <span className="font-extrabold text-xl">
+                                        {ticket.descripcion}
+                                      </span>
+                                    )}
+
+                                    {editandoTicket === ticket ? (
+                                      <input
+                                        type="date"
+                                        className="border-b border-black bg-transparent border-dashed border-spacing-3 w-[15%] ml-auto text-black text-md"
+                                        value={ticket.fecha}
+                                        placeholder={ticket.fecha}
+                                      />
+                                    ) : (
+                                      <span className="text-black text-md ml-auto">
+                                        {ticket.fecha}
+                                      </span>
+                                    )}
                                   </div>
                                   <div className="flex flex-col gap-1 w-full">
                                     {ticket.split?.length > 0 &&
@@ -467,28 +626,92 @@ export const ProjectInfo = ({ project, usuarios }) => {
                                             )}
                                           </span>
                                           <div className="space-x-1">
-                                            <span className="font-semibold">
-                                              Gastó $
-                                              {ticket.montoTotalTicket *
-                                                (sp.porcentaje / 100)}
-                                            </span>
+                                            {editandoTicket === ticket ? (
+                                              <>
+                                                <span className="font-semibold">
+                                                  Gastó $
+                                                </span>
+                                                <input
+                                                  type="number"
+                                                  className="border-b border-black bg-transparent border-dashed border-spacing-3 w-24 font-semibold"
+                                                  value={sp.montoParticipante.toFixed(
+                                                    2
+                                                  )}
+                                                  placeholder={
+                                                    sp.montoParticipante
+                                                  }
+                                                />
+                                              </>
+                                            ) : (
+                                              <span className="font-semibold">
+                                                Gastó $
+                                                {sp.montoParticipante.toFixed(
+                                                  2
+                                                )}
+                                              </span>
+                                            )}
+
                                             <span className="text-red-500">
                                               ({sp.porcentaje}%)
                                             </span>
                                           </div>
                                         </div>
                                       ))}
+                                    {ticket.imagen && (
+                                      <>
+                                        <button
+                                          onClick={() =>
+                                            setShowTicketImagen(
+                                              !showTicketImagen
+                                            )
+                                          }
+                                          className="text-left underline text-xs hover:opacity-90 text-brandblue"
+                                        >
+                                          {showTicketImagen
+                                            ? "Esconder imagen del ticket"
+                                            : "Ver imagen del ticket"}
+                                        </button>
+                                        {showTicketImagen && (
+                                          <img
+                                            src={ticket.imagen}
+                                            className="w-96 h-96"
+                                          />
+                                        )}
+                                      </>
+                                    )}
+
+                                    {ticket.imagen &&
+                                      editandoTicket === ticket && (
+                                        <button
+                                          onClick={() =>
+                                            // handleDeleteTicketImage()
+                                            alert("Imagen borrada")
+                                          }
+                                          className="text-left underline text-xs hover:opacity-90 text-brandblue"
+                                        >
+                                          Borrar imagen del ticket
+                                        </button>
+                                      )}
+
+                                    {!ticket.imagen && editandoTicket && (
+                                      <button
+                                        onClick={() => alert("Imagen agregada")}
+                                        className="text-left underline text-xs hover:opacity-90 text-brandblue"
+                                      >
+                                        Agregar imagen del ticket
+                                      </button>
+                                    )}
                                     <span className="font-bold text-lg ml-auto">
-                                      Total: $
+                                      Total ticket: $
                                       {ticket.montoTotalTicket.toFixed(2)}
                                     </span>
                                   </div>
                                 </div>
                               ))}
                             <div className="border border-1 bg-white p-5 rounded-xl shadow-md w-full text-center">
-                              <span className="font-bold text-2xl">
-                                Total: ${gasto.montoTotalGasto.toFixed(2)}
-                              </span>
+                              <button className="w-full border-2 border-brandblue text-brandblue rounded-lg py-2 px-4 hover:opacity-80">
+                                Agregar ticket
+                              </button>
                             </div>
                           </>
                         )}
@@ -538,6 +761,7 @@ export const ProjectInfo = ({ project, usuarios }) => {
             </div>
           </div>
         </>
+
       )}
     </div>
   );

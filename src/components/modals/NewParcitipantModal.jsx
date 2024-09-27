@@ -1,54 +1,76 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { checkEmailExists } from "../../services/AuthService";
 
-const NewParticipantModal = ({ isOpen, onClose, onAddParticipant }) => {
-  const [email, setEmail] = useState("");
-  const [error, setError] = useState("");
+const NewParticipantModal = ({ participantesId, isOpen, onClose, onAddParticipant }) => {
+  
+  const [participanteNoExiste, setParticipanteNoExiste] = useState(true);
+  const [participanteAgregando, setParticipanteAgregando] = useState("");
+  const [usuariosId, setUsuariosId] = useState([]);
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const validateEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (validateEmail(email)) {
-      onAddParticipant(email);
-      onClose();
-    } else {
-      setError("Por favor, ingrese un correo electrónico válido.");
+  useEffect(() => {
+    const loggedUser = JSON.parse(localStorage.getItem("user"));
+    if (loggedUser && loggedUser.email && !participantesId.includes(loggedUser.email)) {
+      setUsuariosId([loggedUser.id])
     }
+  }, []);
+
+  const handleEmailChange = async (e) => {
+    const email = e.target.value;
+    setParticipanteAgregando(email);
+    if (email) {
+      const user = await checkEmailExiste(email);
+      setParticipanteNoExiste(!user);
+    } else {
+      setParticipanteNoExiste(true);
+    }
+  };
+
+  const checkEmailExiste = async (email) => {
+    const usuario = await checkEmailExists(email);
+
+    if (usuario) {
+      if (!usuariosId.includes(usuario.id)) {
+        setUsuariosId((prevIds) => [...prevIds, usuario.id]);
+      }
+      return true;
+    }
+    return false;
+  };
+
+  const handleAddParticipant = async () => {
+    if (participanteAgregando) {
+      onAddParticipant(usuariosId)
+      onClose();
+    }
+    return;
   };
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white p-6 rounded-lg shadow-lg w-[90vw] lg:w-[30vw]">
         <h2 className="text-2xl font-semibold mb-4">Agregar participante</h2>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <form onSubmit={handleAddParticipant} className="flex flex-col gap-4">
           <input
             type="email"
-            value={email}
+            value={participanteAgregando}
             onChange={handleEmailChange}
             className="px-2 py-3 border border-1 border-[#e9e9ef] shadow-sm outline-none rounded-md text-sm"
             placeholder="Ingrese el correo electrónico..."
           />
-          {error && <span className="text-red-500 text-sm">{error}</span>}
           <div className="flex justify-end gap-4">
             <button
               type="button"
               onClick={onClose}
-              className="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-500"
+              className="bg-red-500 text-white px-4 py-2 rounded-md hover:opacity-80"
             >
               Cancelar
             </button>
             <button
               type="submit"
-              className="bg-brandblue text-white px-4 py-2 rounded-md hover:opacity-85"
+              disabled={participanteNoExiste}
+              className={`${participanteNoExiste ? "bg-gray-600" : "bg-brandblue"} text-white px-4 py-2 rounded-md hover:opacity-85`}
             >
               Agregar
             </button>

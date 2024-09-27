@@ -30,6 +30,6 @@ export const restaurarPassword = async (id, usuarioOriginal) => {
 
 export const checkEmailExists = async (email) => {
     const usuarios = await fetchUsuarios();
-    const usuario = await usuarios.find((usuario) => usuario.email === email);
+    const usuario = usuarios.find((usuario) => usuario.email === email);
     return usuario;
 }
