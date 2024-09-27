@@ -6,10 +6,13 @@ import { UserPlus } from "./icons/UserPlus";
 import { ChevronDown } from "./icons/ChevronDown";
 import NewParticipantModal from "./modals/NewParcitipantModal";
 import { ArrowsUpDown } from "./icons/ArrowsUpDown";
-import { updateProject } from "../services/ProjectService";
+import { deleteProject, updateProject } from "../services/ProjectService";
+import { useAuth } from "../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export const ProjectInfo = ({ project, usuarios }) => {
   const [projectData, setProjectData] = useState({
+    id: "",
     nombre: "",
     descripcion: "",
     montoTotalProyecto: "",
@@ -24,11 +27,14 @@ export const ProjectInfo = ({ project, usuarios }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [showTicketImagen, setShowTicketImagen] = useState(false);
   const [projectStatus, setProjectStatus] = useState(null)
-  const [participantes, setParticipantes] = useState(projectData.participantes)
+  
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (project) {
       setProjectData({
+        id: project.id,
         nombre: project.nombre,
         descripcion: project.descripcion,
         montoTotalProyecto: project.montoTotalProyecto,
@@ -37,21 +43,24 @@ export const ProjectInfo = ({ project, usuarios }) => {
         gastos: project.gastos || [],
       });
       setProjectStatus(projectData.estado)
-      setParticipantes(projectData.participantes)
     }
   }, [project]);
 
-  const eliminarParticipante = async (participanteId) => {
-    try {
-      const nuevosParticipantes = participantes.filter(participante => participante.id !== participanteId);
-      setParticipantes(nuevosParticipantes);
-      
-    } catch (error) {
-      console.error("Error al eliminar el participante:", error);
-    }
+  const eliminarParticipante = (participanteId) => {
+    const nuevosParticipantes = projectData.participantes
+      .filter(
+        (id) => id !== participanteId
+      );
+
+    console.log(nuevosParticipantes)
+
+    setProjectData((prevData) => ({
+      ...prevData,
+      participantes: nuevosParticipantes
+    }));
+
+    console.log(projectData);
   };
-
-
 
   const toggleGasto = (index) => {
     setGastosExpandidos((prev) => ({
@@ -121,16 +130,23 @@ export const ProjectInfo = ({ project, usuarios }) => {
     setEditandoProyecto(!editandoProyecto);
   };
 
+
+  const eliminarProyecto = async () => {
+    console.log(projectData.id)
+    await deleteProject(projectData.id)
+    navigate('/dashboard')
+  }
+
   const handleSaveProyecto = async () => {
     try {
       setEditandoProyecto(false);
-      }
-      catch (error) {
+    }
+    catch (error) {
       console.error('Error al actualizar el proyecto:', error);
     }
   };
-  
-  
+
+
   const openModal = () => {
     setModalIsOpen(true);
   };
@@ -450,7 +466,8 @@ export const ProjectInfo = ({ project, usuarios }) => {
               >
                 <span className="text-white text-sm">Cancelar edición</span>
               </button>
-              <button className="flex flex-row bg-red-600 rounded-xl border border-1 w-fit p-3 gap-2 hover:bg-opacity-80 ml-auto">
+              <button className="flex flex-row bg-red-600 rounded-xl border border-1 w-fit p-3 gap-2 hover:bg-opacity-80 ml-auto"
+              onClick={eliminarProyecto}>
                 <span className="text-white font-semibold text-sm">
                   ¡Eliminar proyecto!
                 </span>
@@ -524,13 +541,17 @@ export const ProjectInfo = ({ project, usuarios }) => {
                       >
                         {getInicialesParticipante(p)}
                       </span>
-                      <button
-                        onClick={() => eliminarParticipante(p)}
-                        className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs"
-                      >
-                        
-                        &times;
-                      </button>
+                      {
+                        p !== user.id && (
+
+                          <button
+                            onClick={() => eliminarParticipante(p)}
+                            className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs"
+                          >
+                            &times;
+                          </button>
+                        )
+                      }
                     </div>
                   ))}
                 <button
