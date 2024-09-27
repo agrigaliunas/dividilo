@@ -26,7 +26,7 @@ const NewParticipantModal = ({ isOpen, onClose, onAddParticipant }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white p-6 rounded-lg shadow-lg w-[90vw] lg:w-[30vw]">
         <h2 className="text-2xl font-semibold mb-4">Agregar participante</h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">

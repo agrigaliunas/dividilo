@@ -5,6 +5,7 @@ import { Trash } from "./icons/Trash";
 import { UserPlus } from "./icons/UserPlus";
 import { ChevronDown } from "./icons/ChevronDown";
 import NewParticipantModal from "./modals/NewParcitipantModal";
+import { eliminarParticipanteDelProyecto, updateProject } from "../services/ProjectService";
 
 export const ProjectInfo = ({ project, usuarios }) => {
   const [projectData, setProjectData] = useState({
@@ -32,6 +33,19 @@ export const ProjectInfo = ({ project, usuarios }) => {
       });
     }
   }, [project]);
+
+  // const eliminarParticipante = async (participanteId) => {
+  //   try {
+  //     await eliminarParticipanteDelProyecto(projectData.id, participanteId);
+  //     setProjectData((prevData) => ({
+  //       ...prevData,
+  //       participantes: prevData.participantes.filter(id => id !== participanteId)
+  //     }));
+  //   } catch (error) {
+  //     console.error("Error al eliminar el participante:", error);
+  //   }
+  // };
+  
 
   const toggleGasto = (index) => {
     setGastosExpandidos((prev) => ({
@@ -113,7 +127,6 @@ export const ProjectInfo = ({ project, usuarios }) => {
   };
 
   const handleAddParticipant = (email) => {
-    console.log("Nuevo participante agregado: ", email);
   };
 
   return (
@@ -391,12 +404,20 @@ export const ProjectInfo = ({ project, usuarios }) => {
               <div className="flex flex-row gap-4">
                 {projectData.participantes.length > 0 &&
                   projectData.participantes.map((p, index) => (
-                    <span
-                      key={index}
-                      className="rounded-full w-12 h-12 flex items-center justify-center border border-1 border-gray-400 bg-brandblue text-white font-semibold p-2"
-                    >
-                      {getInicialesParticipante(p)}
-                    </span>
+                    <div className="relative inline-block">
+                      <span
+                        key={index}
+                        className="rounded-full w-12 h-12 flex items-center justify-center border border-1 border-gray-400 bg-brandblue text-white font-semibold p-2"
+                      >
+                        {getInicialesParticipante(p)}
+                      </span>
+                      <button
+                        onClick={() => eliminarParticipante(p)}
+                        className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs"
+                      >
+                        &times;
+                      </button>
+                    </div>
                   ))}
                 <button
                   onClick={openModal}
