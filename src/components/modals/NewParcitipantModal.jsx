@@ -5,23 +5,28 @@ const NewParticipantModal = ({ participantesId, isOpen, onClose, onAddParticipan
   
   const [participanteNoExiste, setParticipanteNoExiste] = useState(true);
   const [participanteAgregando, setParticipanteAgregando] = useState("");
+  const [participanteYaAgregado, setParticipanteYaAgregado] = useState(false);
   const [usuariosId, setUsuariosId] = useState([]);
 
   useEffect(() => {
     const loggedUser = JSON.parse(localStorage.getItem("user"));
     if (loggedUser && loggedUser.email && !participantesId.includes(loggedUser.email)) {
-      setUsuariosId([loggedUser.id])
+      setUsuariosId([loggedUser.id]);
     }
   }, []);
 
   const handleEmailChange = async (e) => {
     const email = e.target.value;
     setParticipanteAgregando(email);
+    
     if (email) {
-      const user = await checkEmailExiste(email);
-      setParticipanteNoExiste(!user);
+      const userExists = await checkEmailExiste(email);
+      const alreadyAdded = await checkParticipanteYaAgregado(email);
+      setParticipanteNoExiste(!userExists);
+      setParticipanteYaAgregado(alreadyAdded);
     } else {
       setParticipanteNoExiste(true);
+      setParticipanteYaAgregado(false);
     }
   };
 
@@ -37,12 +42,21 @@ const NewParticipantModal = ({ participantesId, isOpen, onClose, onAddParticipan
     return false;
   };
 
-  const handleAddParticipant = async () => {
-    if (participanteAgregando) {
-      onAddParticipant(usuariosId)
+  const checkParticipanteYaAgregado = async (email) => {
+    const usuario = await checkEmailExists(email);
+
+    if (usuario) {
+      return participantesId.includes(usuario.id);
+    }
+    return false;
+  };
+
+  const handleAddParticipant = async (e) => {
+    e.preventDefault();
+    if (participanteAgregando && !participanteYaAgregado) {
+      onAddParticipant(usuariosId);
       onClose();
     }
-    return;
   };
 
   if (!isOpen) return null;
@@ -59,6 +73,9 @@ const NewParticipantModal = ({ participantesId, isOpen, onClose, onAddParticipan
             className="px-2 py-3 border border-1 border-[#e9e9ef] shadow-sm outline-none rounded-md text-sm"
             placeholder="Ingrese el correo electrónico..."
           />
+          {participanteYaAgregado && (
+            <p className="text-red-500 text-sm">El participante está en el proyecto.</p>
+          )}
           <div className="flex justify-end gap-4">
             <button
               type="button"
@@ -69,8 +86,8 @@ const NewParticipantModal = ({ participantesId, isOpen, onClose, onAddParticipan
             </button>
             <button
               type="submit"
-              disabled={participanteNoExiste}
-              className={`${participanteNoExiste ? "bg-gray-600" : "bg-brandblue"} text-white px-4 py-2 rounded-md hover:opacity-85`}
+              disabled={participanteNoExiste || participanteYaAgregado}
+              className={`${participanteNoExiste || participanteYaAgregado ? "bg-gray-600" : "bg-brandblue"} text-white px-4 py-2 rounded-md hover:opacity-85`}
             >
               Agregar
             </button>
