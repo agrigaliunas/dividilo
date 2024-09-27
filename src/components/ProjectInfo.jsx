@@ -234,12 +234,20 @@ export const ProjectInfo = ({ project, usuarios }) => {
                                   )}
 
                                   {editandoTicket === ticket && (
-                                    <button
-                                      onClick={() => setEditandoTicket(null)}
-                                      className="w-fit border-2 border-red-400 text-red-400 rounded-lg py-2 px-4 hover:opacity-80 text-xs"
-                                    >
-                                      Cancelar edición
-                                    </button>
+                                    <div className="flex flex-row gap-1">
+                                        <button
+                                          onClick={() => setEditandoTicket(null)}
+                                          className="w-fit border-2 border-red-400 text-red-400 rounded-lg py-2 px-4 hover:opacity-80 text-xs"
+                                        >
+                                          Cancelar edición
+                                        </button>
+                                      <button
+                                        onClick={() => alert("actualizado")}
+                                        className="w-fit border-2 border-green-500 text-green-500 rounded-lg py-2 px-4 hover:opacity-80 text-xs"
+                                      >
+                                        Actualizar ticket
+                                      </button>
+                                    </div>
                                   )}
 
                                   <div className="flex flex-row gap-4">
