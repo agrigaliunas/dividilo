@@ -261,7 +261,7 @@ export const ProjectInfo = ({ project, usuarios }) => {
                                       {ticket.montoTotalTicket.toFixed(2)}
                                     </span>
                                   </div>
-                                  {ticket.imagen && (
+                                  {ticket.imagen ? (
                                     <>
                                     <button 
                                       onClick={() => setShowTicketImagen(!showTicketImagen)}
@@ -270,7 +270,12 @@ export const ProjectInfo = ({ project, usuarios }) => {
                                     </button>
                                     {showTicketImagen && <img src={ticket.imagen} className="w-96 h-96"/>}
                                     </>
-                                  )}
+                                  ) : 
+                                  <button 
+                                      onClick={() => alert("Imagen agregada")}
+                                      className="text-left underline text-xs hover:opacity-90 text-brandblue">
+                                      Agregar imagen del ticket
+                                    </button>}
                                 </div>
                               ))}
                             <button className="my-3 w-full border-2 border-brandblue text-brandblue rounded-lg py-2 px-4 hover:opacity-80">
