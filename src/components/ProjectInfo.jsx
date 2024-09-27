@@ -5,6 +5,7 @@ import { Trash } from "./icons/Trash";
 import { UserPlus } from "./icons/UserPlus";
 import { ChevronDown } from "./icons/ChevronDown";
 import NewParticipantModal from "./modals/NewParcitipantModal";
+import { ArrowsUpDown } from "./icons/ArrowsUpDown";
 
 export const ProjectInfo = ({ project, usuarios }) => {
   const [projectData, setProjectData] = useState({
@@ -159,10 +160,6 @@ export const ProjectInfo = ({ project, usuarios }) => {
                 {projectData.montoTotalProyecto &&
                   projectData.montoTotalProyecto.toFixed(2)}
               </span>
-              <div className="flex flex-col gap-1">
-                <span className="text-gray-500">Debes $</span>
-                <span className="text-gray-500">Te deben $</span>
-              </div>
             </div>
             <div className="flex flex-col w-full border border-1 bg-white rounded-xl shadow-md p-5 lg:w-[50%] gap-4">
               <h2 className="text-2xl text-left font-bold">Participantes</h2>
@@ -220,13 +217,16 @@ export const ProjectInfo = ({ project, usuarios }) => {
                               gasto.tickets.map((ticket, ticketIndex) => (
                                 <div
                                   key={ticketIndex}
-                                  className="flex flex-col gap-5 bg-gray-100 border-2 rounded-lg w-full text-base px-5 py-2 justify-center"
+                                  className="flex flex-col gap-2 bg-gray-100 border-2 rounded-lg w-full text-base px-5 py-2 justify-center"
                                 >
+                                  <button className="w-fit border-2 text-gray-500 rounded-lg py-2 px-4 hover:opacity-80 text-xs">
+                                    Editar ticket
+                                  </button>
                                   <div className="flex flex-row gap-4">
                                     <span className="font-extrabold text-xl">
                                       {ticket.descripcion}
                                     </span>
-                                    <span className="border border-1 border-gray-300 rounded-xl p-2 bg-white  text-md ml-auto">
+                                    <span className="border border-1 border-gray-300 text-gray-500 rounded-xl p-2 bg-white text-sm ml-auto">
                                       {ticket.fecha}
                                     </span>
                                   </div>
@@ -254,6 +254,7 @@ export const ProjectInfo = ({ project, usuarios }) => {
                                           </div>
                                         </div>
                                       ))}
+
                                     <span className="font-bold text-lg ml-auto">
                                       Total: $
                                       {ticket.montoTotalTicket.toFixed(2)}
@@ -261,6 +262,9 @@ export const ProjectInfo = ({ project, usuarios }) => {
                                   </div>
                                 </div>
                               ))}
+                            <button className="my-3 w-full border-2 border-brandblue text-brandblue rounded-lg py-2 px-4 hover:opacity-80">
+                              Agregar ticket
+                            </button>
                             <div className="border border-1 bg-white p-5 rounded-xl shadow-md w-full text-center">
                               <span className="font-bold text-2xl">
                                 Total: ${gasto.montoTotalGasto.toFixed(2)}
@@ -338,10 +342,10 @@ export const ProjectInfo = ({ project, usuarios }) => {
               >
                 <span className="text-white text-sm">Cancelar edición</span>
               </button>
-              <button
-                className="flex flex-row bg-red-600 rounded-xl border border-1 w-fit p-3 gap-2 hover:bg-opacity-80 ml-auto"
-              >
-                <span className="text-white font-semibold text-sm">¡Eliminar proyecto!</span>
+              <button className="flex flex-row bg-red-600 rounded-xl border border-1 w-fit p-3 gap-2 hover:bg-opacity-80 ml-auto">
+                <span className="text-white font-semibold text-sm">
+                  ¡Eliminar proyecto!
+                </span>
               </button>
             </div>
           </div>
@@ -355,13 +359,23 @@ export const ProjectInfo = ({ project, usuarios }) => {
                 placeholder="Ingrese título del proyecto..."
               />
               {projectData.estado === "En progreso" ? (
-                <span className="font-semibold flex items-center justify-center text-center lg:p-3 p-1.5 bg-orange-600 bg-opacity-40 rounded-xl text-gray-800 cursor-default select-none text-xs lg:text-sm">
-                  En progreso
-                </span>
+                <div className="flex flex-row gap-1 bg-orange-600 lg:p-3 p-1.5 bg-opacity-40 rounded-xl text-gray-800 cursor-default select-none text-xs lg:text-sm">
+                  <button className="bg-orange-600 bg-opacity-10 rounded-full p-1 hover:opacity-80">
+                    <ArrowsUpDown />
+                  </button>
+                  <span className="font-semibold flex items-center justify-center text-center ">
+                    Finalizado
+                  </span>
+                </div>
               ) : (
-                <span className="font-semibold flex items-center justify-center text-center lg:p-3 p-1.5 bg-green-600 bg-opacity-40 rounded-xl text-gray-800 cursor-default select-none text-xs lg:text-sm">
-                  Finalizado
-                </span>
+                <div className="flex flex-row gap-1 bg-green-600 lg:p-3 p-1.5  bg-opacity-40 rounded-xl text-gray-800 cursor-default select-none text-xs lg:text-sm">
+                  <button className="bg-green-600 bg-opacity-10 rounded-full p-1 hover:opacity-80">
+                    <ArrowsUpDown />
+                  </button>
+                  <span className="font-semibold flex items-center justify-center text-center">
+                    Finalizado
+                  </span>
+                </div>
               )}
             </div>
             <input
@@ -400,7 +414,8 @@ export const ProjectInfo = ({ project, usuarios }) => {
                   ))}
                 <button
                   onClick={openModal}
-                  className="rounded-full w-12 h-12 flex items-center justify-center border border-1 border-gray-400 bg-white text-black hover:bg-gray-50 font-semibold p-2">
+                  className="rounded-full w-12 h-12 flex items-center justify-center border border-1 border-gray-400 bg-white text-black hover:bg-gray-50 font-semibold p-2"
+                >
                   <UserPlus />
                 </button>
               </div>
@@ -489,6 +504,9 @@ export const ProjectInfo = ({ project, usuarios }) => {
                               <span className="font-bold text-2xl">
                                 Total: ${gasto.montoTotalGasto.toFixed(2)}
                               </span>
+                              <button className="w-full border-2 border-brandblue text-brandblue rounded-lg py-2 px-4 hover:opacity-80">
+                                Agregar ticket
+                              </button>
                             </div>
                           </>
                         )}

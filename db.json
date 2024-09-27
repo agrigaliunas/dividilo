@@ -416,6 +416,18 @@
           ]
         }
       ]
+    },
+    {
+      "id": "713f",
+      "nombre": "Gasto test",
+      "descripcion": "Gasto test test",
+      "participantes": [
+        "2",
+        "1"
+      ],
+      "montoTotalProyecto": 0,
+      "gastos": [],
+      "estado": "En progreso"
     }
   ]
 }
