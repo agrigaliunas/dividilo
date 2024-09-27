@@ -60,16 +60,12 @@ export const ProjectInfo = ({ project, usuarios }) => {
   };
 
   const eliminarGasto = (gastoId) => {
-    const nuevosGastos = projectData.gastos
-      .filter(
-        (id) => id !== gastoId
-      );
+    const nuevosGastos = projectData.gastos.filter((id) => id !== gastoId);
 
     setProjectData((prevData) => ({
       ...prevData,
-      gastos: nuevosGastos
+      gastos: nuevosGastos,
     }));
-
   };
 
   const toggleGasto = (index) => {
@@ -138,7 +134,6 @@ export const ProjectInfo = ({ project, usuarios }) => {
   const handleEditarClick = () => {
     setProjectStatus(projectData.estado);
     setEditandoProyecto(!editandoProyecto);
-    setEditandoTicket(!editandoTicket);
   };
 
   const eliminarProyecto = async () => {
@@ -303,42 +298,24 @@ export const ProjectInfo = ({ project, usuarios }) => {
                                       {ticket.montoTotalTicket.toFixed(2)}
                                     </span>
                                   </div>
-                                  {ticket.imagen ? (
-                                    <>
-                                      <button
-                                        onClick={() =>
-                                          setShowTicketImagen(!showTicketImagen)
-                                        }
-                                        className="text-left underline text-xs hover:opacity-90 text-brandblue"
-                                      >
-                                        {showTicketImagen
-                                          ? "Esconder imagen del ticket"
-                                          : "Ver imagen del ticket"}
-                                      </button>
-                                      {showTicketImagen && (
-                                        <img
-                                          src={ticket.imagen}
-                                          className="w-96 h-96"
-                                        />
-                                      )}
-                                      <button
-                                        onClick={() =>
-                                          // handleDeleteTicketImage()
-                                          alert("Imagen borrada")
-                                        }
-                                        className="text-left underline text-xs hover:opacity-90 text-brandblue"
-                                      >
-                                        Borrar imagen del ticket
-                                      </button>
-                                    </>
-                                  ) : (
+                                  {ticket.imagen && (
                                     <button
-                                      onClick={() => alert("Imagen agregada")}
+                                      onClick={() =>
+                                        setShowTicketImagen(!showTicketImagen)
+                                      }
                                       className="text-left underline text-xs hover:opacity-90 text-brandblue"
                                     >
-                                      Agregar imagen del ticket
+                                      {showTicketImagen
+                                        ? "Esconder imagen del ticket"
+                                        : "Ver imagen del ticket"}
                                     </button>
                                   )}
+                                  {ticket.imagen && showTicketImagen && (
+                                    <img
+                                    src={ticket.imagen}
+                                    className="w-96 h-96"
+                                    />
+                                )}
                                 </div>
                               ))}
                             <button className="my-3 w-full border-2 border-brandblue text-brandblue rounded-lg py-2 px-4 hover:opacity-80">
@@ -430,7 +407,6 @@ export const ProjectInfo = ({ project, usuarios }) => {
 
           <div className="flex flex-col gap-3 border border-1 bg-white p-5 rounded-xl shadow-md">
             <div className="flex flex-col lg:justify-between gap-5">
-
               {projectStatus === "En progreso" ? (
                 <div className="flex flex-row gap-1 bg-orange-600 w-fit lg:p-3 p-1.5 bg-opacity-40 rounded-xl text-gray-800 cursor-default select-none text-xs lg:text-sm">
                   <button
@@ -535,7 +511,6 @@ export const ProjectInfo = ({ project, usuarios }) => {
                         &times;
                       </button>
                       <div className="flex flex-col gap-3 items-left bg-white p-5 rounded-xl shadow-md w-full">
-
                         <div className="flex flex-row gap-2 items-center">
                           <button
                             onClick={() => toggleGasto(index)}
@@ -559,12 +534,22 @@ export const ProjectInfo = ({ project, usuarios }) => {
                                   className="flex flex-col gap-5 bg-gray-100 border-2 rounded-lg w-full text-base px-5 py-2 justify-center"
                                 >
                                   {editandoTicket !== ticket && (
-                                    <button
-                                      onClick={() => setEditandoTicket(ticket)}
-                                      className="w-fit border-2 text-white bg-brandblue rounded-lg py-2 px-4 hover:opacity-80 text-xs"
-                                    >
-                                      Editar ticket
-                                    </button>
+                                    <div className="flex flex-row justify-end">
+                                      <button
+                                        onClick={() =>
+                                          setEditandoTicket(ticket)
+                                        }
+                                        className="w-fit border-2 text-white bg-brandblue rounded-lg py-2 px-4 hover:opacity-80 text-xs"
+                                      >
+                                        Editar ticket
+                                      </button>
+                                      <button
+                                        // onClick={}
+                                        className="w-fit border-2 text-white bg-red-600 rounded-lg py-2 px-4 hover:opacity-80 text-xs"
+                                      >
+                                        Borrar ticket
+                                      </button>
+                                    </div>
                                   )}
                                   {editandoTicket === ticket && (
                                     <div className="flex flex-row gap-1">
@@ -633,6 +618,49 @@ export const ProjectInfo = ({ project, usuarios }) => {
                                           </div>
                                         </div>
                                       ))}
+                                    {ticket.imagen && (
+                                      <>
+                                        <button
+                                          onClick={() =>
+                                            setShowTicketImagen(
+                                              !showTicketImagen
+                                            )
+                                          }
+                                          className="text-left underline text-xs hover:opacity-90 text-brandblue"
+                                        >
+                                          {showTicketImagen
+                                            ? "Esconder imagen del ticket"
+                                            : "Ver imagen del ticket"}
+                                        </button>
+                                        {showTicketImagen && (
+                                          <img
+                                            src={ticket.imagen}
+                                            className="w-96 h-96"
+                                          />
+                                        )}
+                                      </>
+                                    )}
+
+                                    {(ticket.imagen && (editandoTicket === ticket)) && (
+                                      <button
+                                        onClick={() =>
+                                          // handleDeleteTicketImage()
+                                          alert("Imagen borrada")
+                                        }
+                                        className="text-left underline text-xs hover:opacity-90 text-brandblue"
+                                      >
+                                        Borrar imagen del ticket
+                                      </button>
+                                    )}
+
+                                    {!ticket.imagen && editandoTicket && (
+                                      <button
+                                        onClick={() => alert("Imagen agregada")}
+                                        className="text-left underline text-xs hover:opacity-90 text-brandblue"
+                                      >
+                                        Agregar imagen del ticket
+                                      </button>
+                                    )}
                                     <span className="font-bold text-lg ml-auto">
                                       Total ticket: $
                                       {ticket.montoTotalTicket.toFixed(2)}
