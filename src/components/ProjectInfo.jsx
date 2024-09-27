@@ -10,6 +10,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { ProjectParticipantRounded } from "./ProjectParticipantRounded";
 import { CrossButton } from "./buttons/CrossButton";
+import { NewGastoModal } from "./modals/NewGastoModal";
 
 export const ProjectInfo = ({ project, usuarios }) => {
   const [projectData, setProjectData] = useState({
@@ -25,7 +26,8 @@ export const ProjectInfo = ({ project, usuarios }) => {
   const [editandoProyecto, setEditandoProyecto] = useState(false);
   const [editandoTicket, setEditandoTicket] = useState(null);
   const [gastosExpandidos, setGastosExpandidos] = useState({});
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [modalParticipanteIsOpen, setModalParticipanteIsOpen] = useState(false);
+  const [modalGastoIsOpen, setModalGastoIsOpen] = useState(false);
   const [showTicketImagen, setShowTicketImagen] = useState(false);
   const [projectStatus, setProjectStatus] = useState(null);
 
@@ -148,12 +150,20 @@ export const ProjectInfo = ({ project, usuarios }) => {
     }
   };
 
-  const openModal = () => {
-    setModalIsOpen(true);
+  const openParticipanteModal = () => {
+    setModalParticipanteIsOpen(true);
   };
 
-  const closeModal = () => {
-    setModalIsOpen(false);
+  const closeParticipanteModal = () => {
+    setModalParticipanteIsOpen(false);
+  };
+
+  const openGastoModal = () => {
+    setModalGastoIsOpen(true);
+  };
+
+  const closeGastoModal = () => {
+    setModalGastoIsOpen(false);
   };
 
   const handleAddParticipant = async (participanteAgregando) => {
@@ -162,6 +172,15 @@ export const ProjectInfo = ({ project, usuarios }) => {
       participantes: participanteAgregando,
     }));
   };
+
+  const handleAddGasto = async (gastoAgregando) => {
+
+    setProjectData((prevData) => ({
+      ...prevData,
+      gastos: [...prevData.gastos, gastoAgregando]
+    }));
+  };
+
 
   return (
     <div className="flex flex-col w-full lg:px-[20vw] lg:py-[5vw] px-[5vw] py-[5vw] gap-8">
@@ -374,9 +393,17 @@ export const ProjectInfo = ({ project, usuarios }) => {
           {
             <NewParticipantModal
               participantesId={projectData.participantes}
-              isOpen={modalIsOpen}
-              onClose={closeModal}
+              isOpen={modalParticipanteIsOpen}
+              onClose={closeParticipanteModal}
               onAddParticipant={handleAddParticipant}
+            />
+          }
+          {
+            <NewGastoModal
+              gastos={projectData.gastos}
+              isOpen={modalGastoIsOpen}
+              onClose={closeGastoModal}
+              onAddGasto={handleAddGasto}
             />
           }
           <div className="flex flex-col gap-1">
@@ -475,7 +502,7 @@ export const ProjectInfo = ({ project, usuarios }) => {
                     </div>
                   ))}
                 <button
-                  onClick={openModal}
+                  onClick={openParticipanteModal}
                   className="rounded-full w-12 h-12 flex items-center justify-center border border-1 border-gray-400 bg-white text-black hover:bg-gray-50 font-semibold p-2"
                 >
                   <UserPlus />
@@ -489,7 +516,10 @@ export const ProjectInfo = ({ project, usuarios }) => {
                 <h2 className="text-2xl text-left font-bold">
                   Gastos del proyecto
                 </h2>
-                <button className="border-2 border-brandblue text-brandblue rounded-lg lg:py-2 lg:px-4 p-1 lg:text-base text-sm hover:opacity-80">
+                <button
+                  onClick={openGastoModal}
+                  className="border-2 border-brandblue text-brandblue rounded-lg lg:py-2 lg:px-4 p-1 lg:text-base text-sm hover:opacity-80"
+                >
                   Agregar gasto
                 </button>
               </div>
@@ -735,6 +765,7 @@ export const ProjectInfo = ({ project, usuarios }) => {
             </div>
           </div>
         </>
+
       )}
     </div>
   );
