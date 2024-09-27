@@ -32,7 +32,7 @@ export const ProjectInfo = ({ project, usuarios }) => {
   const [modalTicketIsOpen, setModalTicketIsOpen] = useState(false);
   const [showTicketImagen, setShowTicketImagen] = useState(false);
   const [projectStatus, setProjectStatus] = useState(null);
-  const [indexGasto, setIndexGasto] = useState(0)
+  const [indexGasto, setIndexGasto] = useState(0);
   const [ticketAgregado, setTicketAgregado] = useState({
     montoTotalTicket: 0,
     descripcion: "",
@@ -71,10 +71,13 @@ export const ProjectInfo = ({ project, usuarios }) => {
   };
 
   const eliminarGasto = (gastoId) => {
+
+    const montoGastoBorrado = projectData.gastos.filter((id) => id === gastoId)[0].montoTotalGasto
     const nuevosGastos = projectData.gastos.filter((id) => id !== gastoId);
 
     setProjectData((prevData) => ({
       ...prevData,
+      montoTotalProyecto: prevData.montoTotalProyecto-montoGastoBorrado,
       gastos: nuevosGastos,
     }));
   };
@@ -161,7 +164,7 @@ export const ProjectInfo = ({ project, usuarios }) => {
   };
 
   const openTicketModal = (gastoIndex) => {
-    setIndexGasto(gastoIndex)
+    setIndexGasto(gastoIndex);
     setModalTicketIsOpen(true);
   };
 
@@ -183,18 +186,34 @@ export const ProjectInfo = ({ project, usuarios }) => {
     }));
   };
 
+  const deleteTicket = (gastoId, ticketId) => {
+    setProjectData((prevData) => ({
+      ...prevData,
+      gastos: prevData.gastos.map((gasto, index) => {
+        if (gasto.id === gastoId) {
+          return {
+            ...gasto,
+            montoTotalGasto: 0,
+            tickets: gasto.tickets.filter((ticket) => ticket.id !== ticketId),
+          };
+        }
+        return gasto;
+      }),
+    }));
+  };
+
   const handleAddTicket = (ticketAgregado) => {
     setProjectData((prevData) => ({
       ...prevData,
       gastos: prevData.gastos.map((gasto, index) => {
         if (index === indexGasto) {
-          setIndexGasto(0)
+          setIndexGasto(0);
           return {
             ...gasto,
             tickets: [...gasto.tickets, ticketAgregado],
           };
         }
-        setIndexGasto(0)
+        setIndexGasto(0);
         return gasto;
       }),
     }));
@@ -591,7 +610,9 @@ export const ProjectInfo = ({ project, usuarios }) => {
                                         Editar ticket
                                       </button>
                                       <button
-                                        // onClick={}
+                                        onClick={() =>
+                                          deleteTicket(gasto.id, ticket.id)
+                                        }
                                         className="w-fit border-2 text-white bg-red-600 rounded-lg py-2 px-4 hover:opacity-80 text-xs"
                                       >
                                         Borrar ticket
