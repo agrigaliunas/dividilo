@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { EditIcon } from "./icons/EditIcon";
-import { PaperAirplane } from "./icons/PaperAirplane";
-import { Trash } from "./icons/Trash";
+import { Cross } from "./icons/Cross";
 import { UserPlus } from "./icons/UserPlus";
 import { ChevronDown } from "./icons/ChevronDown";
 import NewParticipantModal from "./modals/NewParcitipantModal";
 import { ArrowsUpDown } from "./icons/ArrowsUpDown";
-import { deleteProject, updateProject } from "../services/ProjectService";
+import { deleteProject } from "../services/ProjectService";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { ProjectParticipantRounded } from "./ProjectParticipantRounded";
-import { checkEmailExists } from "../services/AuthService";
+import { CrossButton } from "./buttons/CrossButton";
 
 export const ProjectInfo = ({ project, usuarios }) => {
   const [projectData, setProjectData] = useState({
@@ -312,10 +311,10 @@ export const ProjectInfo = ({ project, usuarios }) => {
                                   )}
                                   {ticket.imagen && showTicketImagen && (
                                     <img
-                                    src={ticket.imagen}
-                                    className="w-96 h-96"
+                                      src={ticket.imagen}
+                                      className="w-96 h-96"
                                     />
-                                )}
+                                  )}
                                 </div>
                               ))}
                             <button className="my-3 w-full border-2 border-brandblue text-brandblue rounded-lg py-2 px-4 hover:opacity-80">
@@ -433,14 +432,14 @@ export const ProjectInfo = ({ project, usuarios }) => {
                 </div>
               )}
               <input
-                className="lg:text-4xl text-xl text-left font-extrabold w-[auto] border-b"
+                className="lg:text-4xl text-xl text-left font-extrabold w-[auto] border-b border-black bg-transparent border-dashed border-spacing-3"
                 value={projectData.nombre}
                 onChange={handleEditNombre}
                 placeholder="Ingrese título del proyecto..."
               />
             </div>
             <input
-              className="text-gray-500 font-medium w-[auto] border-b"
+              className="text-gray-500 font-medium w-[auto] border-b border-black bg-transparent border-dashed border-spacing-3"
               value={projectData.descripcion}
               onChange={handleEditDescripcion}
               placeholder="Ingrese descripción del proyecto..."
@@ -469,12 +468,9 @@ export const ProjectInfo = ({ project, usuarios }) => {
                     <div className="relative inline-block">
                       <ProjectParticipantRounded participant={p} />
                       {p !== user.id && (
-                        <button
-                          onClick={() => eliminarParticipante(p)}
-                          className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs"
-                        >
-                          &times;
-                        </button>
+                        <CrossButton
+                          handleFunction={() => eliminarParticipante(p)}
+                        />
                       )}
                     </div>
                   ))}
@@ -504,12 +500,9 @@ export const ProjectInfo = ({ project, usuarios }) => {
                       key={index}
                       className="relative flex flex-col items-center border-2 rounded-xl gap-2 w-full "
                     >
-                      <button
-                        onClick={() => eliminarGasto(gasto)}
-                        className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs"
-                      >
-                        &times;
-                      </button>
+                      <CrossButton
+                        handleFunction={() => eliminarGasto(gasto)}
+                      />
                       <div className="flex flex-col gap-3 items-left bg-white p-5 rounded-xl shadow-md w-full">
                         <div className="flex flex-row gap-2 items-center">
                           <button
@@ -568,12 +561,31 @@ export const ProjectInfo = ({ project, usuarios }) => {
                                     </div>
                                   )}
                                   <div className="flex flex-row gap-4">
-                                    <span className="font-extrabold text-xl">
-                                      {ticket.descripcion}
-                                    </span>
-                                    <span className="text-black text-md ml-auto">
-                                      {ticket.fecha}
-                                    </span>
+                                    {editandoTicket === ticket ? (
+                                      <input
+                                        type="text"
+                                        className="border-b border-black bg-transparent border-dashed border-spacing-3 w-[60%] font-extrabold text-xl"
+                                        value={ticket.descripcion}
+                                        placeholder={ticket.descripcion}
+                                      />
+                                    ) : (
+                                      <span className="font-extrabold text-xl">
+                                        {ticket.descripcion}
+                                      </span>
+                                    )}
+
+                                    {editandoTicket === ticket ? (
+                                      <input
+                                        type="date"
+                                        className="border-b border-black bg-transparent border-dashed border-spacing-3 w-[15%] ml-auto text-black text-md"
+                                        value={ticket.fecha}
+                                        placeholder={ticket.fecha}
+                                      />
+                                    ) : (
+                                      <span className="text-black text-md ml-auto">
+                                        {ticket.fecha}
+                                      </span>
+                                    )}
                                   </div>
                                   <div className="flex flex-col gap-1 w-full">
                                     {ticket.split?.length > 0 &&
@@ -588,13 +600,14 @@ export const ProjectInfo = ({ project, usuarios }) => {
                                             )}
                                           </span>
                                           <div className="space-x-1">
-                                            {editandoTicket ? (
+                                            {editandoTicket === ticket ? (
                                               <>
                                                 <span className="font-semibold">
                                                   Gastó $
                                                 </span>
                                                 <input
-                                                  className="border-b border-dashed border-spacing-3 w-24"
+                                                  type="number"
+                                                  className="border-b border-black bg-transparent border-dashed border-spacing-3 w-24 font-semibold"
                                                   value={sp.montoParticipante.toFixed(
                                                     2
                                                   )}
@@ -641,17 +654,18 @@ export const ProjectInfo = ({ project, usuarios }) => {
                                       </>
                                     )}
 
-                                    {(ticket.imagen && (editandoTicket === ticket)) && (
-                                      <button
-                                        onClick={() =>
-                                          // handleDeleteTicketImage()
-                                          alert("Imagen borrada")
-                                        }
-                                        className="text-left underline text-xs hover:opacity-90 text-brandblue"
-                                      >
-                                        Borrar imagen del ticket
-                                      </button>
-                                    )}
+                                    {ticket.imagen &&
+                                      editandoTicket === ticket && (
+                                        <button
+                                          onClick={() =>
+                                            // handleDeleteTicketImage()
+                                            alert("Imagen borrada")
+                                          }
+                                          className="text-left underline text-xs hover:opacity-90 text-brandblue"
+                                        >
+                                          Borrar imagen del ticket
+                                        </button>
+                                      )}
 
                                     {!ticket.imagen && editandoTicket && (
                                       <button
