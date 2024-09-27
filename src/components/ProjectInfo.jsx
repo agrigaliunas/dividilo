@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { ProjectParticipantRounded } from "./ProjectParticipantRounded";
 import { CrossButton } from "./buttons/CrossButton";
 import { NewGastoModal } from "./modals/NewGastoModal";
+import NewTicketModal from "./modals/NewTicketModal";
 
 export const ProjectInfo = ({ project, usuarios }) => {
   const [projectData, setProjectData] = useState({
@@ -28,8 +29,17 @@ export const ProjectInfo = ({ project, usuarios }) => {
   const [gastosExpandidos, setGastosExpandidos] = useState({});
   const [modalParticipanteIsOpen, setModalParticipanteIsOpen] = useState(false);
   const [modalGastoIsOpen, setModalGastoIsOpen] = useState(false);
+  const [modalTicketIsOpen, setModalTicketIsOpen] = useState(false);
   const [showTicketImagen, setShowTicketImagen] = useState(false);
   const [projectStatus, setProjectStatus] = useState(null);
+  const [indexGasto, setIndexGasto] = useState(0)
+  const [ticketAgregado, setTicketAgregado] = useState({
+    montoTotalTicket: 0,
+    descripcion: "",
+    fecha: "",
+    imagen: "",
+    split: [],
+  });
 
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -84,18 +94,6 @@ export const ProjectInfo = ({ project, usuarios }) => {
     return "Desconocido";
   };
 
-  const getInicialesParticipante = (participanteId) => {
-    if (usuarios) {
-      const usuario = usuarios.find((user) => user.id === participanteId);
-      if (usuario) {
-        const inicialNombre = usuario.nombre.charAt(0).toUpperCase();
-        const inicialApellido = usuario.apellido.charAt(0).toUpperCase();
-        return `${inicialNombre}${inicialApellido}`;
-      }
-    }
-    return "??";
-  };
-
   const calcularGastoParticipante = (proyecto, participanteId) => {
     let totalGasto = 0;
 
@@ -142,7 +140,7 @@ export const ProjectInfo = ({ project, usuarios }) => {
     navigate("/dashboard");
   };
 
-  const handleSaveProyecto = async () => {
+  const handleSaveProyecto = () => {
     setEditandoProyecto(false);
   };
 
@@ -162,21 +160,45 @@ export const ProjectInfo = ({ project, usuarios }) => {
     setModalGastoIsOpen(false);
   };
 
-  const handleAddParticipant = async (participanteAgregando) => {
+  const openTicketModal = (gastoIndex) => {
+    setIndexGasto(gastoIndex)
+    setModalTicketIsOpen(true);
+  };
+
+  const closeTicketModal = () => {
+    setModalTicketIsOpen(false);
+  };
+
+  const handleAddParticipant = (participanteAgregando) => {
     setProjectData((prevData) => ({
       ...prevData,
       participantes: participanteAgregando,
     }));
   };
 
-  const handleAddGasto = async (gastoAgregando) => {
-
+  const handleAddGasto = (gastoAgregando) => {
     setProjectData((prevData) => ({
       ...prevData,
-      gastos: [...prevData.gastos, gastoAgregando]
+      gastos: [...prevData.gastos, gastoAgregando],
     }));
   };
 
+  const handleAddTicket = (ticketAgregado) => {
+    setProjectData((prevData) => ({
+      ...prevData,
+      gastos: prevData.gastos.map((gasto, index) => {
+        if (index === indexGasto) {
+          setIndexGasto(0)
+          return {
+            ...gasto,
+            tickets: [...gasto.tickets, ticketAgregado],
+          };
+        }
+        setIndexGasto(0)
+        return gasto;
+      }),
+    }));
+  };
 
   return (
     <div className="flex flex-col w-full lg:px-[20vw] lg:py-[5vw] px-[5vw] py-[5vw] gap-8">
@@ -332,9 +354,6 @@ export const ProjectInfo = ({ project, usuarios }) => {
                                   )}
                                 </div>
                               ))}
-                            <button className="my-3 w-full border-2 border-brandblue text-brandblue rounded-lg py-2 px-4 hover:opacity-80">
-                              Agregar ticket
-                            </button>
                           </>
                         )}
                       </div>
@@ -400,6 +419,15 @@ export const ProjectInfo = ({ project, usuarios }) => {
               isOpen={modalGastoIsOpen}
               onClose={closeGastoModal}
               onAddGasto={handleAddGasto}
+            />
+          }
+          {
+            <NewTicketModal
+              isOpen={modalTicketIsOpen}
+              onClose={closeTicketModal}
+              onAddTicket={handleAddTicket}
+              participantes={projectData.participantes}
+              getParticipanteNombreApellido={getParticipanteNombreApellido}
             />
           }
           <div className="flex flex-col gap-1">
@@ -521,9 +549,9 @@ export const ProjectInfo = ({ project, usuarios }) => {
               </div>
               <div className={`flex flex-col gap-2`}>
                 {projectData.gastos.length > 0 ? (
-                  projectData.gastos.map((gasto, index) => (
+                  projectData.gastos.map((gasto, gastoIndex) => (
                     <div
-                      key={index}
+                      key={gastoIndex}
                       className="relative flex flex-col items-center border-2 rounded-xl gap-2 w-full "
                     >
                       <CrossButton
@@ -532,7 +560,7 @@ export const ProjectInfo = ({ project, usuarios }) => {
                       <div className="flex flex-col gap-3 items-left bg-white p-5 rounded-xl shadow-md w-full">
                         <div className="flex flex-row gap-2 items-center">
                           <button
-                            onClick={() => toggleGasto(index)}
+                            onClick={() => toggleGasto(gastoIndex)}
                             className="bg-gray-200 rounded-full p-1 hover:opacity-80"
                           >
                             <ChevronDown />
@@ -544,7 +572,7 @@ export const ProjectInfo = ({ project, usuarios }) => {
                             ${gasto.montoTotalGasto.toFixed(2)}
                           </span>
                         </div>
-                        {gastosExpandidos[index] && (
+                        {gastosExpandidos[gastoIndex] && (
                           <>
                             {gasto.tickets?.length > 0 &&
                               gasto.tickets.map((ticket, ticketIndex) => (
@@ -709,7 +737,10 @@ export const ProjectInfo = ({ project, usuarios }) => {
                                 </div>
                               ))}
                             <div className="border border-1 bg-white p-5 rounded-xl shadow-md w-full text-center">
-                              <button className="w-full border-2 border-brandblue text-brandblue rounded-lg py-2 px-4 hover:opacity-80">
+                              <button
+                                onClick={() => openTicketModal(gastoIndex)}
+                                className="w-full border-2 border-brandblue text-brandblue rounded-lg py-2 px-4 hover:opacity-80"
+                              >
                                 Agregar ticket
                               </button>
                             </div>
@@ -761,7 +792,6 @@ export const ProjectInfo = ({ project, usuarios }) => {
             </div>
           </div>
         </>
-
       )}
     </div>
   );
