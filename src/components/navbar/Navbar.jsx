@@ -64,15 +64,7 @@ export const Navbar = () => {
                 </span>
               </Link>
               <Link
-                className="hover:bg-gray-100 w-full py-1 rounded-md px-4"
-                onClick={closeMenu}
-              >
-                <span className="flex flex-row gap-1 items-center">
-                  <DocumentText />
-                  Historial y reportes
-                </span>
-              </Link>
-              <Link
+                to="/notifications"
                 className="hover:bg-gray-100 w-full py-1 rounded-md px-4"
                 onClick={closeMenu}
               >

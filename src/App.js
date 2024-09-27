@@ -10,6 +10,7 @@ import { ProjectScreen } from './screens/ProjectScreen.js';
 import { AdminPanelScreen } from './screens/AdminPanelScreen.js';
 import ForgotPasswordScreen from './screens/ForgotPasswordScreen.js';
 import LandingPage from './screens/LandingPage.js';
+import NotificationsScreen from './screens/NotificationsScreen.js';
 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
         <Route path="/admin-panel" element={<AdminPanelScreen />} exact />
         <Route path="/projects/:id" element={<ProjectScreen />} />
         <Route path="/forgot-password" element={<ForgotPasswordScreen />} exact />
+        <Route path="/notifications" element={<NotificationsScreen />} exact />
       </Routes>
     </>
   );

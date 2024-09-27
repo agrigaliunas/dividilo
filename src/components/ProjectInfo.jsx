@@ -5,7 +5,8 @@ import { Trash } from "./icons/Trash";
 import { UserPlus } from "./icons/UserPlus";
 import { ChevronDown } from "./icons/ChevronDown";
 import NewParticipantModal from "./modals/NewParcitipantModal";
-import { eliminarParticipanteDelProyecto, updateProject } from "../services/ProjectService";
+import { ArrowsUpDown } from "./icons/ArrowsUpDown";
+import { updateProject } from "../services/ProjectService";
 
 export const ProjectInfo = ({ project, usuarios }) => {
   const [projectData, setProjectData] = useState({
@@ -18,8 +19,12 @@ export const ProjectInfo = ({ project, usuarios }) => {
   });
 
   const [editandoProyecto, setEditandoProyecto] = useState(false);
+  const [editandoTicket, setEditandoTicket] = useState(null);
   const [gastosExpandidos, setGastosExpandidos] = useState({});
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [showTicketImagen, setShowTicketImagen] = useState(false);
+  const [projectStatus, setProjectStatus] = useState(null)
+  const [participantes, setParticipantes] = useState(projectData.participantes)
 
   useEffect(() => {
     if (project) {
@@ -31,21 +36,22 @@ export const ProjectInfo = ({ project, usuarios }) => {
         participantes: project.participantes || [],
         gastos: project.gastos || [],
       });
+      setProjectStatus(projectData.estado)
+      setParticipantes(projectData.participantes)
     }
   }, [project]);
 
-  // const eliminarParticipante = async (participanteId) => {
-  //   try {
-  //     await eliminarParticipanteDelProyecto(projectData.id, participanteId);
-  //     setProjectData((prevData) => ({
-  //       ...prevData,
-  //       participantes: prevData.participantes.filter(id => id !== participanteId)
-  //     }));
-  //   } catch (error) {
-  //     console.error("Error al eliminar el participante:", error);
-  //   }
-  // };
-  
+  const eliminarParticipante = async (participanteId) => {
+    try {
+      const nuevosParticipantes = participantes.filter(participante => participante.id !== participanteId);
+      setParticipantes(nuevosParticipantes);
+      
+    } catch (error) {
+      console.error("Error al eliminar el participante:", error);
+    }
+  };
+
+
 
   const toggleGasto = (index) => {
     setGastosExpandidos((prev) => ({
@@ -111,13 +117,20 @@ export const ProjectInfo = ({ project, usuarios }) => {
   };
 
   const handleEditarClick = () => {
+    setProjectStatus(projectData.estado)
     setEditandoProyecto(!editandoProyecto);
   };
 
-  const handleSaveProyecto = () => {
-    setEditandoProyecto(false);
+  const handleSaveProyecto = async () => {
+    try {
+      setEditandoProyecto(false);
+      }
+      catch (error) {
+      console.error('Error al actualizar el proyecto:', error);
+    }
   };
-
+  
+  
   const openModal = () => {
     setModalIsOpen(true);
   };
@@ -147,7 +160,7 @@ export const ProjectInfo = ({ project, usuarios }) => {
               <h1 className="lg:text-4xl text-xl text-left font-extrabold">
                 {projectData.nombre}
               </h1>
-              {projectData.estado === "En progreso" ? (
+              {projectStatus === "En progreso" ? (
                 <span className="font-semibold flex items-center justify-center text-center lg:p-3 p-1.5 bg-orange-600 bg-opacity-40 rounded-xl text-gray-800 cursor-default select-none text-xs lg:text-sm">
                   En progreso
                 </span>
@@ -172,10 +185,6 @@ export const ProjectInfo = ({ project, usuarios }) => {
                 {projectData.montoTotalProyecto &&
                   projectData.montoTotalProyecto.toFixed(2)}
               </span>
-              <div className="flex flex-col gap-1">
-                <span className="text-gray-500">Debes $</span>
-                <span className="text-gray-500">Te deben $</span>
-              </div>
             </div>
             <div className="flex flex-col w-full border border-1 bg-white rounded-xl shadow-md p-5 lg:w-[50%] gap-4">
               <h2 className="text-2xl text-left font-bold">Participantes</h2>
@@ -233,47 +242,137 @@ export const ProjectInfo = ({ project, usuarios }) => {
                               gasto.tickets.map((ticket, ticketIndex) => (
                                 <div
                                   key={ticketIndex}
-                                  className="flex flex-col gap-5 bg-gray-100 border-2 rounded-lg w-full text-base px-5 py-2 justify-center"
+                                  className="flex flex-col gap-2 bg-gray-100 border-2 rounded-lg w-full text-base px-5 py-2 justify-center"
                                 >
+                                  {editandoTicket !== ticket && (
+                                    <button
+                                      onClick={() => setEditandoTicket(ticket)}
+                                      className="w-fit border-2 text-gray-500 rounded-lg py-2 px-4 hover:opacity-80 text-xs"
+                                    >
+                                      Editar ticket
+                                    </button>
+                                  )}
+
+                                  {editandoTicket === ticket && (
+                                    <div className="flex flex-row gap-1">
+                                      <button
+                                        onClick={() => setEditandoTicket(null)}
+                                        className="w-fit border-2 border-red-400 text-red-400 rounded-lg py-2 px-4 hover:opacity-80 text-xs"
+                                      >
+                                        Cancelar edición
+                                      </button>
+                                      <button
+                                        onClick={() => alert("actualizado")}
+                                        className="w-fit border-2 border-green-500 text-green-500 rounded-lg py-2 px-4 hover:opacity-80 text-xs"
+                                      >
+                                        Actualizar ticket
+                                      </button>
+                                    </div>
+                                  )}
+
                                   <div className="flex flex-row gap-4">
-                                    <span className="font-extrabold text-xl">
-                                      {ticket.descripcion}
-                                    </span>
-                                    <span className="border border-1 border-gray-300 rounded-xl p-2 bg-white  text-md ml-auto">
-                                      {ticket.fecha}
-                                    </span>
+                                    {editandoTicket === ticket ? (
+                                      <>
+                                        <input
+                                          type="text"
+                                          className="font-extrabold text-xl w-[80%] border-b border-black border-dashed"
+                                          value={ticket.descripcion}
+                                          placeholder={ticket.descripcion}
+                                        />
+                                        <input
+                                          type="date"
+                                          className="text-gray-500 bg-white text-sm ml-auto"
+                                          value={ticket.fecha}
+                                        />
+                                      </>
+                                    ) : (
+                                      <>
+                                        <span className="font-extrabold text-xl">
+                                          {ticket.descripcion}
+                                        </span>
+                                        <span className="text-gray-500 bg-white text-sm ml-auto">
+                                          {ticket.fecha}
+                                        </span>
+                                      </>
+                                    )}
                                   </div>
                                   <div className="flex flex-col gap-1 w-full">
                                     {ticket.split?.length > 0 &&
                                       ticket.split.map((sp, spIndex) => (
                                         <div
                                           key={spIndex}
-                                          className="flex flex-row gap-2 w-full justify-between"
+                                          className="flex flex-row gap-2 w-full justify-start items-center"
                                         >
-                                          <span className="font-semibold">
+                                          <span className="font-semibold w-72">
                                             {getParticipanteNombreApellido(
                                               sp.participanteId
                                             )}
                                           </span>
                                           <div className="space-x-1">
-                                            <span className="font-semibold">
-                                              Gastó $
-                                              {ticket.montoTotalTicket *
-                                                (sp.porcentaje / 100)}
-                                            </span>
-                                            <span className="text-red-500">
-                                              ({sp.porcentaje}%)
-                                            </span>
+                                            <div className="space-x-1">
+                                              <span className="font-semibold">
+                                                Gastó $
+                                                {editandoTicket === ticket ? (
+                                                  <input
+                                                    type="number"
+                                                    value={sp.montoParticipante.toFixed(2)}
+                                                    placeholder={sp.montoParticipante.toFixed(2)}
+                                                    className="w-[30%] border-b border-black border-dashed"
+
+                                                  />
+                                                ) : (
+                                                  sp.montoParticipante.toFixed(
+                                                    2
+                                                  )
+                                                )}
+                                              </span>
+                                              <span className="text-red-500">
+                                                ({sp.porcentaje}%)
+                                              </span>
+                                            </div>
                                           </div>
                                         </div>
                                       ))}
-                                    <span className="font-bold text-lg ml-auto">
-                                      Total: $
-                                      {ticket.montoTotalTicket.toFixed(2)}
-                                    </span>
                                   </div>
+                                  {ticket.imagen ? (
+                                    <>
+                                      <button
+                                        onClick={() =>
+                                          setShowTicketImagen(!showTicketImagen)
+                                        }
+                                        className="text-left underline text-xs hover:opacity-90 text-brandblue"
+                                      >
+                                        {showTicketImagen
+                                          ? "Esconder imagen del ticket"
+                                          : "Ver imagen del ticket"}
+                                      </button>
+                                      {showTicketImagen && (
+                                        <img
+                                          src={ticket.imagen}
+                                          className="w-96 h-96"
+                                        />
+                                      )}
+                                      <button
+                                        onClick={() =>
+                                          // handleDeleteTicketImage()
+                                          alert("Imagen borrada")
+                                        }
+                                        className="text-left underline text-xs hover:opacity-90 text-brandblue"
+                                      >Borrar imagen del ticket</button>
+                                    </>
+                                  ) : (
+                                    <button
+                                      onClick={() => alert("Imagen agregada")}
+                                      className="text-left underline text-xs hover:opacity-90 text-brandblue"
+                                    >
+                                      Agregar imagen del ticket
+                                    </button>
+                                  )}
                                 </div>
                               ))}
+                            <button className="my-3 w-full border-2 border-brandblue text-brandblue rounded-lg py-2 px-4 hover:opacity-80">
+                              Agregar ticket
+                            </button>
                             <div className="border border-1 bg-white p-5 rounded-xl shadow-md w-full text-center">
                               <span className="font-bold text-2xl">
                                 Total: ${gasto.montoTotalGasto.toFixed(2)}
@@ -351,10 +450,10 @@ export const ProjectInfo = ({ project, usuarios }) => {
               >
                 <span className="text-white text-sm">Cancelar edición</span>
               </button>
-              <button
-                className="flex flex-row bg-red-600 rounded-xl border border-1 w-fit p-3 gap-2 hover:bg-opacity-80 ml-auto"
-              >
-                <span className="text-white font-semibold text-sm">¡Eliminar proyecto!</span>
+              <button className="flex flex-row bg-red-600 rounded-xl border border-1 w-fit p-3 gap-2 hover:bg-opacity-80 ml-auto">
+                <span className="text-white font-semibold text-sm">
+                  ¡Eliminar proyecto!
+                </span>
               </button>
             </div>
           </div>
@@ -367,14 +466,28 @@ export const ProjectInfo = ({ project, usuarios }) => {
                 onChange={handleEditNombre}
                 placeholder="Ingrese título del proyecto..."
               />
-              {projectData.estado === "En progreso" ? (
-                <span className="font-semibold flex items-center justify-center text-center lg:p-3 p-1.5 bg-orange-600 bg-opacity-40 rounded-xl text-gray-800 cursor-default select-none text-xs lg:text-sm">
-                  En progreso
-                </span>
+              {projectStatus === "En progreso" ? (
+                <div className="flex flex-row gap-1 bg-orange-600 lg:p-3 p-1.5 bg-opacity-40 rounded-xl text-gray-800 cursor-default select-none text-xs lg:text-sm">
+                  <button
+                    onClick={() => setProjectStatus("Finalizado")}
+                    className="bg-orange-600 bg-opacity-10 rounded-full p-1 hover:opacity-80">
+                    <ArrowsUpDown />
+                  </button>
+                  <span className="font-semibold flex items-center justify-center text-center ">
+                    En progreso
+                  </span>
+                </div>
               ) : (
-                <span className="font-semibold flex items-center justify-center text-center lg:p-3 p-1.5 bg-green-600 bg-opacity-40 rounded-xl text-gray-800 cursor-default select-none text-xs lg:text-sm">
-                  Finalizado
-                </span>
+                <div className="flex flex-row gap-1 bg-green-600 lg:p-3 p-1.5  bg-opacity-40 rounded-xl text-gray-800 cursor-default select-none text-xs lg:text-sm">
+                  <button
+                    onClick={() => setProjectStatus("En progreso")}
+                    className="bg-green-600 bg-opacity-10 rounded-full p-1 hover:opacity-80">
+                    <ArrowsUpDown />
+                  </button>
+                  <span className="font-semibold flex items-center justify-center text-center">
+                    Finalizado
+                  </span>
+                </div>
               )}
             </div>
             <input
@@ -415,13 +528,15 @@ export const ProjectInfo = ({ project, usuarios }) => {
                         onClick={() => eliminarParticipante(p)}
                         className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs"
                       >
+                        
                         &times;
                       </button>
                     </div>
                   ))}
                 <button
                   onClick={openModal}
-                  className="rounded-full w-12 h-12 flex items-center justify-center border border-1 border-gray-400 bg-white text-black hover:bg-gray-50 font-semibold p-2">
+                  className="rounded-full w-12 h-12 flex items-center justify-center border border-1 border-gray-400 bg-white text-black hover:bg-gray-50 font-semibold p-2"
+                >
                   <UserPlus />
                 </button>
               </div>
@@ -471,7 +586,7 @@ export const ProjectInfo = ({ project, usuarios }) => {
                                     <span className="font-extrabold text-xl">
                                       {ticket.descripcion}
                                     </span>
-                                    <span className="border border-1 border-gray-300 rounded-xl p-2 bg-white  text-md ml-auto">
+                                    <span className="text-gray-500 bg-white text-md ml-auto">
                                       {ticket.fecha}
                                     </span>
                                   </div>
@@ -489,9 +604,7 @@ export const ProjectInfo = ({ project, usuarios }) => {
                                           </span>
                                           <div className="space-x-1">
                                             <span className="font-semibold">
-                                              Gastó $
-                                              {ticket.montoTotalTicket *
-                                                (sp.porcentaje / 100)}
+                                              Gastó ${sp.montoParticipante}
                                             </span>
                                             <span className="text-red-500">
                                               ({sp.porcentaje}%)
@@ -510,6 +623,9 @@ export const ProjectInfo = ({ project, usuarios }) => {
                               <span className="font-bold text-2xl">
                                 Total: ${gasto.montoTotalGasto.toFixed(2)}
                               </span>
+                              <button className="w-full border-2 border-brandblue text-brandblue rounded-lg py-2 px-4 hover:opacity-80">
+                                Agregar ticket
+                              </button>
                             </div>
                           </>
                         )}

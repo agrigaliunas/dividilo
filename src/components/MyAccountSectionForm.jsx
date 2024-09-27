@@ -23,6 +23,7 @@ export const MyAccountSectionForm = ({ label, clearForm }) => {
         value={inputValue}
         onChange={handleChange}
       />
+      
     </div>
   );
 };
