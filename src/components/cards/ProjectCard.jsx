@@ -1,5 +1,5 @@
 import React from "react";
-import { ProjectParticipant, ProjectParticipantRounded } from "./ProjectParticipantRounded";
+import { ProjectParticipant, ProjectParticipantRounded } from "../ProjectParticipantRounded";
 import { Link } from "react-router-dom";
 
 const participantColors = [
