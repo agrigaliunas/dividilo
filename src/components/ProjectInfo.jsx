@@ -143,11 +143,7 @@ export const ProjectInfo = ({ project, usuarios }) => {
   };
 
   const handleSaveProyecto = async () => {
-    try {
-      setEditandoProyecto(false);
-    } catch (error) {
-      console.error("Error al actualizar el proyecto:", error);
-    }
+    setEditandoProyecto(false);
   };
 
   const openParticipanteModal = () => {
