@@ -64,6 +64,7 @@ export const Navbar = () => {
                 </span>
               </Link>
               <Link
+                to="/notifications"
                 className="hover:bg-gray-100 w-full py-1 rounded-md px-4"
                 onClick={closeMenu}
               >
