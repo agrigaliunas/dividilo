@@ -9,6 +9,7 @@ import { ArrowsUpDown } from "./icons/ArrowsUpDown";
 import { deleteProject, updateProject } from "../services/ProjectService";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { ProjectParticipantRounded } from "./ProjectParticipantRounded";
 
 export const ProjectInfo = ({ project, usuarios }) => {
   const [projectData, setProjectData] = useState({
@@ -27,7 +28,7 @@ export const ProjectInfo = ({ project, usuarios }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [showTicketImagen, setShowTicketImagen] = useState(false);
   const [projectStatus, setProjectStatus] = useState(null)
-  
+
   const { user } = useAuth();
   const navigate = useNavigate();
 
@@ -52,8 +53,6 @@ export const ProjectInfo = ({ project, usuarios }) => {
         (id) => id !== participanteId
       );
 
-    console.log(nuevosParticipantes)
-
     setProjectData((prevData) => ({
       ...prevData,
       participantes: nuevosParticipantes
@@ -61,6 +60,7 @@ export const ProjectInfo = ({ project, usuarios }) => {
 
     console.log(projectData);
   };
+
 
   const toggleGasto = (index) => {
     setGastosExpandidos((prev) => ({
@@ -210,12 +210,9 @@ export const ProjectInfo = ({ project, usuarios }) => {
               <div className="flex flex-row gap-4">
                 {projectData.participantes.length > 0 &&
                   projectData.participantes.map((p, index) => (
-                    <span
-                      key={index}
-                      className="rounded-full w-12 h-12 flex items-center justify-center border border-1 border-gray-400 bg-brandblue text-white font-semibold p-2"
-                    >
-                      {getInicialesParticipante(p)}
-                    </span>
+                    <ProjectParticipantRounded
+                      participant={p}
+                    />
                   ))}
               </div>
             </div>
@@ -467,7 +464,7 @@ export const ProjectInfo = ({ project, usuarios }) => {
                 <span className="text-white text-sm">Cancelar edición</span>
               </button>
               <button className="flex flex-row bg-red-600 rounded-xl border border-1 w-fit p-3 gap-2 hover:bg-opacity-80 ml-auto"
-              onClick={eliminarProyecto}>
+                onClick={eliminarProyecto}>
                 <span className="text-white font-semibold text-sm">
                   ¡Eliminar proyecto!
                 </span>
@@ -535,12 +532,9 @@ export const ProjectInfo = ({ project, usuarios }) => {
                 {projectData.participantes.length > 0 &&
                   projectData.participantes.map((p, index) => (
                     <div className="relative inline-block">
-                      <span
-                        key={index}
-                        className="rounded-full w-12 h-12 flex items-center justify-center border border-1 border-gray-400 bg-brandblue text-white font-semibold p-2"
-                      >
-                        {getInicialesParticipante(p)}
-                      </span>
+                      <ProjectParticipantRounded
+                      participant={p}
+                      />
                       {
                         p !== user.id && (
 
