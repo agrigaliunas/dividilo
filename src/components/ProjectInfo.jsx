@@ -61,6 +61,19 @@ export const ProjectInfo = ({ project, usuarios }) => {
 
   };
 
+  const eliminarGasto = (gastoId) => {
+    const nuevosGastos = projectData.gastos
+      .filter(
+        (id) => id !== gastoId
+      );
+
+    setProjectData((prevData) => ({
+      ...prevData,
+      gastos: nuevosGastos
+    }));
+
+  };
+
 
   const toggleGasto = (index) => {
     setGastosExpandidos((prev) => ({
@@ -177,10 +190,7 @@ export const ProjectInfo = ({ project, usuarios }) => {
             </span>
           </button>
           <div className="flex flex-col gap-3 border border-1 bg-white p-5 rounded-xl shadow-md">
-            <div className="flex flex-row lg:justify-between gap-5">
-              <h1 className="lg:text-4xl text-xl text-left font-extrabold">
-                {projectData.nombre}
-              </h1>
+            <div className="flex flex-row w-fit lg:justify-between gap-5">
               {projectStatus === "En progreso" ? (
                 <span className="font-semibold flex items-center justify-center text-center lg:p-3 p-1.5 bg-orange-600 bg-opacity-40 rounded-xl text-gray-800 cursor-default select-none text-xs lg:text-sm">
                   En progreso
@@ -191,6 +201,9 @@ export const ProjectInfo = ({ project, usuarios }) => {
                 </span>
               )}
             </div>
+            <h1 className="lg:text-4xl text-xl text-left font-extrabold">
+              {projectData.nombre}
+            </h1>
             <span className="text-gray-500 font-medium">
               {projectData.descripcion}
             </span>
@@ -345,13 +358,13 @@ export const ProjectInfo = ({ project, usuarios }) => {
                                                 ({sp.porcentaje}%)
                                               </span>
                                             </div>
-                                            
+
                                           </div>
-                                          
+
                                         </div>
-                                        
+
                                       ))}
-                                                                          <span className="font-bold text-lg ml-auto">
+                                    <span className="font-bold text-lg ml-auto">
                                       Total ticket: $
                                       {ticket.montoTotalTicket.toFixed(2)}
                                     </span>
@@ -478,15 +491,10 @@ export const ProjectInfo = ({ project, usuarios }) => {
           </div>
 
           <div className="flex flex-col gap-3 border border-1 bg-white p-5 rounded-xl shadow-md">
-            <div className="flex flex-row lg:justify-between gap-5">
-              <input
-                className="lg:text-4xl text-xl text-left font-extrabold w-[auto] border-b"
-                value={projectData.nombre}
-                onChange={handleEditNombre}
-                placeholder="Ingrese título del proyecto..."
-              />
+            <div className="flex flex-col lg:justify-between gap-5">
+
               {projectStatus === "En progreso" ? (
-                <div className="flex flex-row gap-1 bg-orange-600 lg:p-3 p-1.5 bg-opacity-40 rounded-xl text-gray-800 cursor-default select-none text-xs lg:text-sm">
+                <div className="flex flex-row gap-1 bg-orange-600 w-fit lg:p-3 p-1.5 bg-opacity-40 rounded-xl text-gray-800 cursor-default select-none text-xs lg:text-sm">
                   <button
                     onClick={() => setProjectStatus("Finalizado")}
                     className="bg-orange-600 bg-opacity-10 rounded-full p-1 hover:opacity-80">
@@ -497,7 +505,7 @@ export const ProjectInfo = ({ project, usuarios }) => {
                   </span>
                 </div>
               ) : (
-                <div className="flex flex-row gap-1 bg-green-600 lg:p-3 p-1.5  bg-opacity-40 rounded-xl text-gray-800 cursor-default select-none text-xs lg:text-sm">
+                <div className="flex flex-row gap-1 bg-green-600 w-fit lg:p-3 p-1.5  bg-opacity-40 rounded-xl text-gray-800 cursor-default select-none text-xs lg:text-sm">
                   <button
                     onClick={() => setProjectStatus("En progreso")}
                     className="bg-green-600 bg-opacity-10 rounded-full p-1 hover:opacity-80">
@@ -508,6 +516,12 @@ export const ProjectInfo = ({ project, usuarios }) => {
                   </span>
                 </div>
               )}
+              <input
+                className="lg:text-4xl text-xl text-left font-extrabold w-[auto] border-b"
+                value={projectData.nombre}
+                onChange={handleEditNombre}
+                placeholder="Ingrese título del proyecto..."
+              />
             </div>
             <input
               className="text-gray-500 font-medium w-[auto] border-b"
@@ -577,9 +591,16 @@ export const ProjectInfo = ({ project, usuarios }) => {
                   projectData.gastos.map((gasto, index) => (
                     <div
                       key={index}
-                      className="flex flex-col items-center border-2 rounded-xl gap-2 w-full"
+                      className="relative flex flex-col items-center border-2 rounded-xl gap-2 w-full "
                     >
+                      <button
+                        onClick={() => eliminarGasto(gasto)}
+                        className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs"
+                      >
+                        &times;
+                      </button>
                       <div className="flex flex-col gap-3 items-left bg-white p-5 rounded-xl shadow-md w-full">
+
                         <div className="flex flex-row gap-2 items-center">
                           <button
                             onClick={() => toggleGasto(index)}
