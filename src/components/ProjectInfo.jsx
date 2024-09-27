@@ -332,6 +332,13 @@ export const ProjectInfo = ({ project, usuarios }) => {
                                           className="w-96 h-96"
                                         />
                                       )}
+                                      <button
+                                        onClick={() =>
+                                          // handleDeleteTicketImage()
+                                          alert("Imagen borrada")
+                                        }
+                                        className="text-left underline text-xs hover:opacity-90 text-brandblue"
+                                      >Borrar imagen del ticket</button>
                                     </>
                                   ) : (
                                     <button
