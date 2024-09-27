@@ -10,6 +10,7 @@ import { deleteProject, updateProject } from "../services/ProjectService";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { ProjectParticipantRounded } from "./ProjectParticipantRounded";
+import { checkEmailExists } from "../services/AuthService";
 
 export const ProjectInfo = ({ project, usuarios }) => {
   const [projectData, setProjectData] = useState({
@@ -58,7 +59,6 @@ export const ProjectInfo = ({ project, usuarios }) => {
       participantes: nuevosParticipantes
     }));
 
-    console.log(projectData);
   };
 
 
@@ -132,7 +132,6 @@ export const ProjectInfo = ({ project, usuarios }) => {
 
 
   const eliminarProyecto = async () => {
-    console.log(projectData.id)
     await deleteProject(projectData.id)
     navigate('/dashboard')
   }
@@ -155,8 +154,14 @@ export const ProjectInfo = ({ project, usuarios }) => {
     setModalIsOpen(false);
   };
 
-  const handleAddParticipant = (email) => {
+  const handleAddParticipant = async (participanteAgregando) => {
+    setProjectData((prevData) => ({
+      ...prevData,
+      participantes: participanteAgregando
+    }));
   };
+
+
 
   return (
     <div className="flex flex-col w-full lg:px-[20vw] lg:py-[5vw] px-[5vw] py-[5vw] gap-8">
@@ -444,6 +449,7 @@ export const ProjectInfo = ({ project, usuarios }) => {
         <>
           {
             <NewParticipantModal
+              participantesId = {projectData.participantes} 
               isOpen={modalIsOpen}
               onClose={closeModal}
               onAddParticipant={handleAddParticipant}

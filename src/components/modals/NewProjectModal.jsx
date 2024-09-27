@@ -11,7 +11,7 @@ export const NewProjectModal = ({ closeModal }) => {
   const [participanteAgregando, setParticipanteAgregando] = useState("");
   const [participanteNoExiste, setParticipanteNoExiste] = useState(true);
   const [participantes, setParticipantes] = useState([]);
-  const [usuariosId, setUsuariosId] = useState([]); // Lista para almacenar IDs de los usuarios
+  const [usuariosId, setUsuariosId] = useState([]);
 
   useEffect(() => {
     const loggedUser = JSON.parse(localStorage.getItem("user"));

@@ -448,6 +448,17 @@
           ]
         }
       ]
+    },
+    {
+      "id": "6b1f",
+      "nombre": "Test",
+      "descripcion": "testazo",
+      "participantes": [
+        "2"
+      ],
+      "montoTotalProyecto": 0,
+      "gastos": [],
+      "estado": "En progreso"
     }
   ]
 }
