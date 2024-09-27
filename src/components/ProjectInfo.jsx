@@ -192,8 +192,6 @@ export const ProjectInfo = ({ project, usuarios }) => {
     }));
   };
 
-
-
   return (
     <div className="flex flex-col w-full lg:px-[20vw] lg:py-[5vw] px-[5vw] py-[5vw] gap-8">
       {editandoProyecto == false && (
