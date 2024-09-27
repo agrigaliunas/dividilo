@@ -1,6 +1,10 @@
 import React from "react";
 import { Link, Navigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext.js";
+import { Image } from "../components/icons/Image.jsx";
+import { Banknotes } from "../components/icons/Banknotes.jsx";
+import { UserGroup } from "../components/icons/UserGroup.jsx";
+import { PresentationChart } from "../components/icons/PresentationChart.jsx";
 
 const LandingPage = () => {
   const { user } = useAuth();
@@ -59,11 +63,7 @@ const LandingPage = () => {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="flex items-start">
-              <img
-                src="https://via.placeholder.com/150"
-                alt="Icono de proyecto"
-                className="w-16 h-16 mr-4"
-              />
+              <PresentationChart/>
               <div>
                 <h3 className="text-xl font-bold">Gestión de Proyectos</h3>
                 <p className="text-gray-600">
@@ -73,11 +73,7 @@ const LandingPage = () => {
               </div>
             </div>
             <div className="flex items-start">
-              <img
-                src="https://via.placeholder.com/150"
-                alt="Icono de gastos"
-                className="w-16 h-16 mr-4"
-              />
+              <Banknotes/>
               <div>
                 <h3 className="text-xl font-bold">División de Gastos</h3>
                 <p className="text-gray-600">
@@ -87,11 +83,7 @@ const LandingPage = () => {
               </div>
             </div>
             <div className="flex items-start">
-              <img
-                src="https://via.placeholder.com/150"
-                alt="Icono de tickets"
-                className="w-16 h-16 mr-4"
-              />
+              <Image/>
               <div>
                 <h3 className="text-xl font-bold">Tickets con Imágenes</h3>
                 <p className="text-gray-600">
@@ -101,11 +93,7 @@ const LandingPage = () => {
               </div>
             </div>
             <div className="flex items-start">
-              <img
-                src="https://via.placeholder.com/150"
-                alt="Icono de participantes"
-                className="w-16 h-16 mr-4"
-              />
+              <UserGroup/>
               <div>
                 <h3 className="text-xl font-bold">Gestión de Participantes</h3>
                 <p className="text-gray-600">
