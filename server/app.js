@@ -1,4 +1,3 @@
-// server/app.js
 const express = require('express');
 const cors = require('cors');
 const { sequelize, initializeDatabase } = require('./db/config.js');
@@ -10,7 +9,9 @@ app.use(express.urlencoded({ extended: true }));
 
 const PORT = 5000;
 
-// app.use('/api', require('./routes/api'));
+app.use('/api/users', require('./routes/users'));
+app.use('/api/auth', require('./routes/auth'));
+
 
 app.use((err, req, res, next) => {
     console.error(err.stack);

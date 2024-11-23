@@ -56,29 +56,6 @@ const initializeDatabase = async () => {
 };
 
 
-// const testConnection = async () => {
-//     try {
-//         await sequelize.authenticate();
-//         console.log('Conexión establecida correctamente');
-
-//         await sequelize.sync({ force: false });
-//         console.log('Modelos sincronizados correctamente');
-
-//         const users = await User.findAll();
-//         console.log('\nUsuarios encontrados:', users);
-
-//         const projects = await Project.findAll();
-//         console.log('Proyectos encontrados:', projects.length);
-
-//     } catch (error) {
-//         console.error('Error:', error);
-//     } finally {
-//         await sequelize.close();
-//     }
-// };
-
-// testConnection();
-
 initializeDatabase();
 
 module.exports = {
