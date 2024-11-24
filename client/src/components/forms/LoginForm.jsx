@@ -14,6 +14,7 @@ const LoginForm = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [emailError, setEmailError] = useState("")
+  const [loginError, setLoginError] = useState(false)
 
   const handleViewPassword = (e) => {
     e.preventDefault()
@@ -49,9 +50,12 @@ const LoginForm = () => {
     }
 
     const loginData = await login(userData)
-    console.log(loginData)
-    storeIntoLocalStorage(loginData)    
-
+    
+    if (!loginData.message) {
+      storeIntoLocalStorage(loginData)    
+    } else {
+      setLoginError(true)
+    }
   }
 
   return (
@@ -93,6 +97,7 @@ const LoginForm = () => {
               <div className="flex flex-row justify-end">
                 <Link to="/forgot-password" className="text-brandblue font-semibold">Olvidé mi contraseña</Link>
               </div>
+              {loginError && <p className="text-red-500 p-1">Ocurrió un error al iniciar sesión. Probá nuevamente.</p>}
               <button className="bg-brandblue text-white p-2 rounded-md hover:opacity-85">Iniciar Sesión</button>
               <Link to="/register" className="bg-white text-center text-brandblue border border-brandblue p-2 rounded-md">Registrarse</Link>
             </form>
