@@ -4,17 +4,16 @@ import { EyeSlash } from "../icons/EyeSlash";
 import { Link } from "react-router-dom";
 import { FormTitle } from "./FormTitle";
 import { SubTitle } from "./SubTitle";
-import { useAuth } from "../../contexts/AuthContext";
-
+import {login} from "../../services/AuthService.js"
+import { useAuth } from "../../contexts/AuthContext.js";
 const LoginForm = () => {
 
-  const { login } = useAuth()
+  const {storeIntoLocalStorage} = useAuth()
 
   const [viewPassword, setViewPassword] = useState(false)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [emailError, setEmailError] = useState("")
-  const [passwordError, setPasswordError] = useState("")
 
   const handleViewPassword = (e) => {
     e.preventDefault()
@@ -28,7 +27,6 @@ const LoginForm = () => {
 
   const handleSetPassword = (e) => {
     setPassword(e.target.value)
-    validatePassword(e.target.value)
   }
 
   const validateEmail = (email) => {
@@ -40,28 +38,20 @@ const LoginForm = () => {
     }
   }
 
-  const validatePassword = (password) => {
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
-    if (!passwordRegex.test(password)) {
-      setPasswordError("La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número.")
-    } else {
-      setPasswordError("")
-    }
-  }
-
-  const loginUser = (e) => {
+  const loginUser = async (e) => {
     e.preventDefault()
-    if (emailError || passwordError || !email || !password) {
+    if (emailError || !email || !password) {
       return;
     }
     const userData = {
-      "id": "2",
-      "email": "lauta.jimenez@gmail.com",
-      "nombre": "Lautaro",
-      "apellido": "Jimenez",
-      "rol": "admin"
+      "email": email,
+      "password": password
     }
-    login(userData)
+
+    const loginData = await login(userData)
+    console.log(loginData)
+    storeIntoLocalStorage(loginData)    
+
   }
 
   return (
@@ -87,7 +77,7 @@ const LoginForm = () => {
               </div>
               <div className="flex flex-col gap-1">
                 <label>Contraseña</label>
-                <div className={`flex flex-row border ${passwordError ? 'border-red-600' : 'border-[#e9e9ef]'} justify-between items-center w-full px-2 shadow-sm rounded-md`}>
+                <div className={`flex flex-row border border-[#e9e9ef] justify-between items-center w-full px-2 shadow-sm rounded-md`}>
                   <input
                     className="py-3 text-sm outline-none w-full"
                     type={viewPassword ? "text" : "password"}
@@ -99,7 +89,6 @@ const LoginForm = () => {
                     {viewPassword ? <Eye /> : <EyeSlash />}
                   </button>
                 </div>
-                {passwordError && <p className="text-red-600 text-sm">{passwordError}</p>}
               </div>
               <div className="flex flex-row justify-end">
                 <Link to="/forgot-password" className="text-brandblue font-semibold">Olvidé mi contraseña</Link>

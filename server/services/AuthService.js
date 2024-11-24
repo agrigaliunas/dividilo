@@ -2,6 +2,7 @@ const { User } = require("../db/config");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
+const {sendEmail} = require('../services/EmailService')
 
 const register = async (user) => {
     const existingUser = await User.findOne({
@@ -68,6 +69,44 @@ const login = async (loginData) => {
     };
 };
 
+const restorePassword = async (data) => {
+    const user = await User.findOne({
+        where: { email: data.email }
+    });
+
+    if (!user) {
+        throw new Error("Usuario no existe.");
+    }
+
+    try {
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(data.newPassword, salt);
+
+        await User.update(
+            {password: hashedPassword},
+            {
+                where: {
+                    email: data.email
+                }
+            }
+        );
+
+        try {
+            await sendEmail(
+                data.email, 
+                'Tu contraseña fué modificada', 
+                '<p>¡Hola! Tu contraseña de Dividilo fué modificada.</p>'
+            );
+        } catch (emailError) {
+            console.error('Error enviando email:', emailError);
+        }
+    } catch (error) {
+        throw new Error("Error al actualizar contraseña: " + error.message);
+    }
+
+    return "Contraseña actualizada con éxito.";
+}
+
 
 const getInitials = (user) => {
     return (user.name.charAt(0) + user.lastname.charAt(0)).toUpperCase()
@@ -75,6 +114,7 @@ const getInitials = (user) => {
 
 module.exports = {
     register,
-    getInitials,
-    login
+    login,
+    restorePassword,
+    getInitials
 };

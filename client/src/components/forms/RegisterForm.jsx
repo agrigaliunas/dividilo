@@ -9,8 +9,6 @@ import { useAuth } from "../../contexts/AuthContext";
 
 const RegisterForm = () => {
 
-  const {login} = useAuth()
-
   const [viewPassword, setViewPassword] = useState(false)
   const [name, setName] = useState("")
   const [surname, setSurname] = useState("")
@@ -54,9 +52,9 @@ const RegisterForm = () => {
   }
 
   const validatePassword = (password) => {
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
     if (!passwordRegex.test(password)) {
-      setPasswordError("La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número.")
+      setPasswordError("La contraseña debe tener al menos 6 caracteres, una mayúscula, una minúscula y un número.")
     } else {
       setPasswordError("")
     }
@@ -80,32 +78,19 @@ const RegisterForm = () => {
 
   const registerUser = async (e) => {
 
-    let id = crypto.randomUUID();
-
     e.preventDefault()
     if (emailError || passwordError || confirmedPasswordError || !email || !password || !confirmedPassword) {
       return;
     }
     const nuevosDatos = {
-      "id": id,
-      "nombre": name,
-      "apellido": surname,
+      "name": name,
+      "lastname": surname,
       "email": email,
-      "password": password,
-      "rol": "usuario"
+      "password": password
     }
     await crearCuenta(nuevosDatos)
     
-    login({
-      "id": id,
-      "nombre": name,
-      "apellido": surname,
-      "email": email,
-      "rol": "usuario"
-    })
-
-
-    navigate("/dashboard")
+    navigate("/login")
     
   }
 

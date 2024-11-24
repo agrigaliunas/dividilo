@@ -50,4 +50,18 @@ router.post('/login',
     AuthController.login
 );
 
+router.patch('/restore-password',
+    [
+        check("newPassword")
+            .not().isEmpty().withMessage('La contraseña nueva es requerida'),
+        check("email")
+        .not().isEmpty().withMessage('El email es requerido')
+        .trim()
+        .normalizeEmail()
+        .isEmail().withMessage('Debe ser un email válido'),
+        validateRequest
+    ],
+    AuthController.restorePassword
+)
+
 module.exports = router ;

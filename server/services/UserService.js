@@ -10,9 +10,15 @@ const getUserById = async (id) => {
     return user;
 }
 
-// eliminar cuenta
+const deleteAccount = async (id) => {
+    await User.destroy({
+        where: {
+            user_id: id
+        }
+    })
 
-// reestablecer contraseña
+    return "Usuario borrado con exito."
+}
 
 // cambiar datos (email, nombre, apellido)
     // si cambia nombre y apellido cambiar iniciales
@@ -25,5 +31,6 @@ const getInitials = (user) => {
 
 module.exports = {
     getUserById,
+    deleteAccount,
     getInitials,
 };

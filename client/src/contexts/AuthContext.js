@@ -17,8 +17,9 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  const login = (userData) => {
-    localStorage.setItem('user', JSON.stringify(userData)); 
+  const storeIntoLocalStorage = (userData) => {
+    localStorage.setItem('token', JSON.stringify(userData.token)); 
+    localStorage.setItem('user', JSON.stringify(userData.user)); 
     setUser(userData);
   };
 
@@ -28,7 +29,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, storeIntoLocalStorage, logout }}>
       {children}
     </AuthContext.Provider>
   );

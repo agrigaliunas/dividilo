@@ -1,7 +1,9 @@
 import { fetchUsuarios } from "./UserService.js";
 
+const BACKEND_URL = "http://localhost:5000/api"
+
 export const crearCuenta = async (nuevoUsuario) => {
-  const response = await fetch(`http://localhost:8000/usuarios`, {
+  const response = await fetch(`${BACKEND_URL}/auth/register`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -9,6 +11,18 @@ export const crearCuenta = async (nuevoUsuario) => {
     body: JSON.stringify(nuevoUsuario),
   });
   return response;
+};
+
+
+export const login = async (data) => {
+  const response = await fetch(`${BACKEND_URL}/auth/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+  return await response.json();
 };
 
 export const restaurarPassword = async (id, usuarioOriginal) => {
