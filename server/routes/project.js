@@ -32,4 +32,8 @@ router.post('/:id',
     ProjectController.addParticipant
 )
 
+router.get('/user/:userId',
+    ProjectController.getProjectsByUserId
+)
+
 module.exports = router ;
