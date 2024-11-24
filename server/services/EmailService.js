@@ -4,13 +4,13 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-
 const resendInstance = new Resend(process.env.RESEND_API_KEY);
 
 const sendEmail = async (email, subject, htmlTemplate) => {
+
     try {
         const response = await resendInstance.emails.send({
-            from: 'onboarding@resend.dev',
+            from: 'Dividilo <onboarding@resend.dev>',
             to: email,
             subject,
             html: htmlTemplate

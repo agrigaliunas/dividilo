@@ -2,7 +2,8 @@ const { User } = require("../db/config");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
-const {sendEmail} = require('../services/EmailService')
+const {sendEmail} = require('../services/EmailService');
+const { welcomeTemplate } = require("../utils/EmailTemplates");
 
 const register = async (user) => {
     const existingUser = await User.findOne({
@@ -25,6 +26,17 @@ const register = async (user) => {
             initials,
         });
 
+        try {
+            await sendEmail(
+                user.email, 
+                welcomeTemplate.subject,
+                welcomeTemplate.html
+            );
+        } catch (emailError) {
+            console.error('Error enviando email:', emailError);
+        }
+
+
         const { password, ...userWithoutPassword } = newUser.toJSON();
         return userWithoutPassword;
 
@@ -42,7 +54,7 @@ const login = async (loginData) => {
     });
 
     if (!user) {
-        throw new Error("Credenciales inválidas");
+        throw new Error("Ocurrio un error al intentar iniciar sesion. Intente nuevamente.");
     }
 
     const validPassword = await bcrypt.compare(loginData.password, user.password);
@@ -95,7 +107,7 @@ const restorePassword = async (data) => {
             await sendEmail(
                 data.email, 
                 'Tu contraseña fué modificada', 
-                '<p>¡Hola! Tu contraseña de Dividilo fué modificada.</p>'
+                '<p>¡Hola! Tu contraseña de Dividilo fué modificada. Si no fuiste vos, contactate con un administrador.</p>'
             );
         } catch (emailError) {
             console.error('Error enviando email:', emailError);
