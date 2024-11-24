@@ -10,6 +10,13 @@ const getUserById = async (id) => {
   return user;
 };
 
+const getUserByEmail = async (userEmail) => {
+  const user = await User.findOne({
+    where: { email: userEmail }
+  });
+  return user;
+};
+
 const deleteAccount = async (id) => {
   try {
     const user = await User.findByPk(id, {
@@ -25,9 +32,9 @@ const deleteAccount = async (id) => {
 
       try {
         await sendEmail(
-            user.email, 
-            accountDeletedTemplate.subject,
-            accountDeletedTemplate.html
+          user.email,
+          accountDeletedTemplate.subject,
+          accountDeletedTemplate.html
         );
       } catch (emailError) {
         console.error("Error enviando email:", emailError);
@@ -55,6 +62,7 @@ const getInitials = (user) => {
 
 module.exports = {
   getUserById,
+  getUserByEmail,
   deleteAccount,
   getInitials,
 };

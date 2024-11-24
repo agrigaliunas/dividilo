@@ -12,6 +12,7 @@ const PORT = 5000;
 app.use('/api/users', require('./routes/users'));
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/tickets/image', require('./routes/tickets'))
+app.use('/api/projects', require('./routes/project'));
 
 app.use((err, req, res, next) => {
     console.error(err.stack);

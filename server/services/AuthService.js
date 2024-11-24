@@ -2,8 +2,8 @@ const { User } = require("../db/config");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
-const {sendEmail} = require('../services/EmailService');
-const { welcomeTemplate } = require("../utils/EmailTemplates");
+const { sendEmail } = require('../services/EmailService');
+const { welcomeTemplate, inviteToProjectTemplate } = require("../utils/EmailTemplates");
 
 const register = async (user) => {
     const existingUser = await User.findOne({
@@ -22,13 +22,14 @@ const register = async (user) => {
 
         const newUser = await User.create({
             ...user,
+            finished_onboarding: 1,
             password: hashedPassword,
             initials,
         });
 
         try {
             await sendEmail(
-                user.email, 
+                user.email,
                 welcomeTemplate.subject,
                 welcomeTemplate.html
             );
@@ -48,8 +49,47 @@ const register = async (user) => {
     }
 };
 
+const registerPendingUser = async (email) => {
+
+    try {
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(email, salt);
+
+        const initials = getInitialsByEmail(email)
+
+        const newUser = await User.create({
+            name: "Usuario",
+            lastname: "Pendiente",
+            email: email,
+            finished_onboarding: 0,
+            password: hashedPassword,
+            initials,
+        });
+
+        try {
+            const template = inviteToProjectTemplate(hashedPassword);
+            await sendEmail(
+                email,
+                template.subject,
+                template.html
+            );
+        } catch (emailError) {
+            console.error('Error enviando email:', emailError);
+        }
+
+        const { password, ...userWithoutPassword } = newUser.toJSON();
+        return userWithoutPassword;
+
+    } catch (error) {
+        if (error.name === 'SequelizeUniqueConstraintError') {
+            throw new Error("El email ya está registrado");
+        }
+        throw new Error("Error al crear el usuario: " + error.message);
+    }
+};
+
 const login = async (loginData) => {
-    const user = await User.findOne({ 
+    const user = await User.findOne({
         where: { email: loginData.email }
     });
 
@@ -69,12 +109,12 @@ const login = async (loginData) => {
         },
         process.env.JWT_SECRET,
         {
-            expiresIn: "24h" 
+            expiresIn: "24h"
         }
     );
 
     const { password: _, ...userWithoutPassword } = user.toJSON();
-    
+
     return {
         user: userWithoutPassword,
         token: token
@@ -95,7 +135,7 @@ const restorePassword = async (data) => {
         const hashedPassword = await bcrypt.hash(data.newPassword, salt);
 
         await User.update(
-            {password: hashedPassword},
+            { password: hashedPassword },
             {
                 where: {
                     email: data.email
@@ -105,8 +145,8 @@ const restorePassword = async (data) => {
 
         try {
             await sendEmail(
-                data.email, 
-                'Tu contraseña fué modificada', 
+                data.email,
+                'Tu contraseña fué modificada',
                 '<p>¡Hola! Tu contraseña de Dividilo fué modificada. Si no fuiste vos, contactate con un administrador.</p>'
             );
         } catch (emailError) {
@@ -124,9 +164,15 @@ const getInitials = (user) => {
     return (user.name.charAt(0) + user.lastname.charAt(0)).toUpperCase()
 }
 
+const getInitialsByEmail = (email) => {
+    return (email.substring(0, 2)).toUpperCase()
+}
+
 module.exports = {
     register,
+    registerPendingUser,
     login,
     restorePassword,
-    getInitials
+    getInitials,
+    getInitialsByEmail
 };

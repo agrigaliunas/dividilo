@@ -65,8 +65,41 @@ const accountDeletedTemplate = {
     </html>`
 };
 
+const inviteToProjectTemplate = (password) => ({
+    subject: 'Te han invitado a un proyecto en Dividilo',
+    html: `<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body style="font-family: sans-serif;">
+        <div style="max-width: 600px; margin: 0 auto;">
+            <h1 style="color: #2c3e50;">¡Fuiste invitado a un proyecto!</h1>
+            <p>Hola,</p>
+            <p>Alguien te agregó como participante en un proyecto de <b>Dividilo</b>, pero notamos que aún no tenés una cuenta.</p>
+            <p>Para poder unirte y gestionar el proyecto, necesitas registrarte en nuestra plataforma:</p>
+            <div style="text-align: center; margin: 20px 0;">
+                <a href="http://localhost:3000/login" 
+                   style="display: inline-block; padding: 10px 20px; font-size: 16px; color: #fff; background-color: #3498db; border-radius: 5px; text-decoration: none;">
+                   Crear mi cuenta
+                </a>
+            </div>
+            <p>Además, generamos una contraseña temporal para vos:</p>
+            <div style="background-color: #ecf0f1; padding: 10px; border-radius: 5px; text-align: center;">
+                <b>${password}</b>
+            </div>
+            <p>Recordá cambiar esta contraseña una vez que ingreses por primera vez.</p>
+            <p>Si no esperabas este mensaje, simplemente ignoralo.</p>
+            <p style="color: #95a5a6;">El equipo de Dividilo</p>
+        </div>
+    </body>
+    </html>`
+});
+
+
 module.exports = {
     welcomeTemplate,
     accountDeletedTemplate,
-    passwordUpdatedTemplate
+    passwordUpdatedTemplate,
+    inviteToProjectTemplate
 }
