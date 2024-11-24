@@ -23,7 +23,6 @@ router.post('/register',
         check("email")
             .not().isEmpty().withMessage('El email es requerido')
             .trim()
-            .normalizeEmail()
             .isEmail().withMessage('Debe ser un email válido'),
             
         check("password")
@@ -44,7 +43,6 @@ router.post('/login',
         check("email")
             .not().isEmpty().withMessage('El email es requerido')
             .trim()
-            .normalizeEmail()
             .isEmail().withMessage('Debe ser un email válido'),
         check("password")
             .not().isEmpty().withMessage('La contraseña es requerida'),
@@ -60,7 +58,6 @@ router.patch('/restore-password',
         check("email")
         .not().isEmpty().withMessage('El email es requerido')
         .trim()
-        .normalizeEmail()
         .isEmail().withMessage('Debe ser un email válido'),
         validateRequest
     ],
