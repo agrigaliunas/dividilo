@@ -5,6 +5,9 @@ const validateRequest = require('../middlewares/request_validator');
 
 const router = Router();
 
+// TODO: agregar jwtValidator
+
+
 router.post('/register',
     [
         check("name")
