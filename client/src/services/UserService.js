@@ -7,6 +7,12 @@ export const fetchUsuarios = async () => {
   return data;
 };
 
+export const fetchUsuarioById = async (id) => {
+  const response = await fetch(`${BACKEND_URL}/users/${id}`);
+  const data = await response.json();
+  return data;
+};
+
 export const eliminarUsuario = async (id, confirmationPassword) => {
   const response = await fetch(`${BACKEND_URL}/users/${id}`, {
     method: "DELETE",

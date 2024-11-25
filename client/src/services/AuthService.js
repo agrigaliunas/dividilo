@@ -44,6 +44,7 @@ export const actualizarContrasena = async (email, password, newPassword) => {
   return response;
 }
 
+
 export const checkEmailExists = async (email) => {
     const usuarios = await fetchUsuarios();
     const usuario = usuarios.find((usuario) => usuario.email === email);

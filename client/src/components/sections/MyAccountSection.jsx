@@ -2,7 +2,7 @@ import React from "react";
 import { MyAccountSectionForm } from "../MyAccountSectionForm";
 import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { eliminarUsuario } from "../../services/UserService";
+import { actualizarUsuario, eliminarUsuario, fetchUsuarioById } from "../../services/UserService";
 import { actualizarContrasena } from "../../services/AuthService";
 export const MyAccountSection = ({
   section,
@@ -11,15 +11,17 @@ export const MyAccountSection = ({
   onInputChange,
 }) => {
   const navigate = useNavigate();
-  const { token, user, logout} = useAuth();
+  const { token, user, logout, updateLocalStorage} = useAuth();
 
   const handleSubmit = async () => {
     try {
       switch (section.step) {
         case 0:
           await actualizarUsuario(user.user_id, formValues["Nombre"], formValues["Apellido"], formValues["Correo electrónico"]);
+          const updatedUser = await fetchUsuarioById(user.user_id)
+          await updateLocalStorage(updatedUser)
           alert("Información actualizada correctamente.");
-          navigate('/account')
+          navigate('/dashboard')
           break;
         case 1:
           if (
