@@ -2,11 +2,18 @@ const { User } = require("../db/config");
 const { sendEmail } = require("../services/EmailService");
 const { accountDeletedTemplate } = require("../utils/EmailTemplates");
 const { Op } = require('sequelize');
+const bcrypt = require("bcrypt");
 
 const getUserById = async (id) => {
   const user = await User.findByPk(id, {
     attributes: { exclude: ["password"] },
   });
+
+  return user;
+};
+
+const getUserByIdWithPassword = async (id) => {
+  const user = await User.findByPk(id);
 
   return user;
 };
@@ -32,13 +39,21 @@ const getUserByEmail = async (userEmail) => {
   return user;
 };
 
-const deleteAccount = async (id) => {
+const deleteAccount = async (id, req) => {
+
   try {
-    const user = await User.findByPk(id, {
-      attributes: { exclude: ["password"] },
-    });
+    const user = await getUserByIdWithPassword(id);
+
+    if (!user) {
+      throw new Error("Usuario no existente.");
+    }
 
     if (user) {
+      const validPassword = await bcrypt.compare(req.password, user.password);
+      if (!validPassword) {
+          throw new Error("Credenciales inválidas");
+      }
+
       await User.destroy({
         where: {
           user_id: id,
@@ -58,7 +73,6 @@ const deleteAccount = async (id) => {
       return "Usuario borrado con exito.";
     }
 
-    throw new Error("Usuario no existente.");
   } catch (error) {
     throw new Error(
       "Ocurrio un error al intentar borrar el usuario: " + error.message

@@ -7,18 +7,15 @@ export const fetchUsuarios = async () => {
   return data;
 };
 
-
-/*
-TODO: 
-  pantalla eliminar usuario
-*/
 export const eliminarUsuario = async (id, confirmationPassword) => {
   const response = await fetch(`${BACKEND_URL}/users/${id}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(confirmationPassword),
+    body: JSON.stringify({
+      password: confirmationPassword
+    }),
   });
 
   return response;

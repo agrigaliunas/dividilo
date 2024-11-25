@@ -11,7 +11,7 @@ export const MyAccountSection = ({
   onInputChange,
 }) => {
   const navigate = useNavigate();
-  const { token, user } = useAuth();
+  const { token, user, logout} = useAuth();
 
   const handleSubmit = async () => {
     try {
@@ -50,9 +50,14 @@ export const MyAccountSection = ({
           const password =
             formValues["¡Atención! ¡Esta acción no tiene vuelta atrás!"];
           if (password) {
-            // await eliminarUsuario(user.user_id, token);
-            alert("Cuenta eliminada exitosamente.");
-            navigate("/home");
+            const resp = await eliminarUsuario(user.user_id, password);
+            if (resp.status === 200) {
+              alert("Cuenta eliminada exitosamente.");
+              logout()
+              navigate("/home");
+            } else {
+              alert("Ocurrió un error. Intente nuevamente.")
+            }
           } else {
             alert("Por favor, ingrese la contraseña para eliminar su cuenta.");
           }
