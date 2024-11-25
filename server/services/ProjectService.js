@@ -104,9 +104,23 @@ const getUsersByProjectId = async (projectId) => {
     }
 }
 
+
+const getProjectById = async (projectId) => {
+    try {
+        const project = await Project.findByPk(projectId)
+
+        return project;
+
+    } catch (error) {
+        console.error('Error al obtener proyecto:', err.message);
+        throw new Error('No se pudo obtener el proyecto.');
+    }
+}
+
 module.exports = {
     addProject,
     addParticipant,
     getProjectsByUserId,
-    getUsersByProjectId
+    getUsersByProjectId,
+    getProjectById
 };

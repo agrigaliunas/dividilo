@@ -44,9 +44,21 @@ const getUsersByProjectId = async (req, res) => {
     }
 }
 
+const getProjectById = async (req, res) => {
+    try {
+        const response = await ProjectService.getProjectById(req.params.projectId)
+        res.status(200).json(response);
+    } catch (err) {
+        res.status(500).json({
+            message: err.message
+        });
+    }
+}
+
 module.exports = {
     addProject,
     addParticipant,
     getProjectsByUserId,
-    getUsersByProjectId
+    getUsersByProjectId,
+    getProjectById
 };

@@ -32,6 +32,10 @@ router.post('/:id',
     ProjectController.addParticipant
 )
 
+router.get('/:projectId',
+    ProjectController.getProjectById
+)
+
 router.get('/user/:userId',
     ProjectController.getProjectsByUserId
 )

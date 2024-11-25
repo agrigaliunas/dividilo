@@ -1,20 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { ProjectInfo } from "../ProjectInfo";
-import { fetchProjects } from "../../services/ProjectService";
-import { fetchUsuarios } from "../../services/UserService.js";
+import { fetchUsersByProjectId, fetchProjectById } from "../../services/ProjectService.js";
+import { useAuth } from "../../contexts/AuthContext.js";
 
 const ProjectLayout = ({ projectId }) => {
   const [project, setProject] = useState({});
   const [usuarios, setUsuarios] = useState([]);
 
-  const getProject = async () => {
-    const data = await fetchProjects()
-    return data.filter((proj) => proj.id === projectId)[0];
-  };
 
   useEffect(() => {
     const loadProject = async () => {
-      const projectData = await getProject();
+      const projectData = await fetchProjectById(projectId)
       setProject(projectData);
     };
     loadProject();
@@ -23,7 +19,7 @@ const ProjectLayout = ({ projectId }) => {
   
   useEffect(() => {
     const loadUsuarios = async () => {
-      const usuariosData = await fetchUsuarios();
+      const usuariosData = await fetchUsersByProjectId(projectId);
       setUsuarios(usuariosData);
     };
     loadUsuarios();
@@ -31,7 +27,7 @@ const ProjectLayout = ({ projectId }) => {
 
   return (
     <>
-      <ProjectInfo project={project} usuarios={usuarios}/>
+      <ProjectInfo proyecto={project} participantesProyecto={usuarios}/>
     </>
   );
 };

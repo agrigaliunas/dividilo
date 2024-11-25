@@ -1,13 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ProjectParticipant, ProjectParticipantRounded } from "../ProjectParticipantRounded";
 import { Link } from "react-router-dom";
+import { fetchUsersByProjectId } from "../../services/ProjectService";
 
 const participantColors = [
   "bg-brandblue"
 ];
 
 export const ProjectCard = ({ project }) => {
-  const participants = project.participantes || [];
+
+  const [participants, setParticipants] = useState([])
+
+  useEffect(() => {
+    const loadParticipants = async () => {
+      const usuariosData = await fetchUsersByProjectId(project.project_id);
+      setParticipants(usuariosData);
+    };
+    loadParticipants();
+  }, []);
 
   return (
     <Link

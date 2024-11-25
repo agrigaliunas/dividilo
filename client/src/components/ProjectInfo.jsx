@@ -13,7 +13,7 @@ import { CrossButton } from "./buttons/CrossButton";
 import { NewGastoModal } from "./modals/NewGastoModal";
 import NewTicketModal from "./modals/NewTicketModal";
 
-export const ProjectInfo = ({ project, usuarios }) => {
+export const ProjectInfo = ({ proyecto, participantesProyecto }) => {
   const [projectData, setProjectData] = useState({
     id: "",
     nombre: "",
@@ -45,19 +45,21 @@ export const ProjectInfo = ({ project, usuarios }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (project) {
+    if (proyecto) {
+      console.log("PROYECTO: " + proyecto)
+      console.log("participantes: " + participantesProyecto)
       setProjectData({
-        id: project.id,
-        nombre: project.nombre,
-        descripcion: project.descripcion,
-        montoTotalProyecto: project.montoTotalProyecto,
-        estado: project.estado,
-        participantes: project.participantes || [],
-        gastos: project.gastos || [],
+        id: proyecto.project_id,
+        nombre: proyecto.title,
+        descripcion: proyecto.description,
+        montoTotalProyecto: proyecto.total_amount,
+        estado: proyecto.state,
+        participantes: participantesProyecto,
+        // gastos: proyecto.gastos || [],
       });
       setProjectStatus(projectData.estado);
     }
-  }, [project]);
+  }, [proyecto]);
 
   const eliminarParticipante = (participanteId) => {
     const nuevosParticipantes = projectData.participantes.filter(
@@ -90,47 +92,47 @@ export const ProjectInfo = ({ project, usuarios }) => {
   };
 
   const getParticipanteNombreApellido = (participanteId) => {
-    if (usuarios) {
-      const usuario = usuarios.find((user) => user.id === participanteId);
-      return usuario && `${usuario.nombre} ${usuario.apellido}`;
+    if (participantesProyecto) {
+      const usuario = participantesProyecto.find((user) => user.user_id === participanteId);
+      return usuario && usuario.initials;
     }
     return "Desconocido";
   };
 
-  const calcularGastoParticipante = (proyecto, participanteId) => {
-    let totalGasto = 0;
+  // const calcularGastoParticipante = (proyecto, participanteId) => {
+  //   let totalGasto = 0;
 
-    proyecto.gastos.forEach((gasto) => {
-      gasto.tickets.forEach((ticket) => {
-        const splitParticipante = ticket.split.find(
-          (split) => split.participanteId === participanteId
-        );
-        if (splitParticipante) {
-          totalGasto +=
-            (ticket.montoTotalTicket * splitParticipante.porcentaje) / 100;
-        }
-      });
-    });
+  //   proyecto.gastos.forEach((gasto) => {
+  //     gasto.tickets.forEach((ticket) => {
+  //       const splitParticipante = ticket.split.find(
+  //         (split) => split.participanteId === participanteId
+  //       );
+  //       if (splitParticipante) {
+  //         totalGasto +=
+  //           (ticket.montoTotalTicket * splitParticipante.porcentaje) / 100;
+  //       }
+  //     });
+  //   });
 
-    const balance =
-      proyecto.montoTotalProyecto / proyecto.participantes.length - totalGasto;
+  //   const balance =
+  //     proyecto.montoTotalProyecto / proyecto.participantes.length - totalGasto;
 
-    if (balance < 0) {
-      return {
-        texto: `+ $${(balance * -1).toFixed(2)}`,
-        color: "text-green-500",
-      };
-    } else if (balance === 0) {
-      return {
-        texto: `$${(balance).toFixed(2)}`,
-        color: "text-gray-500",
-      };
-    }
+  //   if (balance < 0) {
+  //     return {
+  //       texto: `+ $${(balance * -1).toFixed(2)}`,
+  //       color: "text-green-500",
+  //     };
+  //   } else if (balance === 0) {
+  //     return {
+  //       texto: `$${(balance).toFixed(2)}`,
+  //       color: "text-gray-500",
+  //     };
+  //   }
     
-    else {
-      return { texto: `- $${balance.toFixed(2)}`, color: "text-red-500" };
-    }
-  };
+  //   else {
+  //     return { texto: `- $${balance.toFixed(2)}`, color: "text-red-500" };
+  //   }
+  // };
 
   const handleEditNombre = (e) => {
     setProjectData({ ...projectData, nombre: e.target.value });
@@ -264,11 +266,11 @@ export const ProjectInfo = ({ project, usuarios }) => {
               <h2 className="text-2xl text-left font-bold">
                 Monto total gastado
               </h2>
-              <span className="text-4xl font-bold mt-auto">
+              {/* <span className="text-4xl font-bold mt-auto">
                 $
                 {projectData.montoTotalProyecto &&
                   projectData.montoTotalProyecto.toFixed(2)}
-              </span>
+              </span> */}
             </div>
             <div className="flex flex-col w-full border border-1 bg-white rounded-xl shadow-md p-5 lg:w-[50%] gap-4">
               <h2 className="text-2xl text-left font-bold">Participantes</h2>
@@ -283,7 +285,7 @@ export const ProjectInfo = ({ project, usuarios }) => {
               </div>
             </div>
           </div>
-          <div className="flex flex-col gap-4">
+          {/* <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-4 border border-1 bg-white p-5 rounded-xl shadow-md">
               <div className="flex flex-row justify-between items-center">
                 <h2 className="text-2xl text-left font-bold">
@@ -392,11 +394,11 @@ export const ProjectInfo = ({ project, usuarios }) => {
                 )}
               </div>
             </div>
-          </div>
+          </div> */}
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-4 border border-1 bg-white p-5 rounded-xl shadow-md">
               <h2 className="text-2xl text-left font-bold">Balances</h2>
-              <div className="flex flex-col gap-2">
+              {/* <div className="flex flex-col gap-2">
                 {projectData.participantes?.length > 0 ? (
                   projectData.participantes.map(
                     (participante, participanteIndex) => {
@@ -424,12 +426,12 @@ export const ProjectInfo = ({ project, usuarios }) => {
                 ) : (
                   <span>No hay participantes</span>
                 )}
-              </div>
+              </div> */}
             </div>
           </div>
         </>
       )}
-      {editandoProyecto == true && (
+      {/* {editandoProyecto == true && (
         <>
           {
             <NewParticipantModal
@@ -820,7 +822,7 @@ export const ProjectInfo = ({ project, usuarios }) => {
             </div>
           </div>
         </>
-      )}
+      )} */}
     </div>
   );
 };

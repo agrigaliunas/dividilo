@@ -3,7 +3,7 @@ import { ChevronDown } from "../icons/ChevronDown.jsx";
 import { ProjectsGrid } from "../ProjectsGrid.jsx";
 import { ChevronUp } from "../icons/ChevronUp.jsx";
 import { NewProjectModal } from "../modals/NewProjectModal.jsx";
-import { fetchProjects, fetchProjectsByUserId } from "../../services/ProjectService.js";
+import { fetchProjectsByUserId } from "../../services/ProjectService.js";
 import { useAuth } from "../../contexts/AuthContext";
 
 const ProjectsLayout = () => {

@@ -1,12 +1,5 @@
 const BACKEND_URL = "http://localhost:5000/api"
 
-export const fetchProjects = async () => {
-  const data = await fetch("http://localhost:8000/proyectos").then((data) =>
-    data.json()
-  );
-  return data;
-};
-
 export const fetchProjectsByUserId = async (userId) => {
   const data = await fetch(`${BACKEND_URL}/projects/user/${userId}`).then((data) =>
     data.json()
@@ -14,7 +7,22 @@ export const fetchProjectsByUserId = async (userId) => {
   return data;
 };
 
-export const createProject = async (nombre, descripcion, usuariosId) => {
+
+export const fetchProjectById = async (projectId) => {
+  const data = await fetch(`${BACKEND_URL}/projects/${projectId}`).then((data) =>
+    data.json()
+  );
+  return data;
+};
+
+export const fetchUsersByProjectId = async (projectId) => {
+  const data = await fetch(`${BACKEND_URL}/projects/${projectId}/users`).then((data) =>
+    data.json()
+  );
+  return data;
+};
+
+export const createProject = async (nombre, descripcion) => {
   const response = await fetch(`${BACKEND_URL}/projects`, {
     method: "POST",
     headers: {
