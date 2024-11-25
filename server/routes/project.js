@@ -45,6 +45,12 @@ router.get("/:projectId/users",
 )
 
 router.delete('/:projectId',
-    ProjectController.deleteProject);
+    ProjectController.deleteProject
+)
+
+router.patch(
+    "/:projectId",
+    ProjectController.updateProject
+);
 
 module.exports = router;

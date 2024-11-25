@@ -151,11 +151,31 @@ const getProjectById = async (projectId) => {
     }
 }
 
+const updateProject = async (id, req) => {
+    try {
+        const project = await Project.findByPk(id);
+        if (!project) {
+            throw new Error("Proyecto no existente.");
+        }
+  
+        await project.update({
+            title: req.title || project.title,
+            description: req.description || project.description,
+            state: req.state || project.state,
+        });
+        
+        return "Proyecto actualizado con exito.";
+    } catch (error) {
+        throw new Error("Ocurrio un error al intentar actualizar el proyecto: " + error.message);
+    }
+}
+
 module.exports = {
     addProject,
     deleteProject,
     addParticipant,
     getProjectsByUserId,
     getUsersByProjectId,
-    getProjectById
+    getProjectById,
+    updateProject
 };
