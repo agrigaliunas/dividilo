@@ -1,3 +1,5 @@
+const BACKEND_URL = "http://localhost:5000/api"
+
 export const fetchProjects = async () => {
   const data = await fetch("http://localhost:8000/proyectos").then((data) =>
     data.json()
@@ -5,19 +7,22 @@ export const fetchProjects = async () => {
   return data;
 };
 
+export const fetchProjectsByUserId = async (userId) => {
+  const data = await fetch(`${BACKEND_URL}/projects/user/${userId}`).then((data) =>
+    data.json()
+  );
+  return data;
+};
+
 export const createProject = async (nombre, descripcion, usuariosId) => {
-  const response = await fetch(`http://localhost:8000/proyectos`, {
+  const response = await fetch(`${BACKEND_URL}/projects`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      nombre: nombre,
-      descripcion: descripcion,
-      participantes: usuariosId,
-      montoTotalProyecto: 0,
-      gastos: [],
-      estado: "En progreso",
+      title: nombre,
+      description: descripcion
     }),
   });
 

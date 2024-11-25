@@ -1,9 +1,8 @@
 const { Project } = require("../db/config");
 const { ProjectUser } = require("../db/config");
-const User = require("../db/models/User");
 const { registerPendingUser } = require('../services/AuthService');
-const { getUserByEmail } = require('../services/UserService');
-
+const { getUserByEmail, getUsersByIdList } = require('../services/UserService');
+const { Op } = require('sequelize');
 
 const ADDED_PARTICIPANT_SUCCESFULLY = "Participante agregado correctamente."
 
@@ -61,11 +60,21 @@ const deleteProject = async (id) => {
         const project = await Project.findByPk(id);
 
         if (project) {
+
+            await ProjectUser.destroy({
+                where: {
+                    project_id: id
+                }
+            })
+
             await Project.destroy({
                 where: {
                     project_id: id,
                 },
             });
+
+            return "Proyecto borrado con exito.";
+
         }
     } catch (error) {
         throw new Error(
@@ -73,9 +82,60 @@ const deleteProject = async (id) => {
         );
     }
 }
+const getProjectsByUserId = async (userId) => {
+
+    try {
+        const projectsFromUser = await ProjectUser.findAll({
+            where: {
+                user_id: userId,
+            }
+        });
+
+        const projectIds = projectsFromUser.map(project => project.project_id);
+
+        if (projectIds.length === 0) {
+            return [];
+        }
+
+        const projects = await Project.findAll({
+            where: {
+                project_id: {
+                    [Op.in]: projectIds,
+                },
+            },
+        });
+
+        return projects;
+    } catch (err) {
+        console.error('Error al obtener proyectos:', err.message);
+        throw new Error('No se pudieron obtener los proyectos.');
+    }
+};
+
+const getUsersByProjectId = async (projectId) => {
+    try {
+        const usersFromProject = await ProjectUser.findAll({
+            where: {
+                project_id: projectId,
+            }
+        });
+
+        const usersIds = usersFromProject.map(project => project.user_id);
+
+        const users = await getUsersByIdList(usersIds)
+
+        return users;
+
+    } catch (error) {
+        console.error('Error al obtener usuarios:', err.message);
+        throw new Error('No se pudieron obtener los usuarios del proyecto.');
+    }
+}
 
 module.exports = {
     addProject,
     deleteProject,
-    addParticipant
+    addParticipant,
+    getProjectsByUserId,
+    getUsersByProjectId,
 };

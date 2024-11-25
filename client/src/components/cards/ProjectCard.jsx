@@ -11,19 +11,19 @@ export const ProjectCard = ({ project }) => {
 
   return (
     <Link
-      to={`/projects/${project.id}`}
+      to={`/projects/${project.project_id}`}
       className="hover:bg-gray-50 border border-1 rounded-lg p-2 min-h-[30vh] shadow-md flex flex-col overflow-hidden gap-5 "
     >
       <div className="text-center">
         <div className="lg:text-2xl text-xl font-semibold">
-          {project.nombre}
+          {project.title}
         </div>
-        <div className="lg:text-sm text-sm p-2">{project.descripcion}</div>
+        <div className="lg:text-sm text-sm p-2">{project.description}</div>
       </div>
       <div className="flex flex-col justify-end items-center gap-10">
         <div className="border border-1 rounded-full bg-gray-100 w-full h-fit">
           <div className="text-xl text-center p-2 font-bold">
-            Restante: ${project.montoTotalProyecto.toFixed(2)}
+            Restante: ${project.total_amount.toFixed(2)}
           </div>
         </div>
         <div className="flex flex-row gap-3 w-full items-center justify-center">

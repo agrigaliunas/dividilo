@@ -53,7 +53,8 @@ const registerPendingUser = async (email) => {
 
     try {
         const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(email, salt);
+        const hashedEmail = await bcrypt.hash(email, salt);
+        const hashedPassword = await bcrypt.hash(hashedEmail, salt);
 
         const initials = getInitialsByEmail(email)
 
@@ -67,7 +68,7 @@ const registerPendingUser = async (email) => {
         });
 
         try {
-            const template = inviteToProjectTemplate(hashedPassword);
+            const template = inviteToProjectTemplate(hashedEmail);
             await sendEmail(
                 email,
                 template.subject,
