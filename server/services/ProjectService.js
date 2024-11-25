@@ -54,6 +54,34 @@ const addParticipant = async (id, req) => {
 
 }
 
+const deleteProject = async (id) => {
+
+    try {
+        const project = await Project.findByPk(id);
+
+        if (project) {
+
+            await ProjectUser.destroy({
+                where: {
+                    project_id: id
+                }
+            })
+
+            await Project.destroy({
+                where: {
+                    project_id: id,
+                },
+            });
+
+            return "Proyecto borrado con exito.";
+
+        }
+    } catch (error) {
+        throw new Error(
+            "Ocurrio un error al intentar borrar el proyecto: " + error.message
+        );
+    }
+}
 const getProjectsByUserId = async (userId) => {
 
     try {
@@ -119,6 +147,7 @@ const getProjectById = async (projectId) => {
 
 module.exports = {
     addProject,
+    deleteProject,
     addParticipant,
     getProjectsByUserId,
     getUsersByProjectId,
