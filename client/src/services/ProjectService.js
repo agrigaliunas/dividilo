@@ -38,15 +38,19 @@ export const createProject = async (nombre, descripcion, userId) => {
   return response;
 };
 
-export const updateProject = async (proyectoActualizado) => {
+export const updateProject = async (id, nombre, descripcion, estado) => {
   const response = await fetch(
-    `http://localhost:8000/proyectos/${proyectoActualizado.id}`,
+    `${BACKEND_URL}/projects/${id}`,
     {
-      method: "PUT",
+      method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(proyectoActualizado),
+      body: JSON.stringify({
+        title: nombre,
+        description: descripcion,
+        state: estado
+      })
     }
   );
 
@@ -56,7 +60,7 @@ export const updateProject = async (proyectoActualizado) => {
 
 export const deleteProject = async (id) => {
   const response = await fetch(
-    `http://localhost:8000/proyectos/${id}`,
+    `${BACKEND_URL}/projects/${id}`,
     {
       method: "DELETE",
       headers: {

@@ -12,6 +12,7 @@ import { ProjectParticipantRounded } from "./ProjectParticipantRounded";
 import { CrossButton } from "./buttons/CrossButton";
 import { NewGastoModal } from "./modals/NewGastoModal";
 import NewTicketModal from "./modals/NewTicketModal";
+import { updateProject } from "../services/ProjectService";
 
 export const ProjectInfo = ({ proyecto, participantesProyecto }) => {
   const [projectData, setProjectData] = useState({
@@ -152,7 +153,17 @@ export const ProjectInfo = ({ proyecto, participantesProyecto }) => {
     navigate("/dashboard");
   };
 
-  const handleSaveProyecto = () => {
+  const handleSaveProyecto = async () => {
+    try {
+      const response = await updateProject(projectData.id, projectData.nombre, projectData.descripcion, projectStatus)
+      if (response.ok) {
+        window.location.reload();
+      } else {
+        console.error("Error al actualizar el proyecto.");
+      }
+    } catch (error) {
+      console.error("Error en la solicitud de actualización:", error);
+    }
     setEditandoProyecto(false);
   };
 
@@ -431,7 +442,7 @@ export const ProjectInfo = ({ proyecto, participantesProyecto }) => {
           </div>
         </>
       )}
-      {/* {editandoProyecto == true && (
+      {editandoProyecto == true && (
         <>
           {
             <NewParticipantModal
@@ -536,7 +547,7 @@ export const ProjectInfo = ({ proyecto, participantesProyecto }) => {
                   projectData.montoTotalProyecto.toFixed(2)}
               </span>
             </div>
-            <div className="flex flex-col w-full border border-1 bg-white rounded-xl shadow-md p-5 lg:w-[50%] gap-4">
+            {/* <div className="flex flex-col w-full border border-1 bg-white rounded-xl shadow-md p-5 lg:w-[50%] gap-4">
               <h2 className="text-2xl text-left font-bold">Participantes</h2>
               <span className="text-4xl font-bold">
                 {projectData.participantes.length || "1"}
@@ -560,7 +571,7 @@ export const ProjectInfo = ({ proyecto, participantesProyecto }) => {
                   <UserPlus />
                 </button>
               </div>
-            </div>
+            </div> */}
           </div>
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-4 border border-1 bg-white p-5 rounded-xl shadow-md">
@@ -575,7 +586,7 @@ export const ProjectInfo = ({ proyecto, participantesProyecto }) => {
                   Agregar gasto
                 </button>
               </div>
-              <div className={`flex flex-col gap-2`}>
+              {/* <div className={`flex flex-col gap-2`}>
                 {projectData.gastos.length > 0 ? (
                   projectData.gastos.map((gasto, gastoIndex) => (
                     <div
@@ -784,13 +795,13 @@ export const ProjectInfo = ({ proyecto, participantesProyecto }) => {
                     No hay gastos registrados.
                   </span>
                 )}
-              </div>
+              </div> */}
             </div>
           </div>
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-4 border border-1 bg-white p-5 rounded-xl shadow-md">
               <h2 className="text-2xl text-left font-bold">Balances</h2>
-              <div className="flex flex-col gap-2">
+              {/* <div className="flex flex-col gap-2">
                 {projectData.participantes?.length > 0 ? (
                   projectData.participantes.map(
                     (participante, participanteIndex) => {
@@ -818,11 +829,11 @@ export const ProjectInfo = ({ proyecto, participantesProyecto }) => {
                 ) : (
                   <span>No hay participantes</span>
                 )}
-              </div>
+              </div> */}
             </div>
           </div>
         </>
-      )} */}
+      )}
     </div>
   );
 };
