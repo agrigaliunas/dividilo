@@ -1,9 +1,7 @@
 const { Project } = require("../db/config");
 const { ProjectUser } = require("../db/config");
-const User = require("../db/models/User");
-const { use } = require("../routes/project");
 const { registerPendingUser } = require('../services/AuthService');
-const { getUserByEmail } = require('../services/UserService');
+const { getUserByEmail, getUsersByIdList } = require('../services/UserService');
 const { Op } = require('sequelize');
 
 const ADDED_PARTICIPANT_SUCCESFULLY = "Participante agregado correctamente."
@@ -65,8 +63,6 @@ const getProjectsByUserId = async (userId) => {
             }
         });
 
-        console.log(projectsFromUser)
-
         const projectIds = projectsFromUser.map(project => project.project_id);
 
         if (projectIds.length === 0) {
@@ -83,13 +79,34 @@ const getProjectsByUserId = async (userId) => {
 
         return projects;
     } catch (err) {
-        console.error('Error obteniendo proyectos:', err.message);
+        console.error('Error al obtener proyectos:', err.message);
         throw new Error('No se pudieron obtener los proyectos.');
     }
 };
 
+const getUsersByProjectId = async (projectId) => {
+    try {
+        const usersFromProject = await ProjectUser.findAll({
+            where: {
+                project_id: projectId,
+            }
+        });
+
+        const usersIds = usersFromProject.map(project => project.user_id);
+
+        const users = await getUsersByIdList(usersIds)
+
+        return users;
+
+    } catch (error) {
+        console.error('Error al obtener usuarios:', err.message);
+        throw new Error('No se pudieron obtener los usuarios del proyecto.');
+    }
+}
+
 module.exports = {
     addProject,
     addParticipant,
-    getProjectsByUserId
+    getProjectsByUserId,
+    getUsersByProjectId
 };

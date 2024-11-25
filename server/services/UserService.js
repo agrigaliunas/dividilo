@@ -1,6 +1,7 @@
 const { User } = require("../db/config");
 const { sendEmail } = require("../services/EmailService");
 const { accountDeletedTemplate } = require("../utils/EmailTemplates");
+const { Op } = require('sequelize');
 
 const getUserById = async (id) => {
   const user = await User.findByPk(id, {
@@ -10,9 +11,23 @@ const getUserById = async (id) => {
   return user;
 };
 
+const getUsersByIdList = async (usersIds) => {
+  const users = await User.findAll({
+    where: {
+      user_id: {
+        [Op.in]: usersIds,
+      },
+    },
+    attributes: { exclude: ["password"] },
+  });
+
+  return users;
+};
+
 const getUserByEmail = async (userEmail) => {
   const user = await User.findOne({
-    where: { email: userEmail }
+    where: { email: userEmail },
+    attributes: { exclude: ["password"] },
   });
   return user;
 };
@@ -65,4 +80,5 @@ module.exports = {
   getUserByEmail,
   deleteAccount,
   getInitials,
+  getUsersByIdList,
 };

@@ -36,4 +36,8 @@ router.get('/user/:userId',
     ProjectController.getProjectsByUserId
 )
 
+router.get("/:projectId/users",
+    ProjectController.getUsersByProjectId
+)
+
 module.exports = router ;
