@@ -25,14 +25,16 @@ export const login = async (data) => {
   return await response.json();
 };
 
-export const restaurarPassword = async (id, usuarioOriginal) => {
+export const actualizarContrasena = async (email, password, newPassword) => {
+
   const datosActualizados = {
-    ...usuarioOriginal,
-    password: "123456",
+    email,
+    password,
+    newPassword
   };
 
-  const response = await fetch(`http://localhost:8000/usuarios/${id}`, {
-    method: "PUT",
+  const response = await fetch(`${BACKEND_URL}/auth/restore-password`, {
+    method: "PATCH",
     headers: {
       "Content-Type": "application/json",
     },
@@ -40,7 +42,7 @@ export const restaurarPassword = async (id, usuarioOriginal) => {
   });
 
   return response;
-};
+}
 
 export const checkEmailExists = async (email) => {
     const usuarios = await fetchUsuarios();

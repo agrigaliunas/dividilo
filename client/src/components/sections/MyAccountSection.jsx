@@ -3,46 +3,87 @@ import { MyAccountSectionForm } from "../MyAccountSectionForm";
 import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { eliminarUsuario } from "../../services/UserService";
-
-export const MyAccountSection = ({ section, clearForm }) => {
-
+import { actualizarContrasena } from "../../services/AuthService";
+export const MyAccountSection = ({
+  section,
+  clearForm,
+  formValues,
+  onInputChange,
+}) => {
   const navigate = useNavigate();
-  const {token, user} = useAuth()
+  const { token, user } = useAuth();
 
-  const deleteAccount = async () => {
-    await eliminarUsuario(user.user_id, token);
-    navigate("/home")
-  }
+  const handleSubmit = async () => {
+    try {
+      switch (section.step) {
+        case 0:
+          // await actualizarUsuario(user.user_id, formValues, token);
+          alert("Información actualizada correctamente.");
+          break;
+        case 1:
+          if (
+            formValues["Contraseña actual"] &&
+            formValues["Nueva contraseña"] &&
+            formValues["Repetir nueva contraseña"]
+          ) {
+            if (
+              formValues["Nueva contraseña"] !==
+              formValues["Repetir nueva contraseña"]
+            ) {
+              alert("Las contraseñas no coinciden.");
+              return;
+            }
+            await actualizarContrasena(
+              user.email,
+              formValues["Contraseña actual"],
+              formValues["Nueva contraseña"],
+              token
+            );
+            alert("Contraseña actualizada correctamente.");
+          } else {
+            alert("Por favor complete todos los campos.");
+          }
+          break;
+        case 2:
+          const password =
+            formValues["¡Atención! ¡Esta acción no tiene vuelta atrás!"];
+          if (password) {
+            // await eliminarUsuario(user.user_id, token);
+            alert("Cuenta eliminada exitosamente.");
+            navigate("/home");
+          } else {
+            alert("Por favor, ingrese la contraseña para eliminar su cuenta.");
+          }
+          break;
+        default:
+          alert("Acción no válida.");
+      }
+    } catch (error) {
+      console.error("Error al realizar la acción:", error);
+      alert("Ocurrió un error. Por favor, inténtelo nuevamente.");
+    }
+  };
 
   return (
     <div className="flex flex-col gap-5">
       <div className="flex flex-col gap-2">
         <span className="font-bold text-xl">{section?.title}</span>
-        {section?.labels.map((l) => (
+        {section?.labels.map((label) => (
           <MyAccountSectionForm
-            label={l}
-            button={section?.button}
+            key={label.title}
+            label={label}
+            value={formValues[label.title]}
+            onChange={onInputChange}
             clearForm={clearForm}
-          ></MyAccountSectionForm>
+          />
         ))}
       </div>
-      {section.step === 2 ? (
-        <button
-          onClick={deleteAccount}
-          className={` ${section.buttonColor} text-white p-2 rounded-md hover:opacity-85`}
-        >
-          {section?.button}
-        </button>
-      ) : (
-        <button
-          onClick={() =>
-            alert("Se ha actualizado la informacion correctamente.")
-          }
-          className={` ${section.buttonColor} text-white p-2 rounded-md hover:opacity-85`}
-        >
-          {section?.button}
-        </button>
-      )}
+      <button
+        onClick={handleSubmit}
+        className={`${section.buttonColor} text-white p-2 rounded-md hover:opacity-85`}
+      >
+        {section?.button}
+      </button>
     </div>
   );
 };

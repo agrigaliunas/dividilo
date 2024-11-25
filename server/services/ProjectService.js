@@ -74,8 +74,8 @@ const deleteProject = async (id) => {
             });
 
             return "Proyecto borrado con exito.";
-
         }
+        
     } catch (error) {
         throw new Error(
             "Ocurrio un error al intentar borrar el proyecto: " + error.message

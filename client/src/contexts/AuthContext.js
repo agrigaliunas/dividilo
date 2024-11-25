@@ -1,5 +1,4 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import { Navigate } from 'react-router-dom';
 
 const AuthContext = createContext();
 
@@ -25,6 +24,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     localStorage.removeItem('user');
+    localStorage.removeItem('access-token');
     setUser(null);
   };
 

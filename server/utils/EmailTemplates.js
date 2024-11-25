@@ -19,30 +19,6 @@ const welcomeTemplate = {
     </html>`
 };
 
-const passwordUpdatedTemplate = {
-    subject: 'Tu contraseña ha sido actualizada',
-    html: `<!DOCTYPE html>
-    <html>
-    <head>
-        <meta charset="utf-8">
-    </head>
-    <body style="font-family: sans-serif;">
-        <div style="max-width: 600px; margin: 0 auto;">
-            <h1 style="color: #2c3e50;">Contraseña Actualizada</h1>
-            <p>Hola,</p>
-            <p>La contraseña de tu cuenta de Dividilo ha sido actualizada exitosamente.</p>
-            <div style="background-color: #fff3cd; padding: 15px; border-radius: 5px;">
-                <p>🔐 Si no realizaste este cambio:</p>
-                <ol>
-                    <li>Cambia tu contraseña inmediatamente</li>
-                    <li>Contacta con nuestro soporte</li>
-                </ol>
-            </div>
-        </div>
-    </body>
-    </html>`
-};
-
 const accountDeletedTemplate = {
     subject: 'Tu cuenta ha sido eliminada',
     html: `<!DOCTYPE html>
@@ -96,10 +72,35 @@ const inviteToProjectTemplate = (password) => ({
     </html>`
 });
 
+const passwordUpdatedTemplate = {
+    subject: 'Tu contraseña fué actualizada exitosamente',
+    html: `<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body style="font-family: sans-serif;">
+        <div style="max-width: 600px; margin: 0 auto;">
+            <h1 style="color: #2c3e50;">Tu Contraseña fué Actualizada</h1>
+            <p>Hola,</p>
+            <p>Te informamos que tu contraseña de la cuenta de <b>Dividilo</b> fué actualizada correctamente.</p>
+            <div style="background-color: #ecf0f1; padding: 15px; border-radius: 5px;">
+                <p>🔒 Si vos no hiciste este cambio, por favor segui estos pasos inmediatamente:</p>
+                <ol>
+                    <li>Cambiá tu contraseña de nuevo.</li>
+                    <li>Contactá a nuestro soporte a través de <a href="mailto:support@dividilo.com">support@dividilo.com</a>.</li>
+                </ol>
+            </div>
+            <p>Si vos fuiste quien realizó el cambio, no necesitas hacer nada más. ¡Gracias por ser parte de la comunidad Dividilo!</p>
+        </div>
+    </body>
+    </html>`
+};
 
 module.exports = {
     welcomeTemplate,
     accountDeletedTemplate,
     passwordUpdatedTemplate,
-    inviteToProjectTemplate
+    inviteToProjectTemplate,
+    passwordUpdatedTemplate
 }

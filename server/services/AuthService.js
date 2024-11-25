@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
 const { sendEmail } = require('../services/EmailService');
-const { welcomeTemplate, inviteToProjectTemplate } = require("../utils/EmailTemplates");
+const { welcomeTemplate, inviteToProjectTemplate, passwordUpdatedTemplate } = require("../utils/EmailTemplates");
 
 const register = async (user) => {
     const existingUser = await User.findOne({
@@ -131,6 +131,11 @@ const restorePassword = async (data) => {
         throw new Error("Usuario no existe.");
     }
 
+    const validPassword = await bcrypt.compare(data.password, user.password);
+    if (!validPassword) {
+        throw new Error("Credenciales inválidas");
+    }
+
     try {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(data.newPassword, salt);
@@ -147,8 +152,8 @@ const restorePassword = async (data) => {
         try {
             await sendEmail(
                 data.email,
-                'Tu contraseña fué modificada',
-                '<p>¡Hola! Tu contraseña de Dividilo fué modificada. Si no fuiste vos, contactate con un administrador.</p>'
+                passwordUpdatedTemplate.subject,
+                passwordUpdatedTemplate.html
             );
         } catch (emailError) {
             console.error('Error enviando email:', emailError);

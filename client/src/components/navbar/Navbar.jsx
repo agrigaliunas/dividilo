@@ -11,8 +11,6 @@ import { Currency } from "../icons/Currency";
 import { UserPlus } from "../icons/UserPlus.jsx";
 import { Adjustment } from "../icons/Adjustment.jsx";
 
-const ROLE_ADMIN = "admin";
-
 export const Navbar = () => {
   const { isMenuOpen, closeMenu } = useMenu();
   const { user, logout } = useAuth();
@@ -24,7 +22,7 @@ export const Navbar = () => {
 
   return (
     <nav
-      className={`z-50 w-[80vw] lg:w-[30vw] h-full shadow-md border border-gray-100 rounded-r-xl fixed bg-white top-0 left-0 transition-transform duration-300 ease-in-out 
+      className={`z-50 w-[80vw] lg:w-[20vw] h-full shadow-md border border-gray-100 rounded-r-xl fixed bg-white top-0 left-0 transition-transform duration-300 ease-in-out 
             transform ${
               isMenuOpen
                 ? "translate-x-0 opacity-100"
@@ -39,18 +37,6 @@ export const Navbar = () => {
           <Cross />
         </button>
         <div className="flex flex-col text-2xl text-left gap-4 w-full px-3">
-          {user && user.rol === ROLE_ADMIN && (
-            <Link
-              to="/admin-panel"
-              className="hover:bg-gray-100 w-full py-1 rounded-md px-4"
-              onClick={closeMenu}
-            >
-              <span className="flex flex-row gap-1 items-center">
-                <Adjustment />
-                Panel admin
-              </span>
-            </Link>
-          )}
           {user ? (
             <>
               <Link

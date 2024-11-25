@@ -1,61 +1,39 @@
-import React, { useState, useEffect } from 'react';
-import {useAuth} from '../contexts/AuthContext'
+import React, { useEffect } from 'react';
+import { useAuth } from '../contexts/AuthContext';
 
-export const MyAccountSectionForm = ({ label, clearForm }) => {
+export const MyAccountSectionForm = ({ label, value, onChange, clearForm }) => {
+  const { user } = useAuth();
 
-  const {user} = useAuth()
-
-  const [placeHolder, setPlaceHolder] = useState("")
-  const [inputValue, setInputValue] = useState('');
-
-  const handleChange = (e) => {
-    setInputValue(e.target.value);
+  const getPlaceholder = () => {
+    switch (label.title) {
+      case "Nombre": return user.name;
+      case "Apellido": return user.lastname;
+      case "Correo electrónico": return user.email;
+      case "Contraseña actual": return "******";
+      case "Nueva contraseña": return "Ingresar nueva contraseña";
+      case "Repetir nueva contraseña": return "Repetir nueva contraseña";
+      case "¡Atención! ¡Esta acción no tiene vuelta atrás!": return "Ingrese contraseña para eliminar la cuenta...";
+      default: return label.placeholder || "Ingrese un valor...";
+    }
   };
 
-  const checkPlaceholder = () => {
-    switch(label.title) {
-      case "Nombre":
-        setPlaceHolder(user.nombre)
-        break;
-      case "Apellido": 
-        setPlaceHolder(user.apellido)
-        break;
-      case "Correo electrónico":
-        setPlaceHolder(user.email)
-        break;
-      case "Contraseña actual":
-        setPlaceHolder("******")
-        break;
-      case "Nueva contraseña":
-        setPlaceHolder("Ingresar nueva contraseña")
-        break;
-      case "Repetir nueva contraseña":
-        setPlaceHolder("Repetir nueva contraseña")
-        break;
-      case "¡Atención! ¡Esta acción no tiene vuelta atrás!":
-        setPlaceHolder("Ingrese contraseña para eliminar la cuenta...")
-        break;
-    }
-  }
-
   useEffect(() => {
-    checkPlaceholder()
     if (clearForm) {
-      setInputValue('');
+      onChange({ target: { name: label.title, value: '' } });
     }
   }, [clearForm]);
 
   return (
     <div className="flex flex-col gap-1">
-      <label className='text-md'>{label.title}</label>
+      <label className="text-md">{label.title}</label>
       <input
         className="px-2 py-3 border border-1 border-[#e9e9ef] shadow-sm outline-none rounded-md text-sm"
         type={label.type}
-        placeholder={placeHolder}
-        value={inputValue}
-        onChange={handleChange}
+        placeholder={getPlaceholder()}
+        name={label.title}
+        value={value}
+        onChange={onChange}
       />
-      
     </div>
   );
 };
