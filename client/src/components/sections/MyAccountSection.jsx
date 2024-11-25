@@ -19,6 +19,7 @@ export const MyAccountSection = ({
         case 0:
           // await actualizarUsuario(user.user_id, formValues, token);
           alert("Información actualizada correctamente.");
+          navigate('/account')
           break;
         case 1:
           if (
@@ -40,6 +41,7 @@ export const MyAccountSection = ({
               token
             );
             alert("Contraseña actualizada correctamente.");
+            navigate('/account')
           } else {
             alert("Por favor complete todos los campos.");
           }
