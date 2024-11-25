@@ -19,7 +19,7 @@ const addProject = async (projectData) => {
 
 const addParticipant = async (id, req) => {
 
-    
+
     const existingProject = await Project.findOne({
         where: { project_id: id }
     });
@@ -41,7 +41,7 @@ const addParticipant = async (id, req) => {
 
             return ADDED_PARTICIPANT_SUCCESFULLY
 
-        } catch(err) {
+        } catch (err) {
             throw new Error('Error registrando un usuario pendiente: ', err.message)
         }
     }
@@ -55,8 +55,27 @@ const addParticipant = async (id, req) => {
 
 }
 
+const deleteProject = async (id) => {
+
+    try {
+        const project = await Project.findByPk(id);
+
+        if (project) {
+            await Project.destroy({
+                where: {
+                    project_id: id,
+                },
+            });
+        }
+    } catch (error) {
+        throw new Error(
+            "Ocurrio un error al intentar borrar el proyecto: " + error.message
+        );
+    }
+}
 
 module.exports = {
     addProject,
+    deleteProject,
     addParticipant
 };

@@ -32,4 +32,8 @@ router.post('/:id',
     ProjectController.addParticipant
 )
 
+
+router.delete('/:projectId',
+    ProjectController.deleteProject);
+
 module.exports = router ;

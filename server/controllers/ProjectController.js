@@ -11,6 +11,17 @@ const addProject = async (req, res) => {
     }
 };
 
+const deleteProject = async(req, res) => {
+    try {
+        const user = await ProjectService.deleteProject(req.params.projectId);
+        res.status(200).json(user);
+      } catch (err) {
+        res.status(500).json({
+          message: err.message,
+        });
+      }
+}
+
 const addParticipant = async (req, res) => {
     try {
         const response = await ProjectService.addParticipant(req.params.id, req.body)
@@ -24,5 +35,6 @@ const addParticipant = async (req, res) => {
 
 module.exports = {
     addProject,
+    deleteProject,
     addParticipant
 };
