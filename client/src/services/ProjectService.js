@@ -22,7 +22,7 @@ export const fetchUsersByProjectId = async (projectId) => {
   return data;
 };
 
-export const createProject = async (nombre, descripcion) => {
+export const createProject = async (nombre, descripcion, userId) => {
   const response = await fetch(`${BACKEND_URL}/projects`, {
     method: "POST",
     headers: {
@@ -30,7 +30,8 @@ export const createProject = async (nombre, descripcion) => {
     },
     body: JSON.stringify({
       title: nombre,
-      description: descripcion
+      description: descripcion,
+      user_id: userId
     }),
   });
 

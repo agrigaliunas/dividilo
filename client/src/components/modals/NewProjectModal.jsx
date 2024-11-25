@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { X } from "../icons/X";
 import { createProject } from "../../services/ProjectService.js";
+import { useAuth } from "../../contexts/AuthContext.js";
 
 
 export const NewProjectModal = ({ closeModal }) => {
   const [nombre, setNombre] = useState("");
   const [descripcion, setDescripcion] = useState("");
 
+  const {user} = useAuth()
+
   const handleCrearProyecto = async () => {
     try {
-      const response = await createProject(nombre, descripcion)
+      const response = await createProject(nombre, descripcion, user.user_id)
       if (response.ok) {
         window.location.reload();
       } else {

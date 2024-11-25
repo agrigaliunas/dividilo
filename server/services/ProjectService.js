@@ -9,6 +9,12 @@ const ADDED_PARTICIPANT_SUCCESFULLY = "Participante agregado correctamente."
 const addProject = async (projectData) => {
     try {
         const newProject = await Project.create(projectData);
+
+        await ProjectUser.create({
+            user_id: projectData.user_id,
+            project_id: newProject.project_id
+        })
+
         return newProject;
     } catch (err) {
         console.error('Error creando proyecto:', err.message);
@@ -75,7 +81,7 @@ const deleteProject = async (id) => {
 
             return "Proyecto borrado con exito.";
         }
-        
+
     } catch (error) {
         throw new Error(
             "Ocurrio un error al intentar borrar el proyecto: " + error.message
