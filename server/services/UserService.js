@@ -80,6 +80,35 @@ const deleteAccount = async (id, req) => {
   }
 };
 
+
+const updateUser = async (id, req) => {
+  try {
+      const user = await User.findByPk(id);
+      if (!user) {
+          throw new Error("Usuario no existente.");
+      }
+
+      let newInitials;
+      if (req.name || req.lastname) {
+        newInitials = getInitialsFromNameAndLastname(
+          req.name || user.name, 
+          req.lastname || user.lastname
+        );
+      }
+
+      await user.update({
+          name: req.name || user.name,
+          lastname: req.lastname || user.lastname,
+          email: req.email || user.email,
+          initials: newInitials || user.initials
+      });
+      
+      return "Usuario actualizado con exito.";
+  } catch (error) {
+      throw new Error("Ocurrio un error al intentar actualizar el usuario: " + error.message);
+  }
+};
+
 // cambiar datos (email, nombre, apellido)
 // si cambia nombre y apellido cambiar iniciales
 
@@ -89,10 +118,15 @@ const getInitials = (user) => {
   return (user.name.charAt(0) + user.lastname.charAt(0)).toUpperCase();
 };
 
+const getInitialsFromNameAndLastname = (name, lastname) => {
+  return (name.charAt(0) + lastname.charAt(0)).toUpperCase();
+};
+
 module.exports = {
   getUserById,
   getUserByEmail,
   deleteAccount,
   getInitials,
   getUsersByIdList,
+  updateUser
 };

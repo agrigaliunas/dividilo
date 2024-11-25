@@ -21,15 +21,19 @@ export const eliminarUsuario = async (id, confirmationPassword) => {
   return response;
 };
 
-export const actualizarUsuario = async (usuarioActualizado) => {
+export const actualizarUsuario = async (id, nombre, apellido, email) => {
   const response = await fetch(
-    `http://localhost:8000/usuarios/${usuarioActualizado.id}`,
+    `${BACKEND_URL}/users/${id}`,
     {
-      method: "PUT",
+      method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(usuarioActualizado),
+      body: JSON.stringify({
+        name: nombre,
+        lastname: apellido,
+        email
+      }),
     }
   );
 

@@ -17,7 +17,7 @@ export const MyAccountSection = ({
     try {
       switch (section.step) {
         case 0:
-          // await actualizarUsuario(user.user_id, formValues, token);
+          await actualizarUsuario(user.user_id, formValues["Nombre"], formValues["Apellido"], formValues["Correo electrónico"]);
           alert("Información actualizada correctamente.");
           navigate('/account')
           break;
