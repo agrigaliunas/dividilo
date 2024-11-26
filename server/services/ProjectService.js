@@ -172,32 +172,32 @@ const updateProject = async (id, req) => {
 
 const deleteParticipantFromProject = async (id, req) => {
     try {
-
-        const projects = await ProjectUser.findAll({
-            where: {
-                project_id: id,
-                user_id: req.userId
-            }
-        });
-
-        if (!projects) {
-            throw new Error("El participante no pertenece al proyecto.")
-        }
-
-        await ProjectUser.destroy({
-            where: {
-                project_id: id,
-                user_id: req.userId
-            },
-        });
-
-        return "Participante borrado con exito del proyecto.";
-
+      const projectUser = await ProjectUser.findOne({
+        where: {
+          project_id: id,
+          user_id: req.userId,
+        },
+      });
+  
+      if (!projectUser) {
+        throw new Error("El participante no pertenece al proyecto.");
+      }
+  
+      await ProjectUser.destroy({
+        where: {
+          project_id: id,
+          user_id: req.userId,
+        },
+      });
+  
+      return "Participante borrado con éxito del proyecto.";
     } catch (err) {
-        throw new Error("Ocurrio un error al intentar eliminar el parcitipante del proyecto: " + error.message);
-
+      throw new Error(
+        "Ocurrió un error al intentar eliminar al participante del proyecto: " +
+          err.message
+      );
     }
-}
+  };
 
 
 module.exports = {
