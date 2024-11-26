@@ -22,7 +22,7 @@ const Project = require('./models//Project')(sequelize);
 const ProjectUser = require('./models/ProjectUser')(sequelize);
 const Ticket = require('./models/Ticket')(sequelize);
 const Split = require('./models/Split')(sequelize);
-const Expense = require('./models/Expenseasd')(sequelize)
+const Expense = require('./models/Expense')(sequelize)
 
 dotenv.config();
 
