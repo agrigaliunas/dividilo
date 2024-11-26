@@ -12,8 +12,12 @@ import { CrossButton } from "./buttons/CrossButton";
 import { NewGastoModal } from "./modals/NewGastoModal";
 import NewTicketModal from "./modals/NewTicketModal";
 import {deleteProject, updateProject, eliminarParticipanteDelProyecto } from "../services/ProjectService";
+import { getExpensesByProjectId } from "../services/ExpenseService";
 
 export const ProjectInfo = ({ proyecto, participantesProyecto }) => {
+
+  const [gastos, setGastos] = useState([])
+
   const [projectData, setProjectData] = useState({
     id: "",
     nombre: "",
@@ -44,10 +48,17 @@ export const ProjectInfo = ({ proyecto, participantesProyecto }) => {
   const { user } = useAuth();
   const navigate = useNavigate();
 
+  
+
   useEffect(() => {
     if (proyecto) {
-      console.log("PROYECTO: " + proyecto)
-      console.log("participantes: " + participantesProyecto)
+      const getGastos = async () => {
+        const gastos = await getExpensesByProjectId(proyecto.project_id)
+        setGastos(gastos);
+      };
+
+      getGastos();
+
       setProjectData({
         id: proyecto.project_id,
         nombre: proyecto.title,
@@ -55,7 +66,7 @@ export const ProjectInfo = ({ proyecto, participantesProyecto }) => {
         montoTotalProyecto: proyecto.total_amount,
         estado: proyecto.state,
         participantes: participantesProyecto,
-        // gastos: proyecto.gastos || [],
+        gastos: gastos || [],
       });
       setProjectStatus(projectData.estado);
     }

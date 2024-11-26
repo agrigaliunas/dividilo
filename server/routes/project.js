@@ -2,10 +2,12 @@ const { Router } = require('express');
 const ProjectController = require('../controllers/ProjectController');
 const { check } = require('express-validator');
 const validateRequest = require('../middlewares/request_validator');
+const validateJwt = require('../middlewares/jwt_validator');
 
 const router = Router();
 
 router.post('/',
+    validateJwt,
     [
         check("title")
             .not().isEmpty().withMessage('El título es requerido')

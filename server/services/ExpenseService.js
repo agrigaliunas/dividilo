@@ -1,73 +1,69 @@
 const { Expense } = require("../db/config");
-const { Op } = require('sequelize');
+const { Op } = require("sequelize");
 
 const addExpense = async (expenseData) => {
   try {
     const newExpense = await Expense.create(expenseData);
     return newExpense;
   } catch (err) {
-    console.error('Error creando gasto:', err.message);
-    throw new Error('Falla al crear un gasto.');
+    console.error("Error creando gasto:", err.message);
+    throw new Error("Falla al crear un gasto.");
   }
-}
+};
 
 const deleteExpense = async (id) => {
-
   try {
-      const expense = await Expense.findByPk(id);
+    const expense = await Expense.findByPk(id);
 
-      if (expense) {
+    if (expense) {
+      await Expense.destroy({
+        where: {
+          expense_id: id,
+        },
+      });
 
-          await Expense.destroy({
-              where: {
-                  expense_id: id,
-              },
-          });
-
-          return "Gasto borrado con exito.";
-      }
-
+      return "Gasto borrado con exito.";
+    }
   } catch (error) {
-      throw new Error(
-          "Ocurrio un error al intentar borrar el gasto: " + error.message
-      );
+    throw new Error(
+      "Ocurrio un error al intentar borrar el gasto: " + error.message
+    );
   }
-}
+};
 
 const updateExpense = async (id, req) => {
   try {
-      const expense = await Expense.findByPk(id);
-      if (!expense) {
-          throw new Error("Gasto no existente.");
-      }
+    const expense = await Expense.findByPk(id);
+    if (!expense) {
+      throw new Error("Gasto no existente.");
+    }
 
-      await expense.update({
-          title: req.title || expense.title,
-          total_amount: req.total_amount || expense.total_amount,
-          project_id: req.project_id || expense.project_id,
-      });
+    await expense.update({
+      title: req.title || expense.title,
+      total_amount: req.total_amount || expense.total_amount,
+      project_id: req.project_id || expense.project_id,
+    });
 
-      return "Gasto actualizado con exito.";
+    return "Gasto actualizado con exito.";
   } catch (error) {
-      throw new Error("Ocurrio un error al intentar actualizar el proyecto: " + error.message);
+    throw new Error(
+      "Ocurrio un error al intentar actualizar el proyecto: " + error.message
+    );
   }
-}
+};
 
 const getExpensesByProjectId = async (projectId) => {
-
   try {
-  
-      const expenses = await Expense.findAll({
-          where: {
-              project_id: projectId
-          },
-      });
+    const expenses = await Expense.findAll({
+      where: {
+        project_id: projectId,
+      },
+    });
 
-      return expenses
-
+    return expenses;
   } catch (err) {
-      console.error('Error al obtener proyectos:', err.message);
-      throw new Error('No se pudieron obtener los proyectos.');
+    console.error("Error al obtener proyectos:", err.message);
+    throw new Error("No se pudieron obtener los proyectos.");
   }
 };
 
@@ -75,5 +71,5 @@ module.exports = {
   addExpense,
   deleteExpense,
   updateExpense,
-  getExpensesByProjectId
+  getExpensesByProjectId,
 };
