@@ -53,4 +53,8 @@ router.patch(
     ProjectController.updateProject
 );
 
+router.delete("/:projectId/users",
+    ProjectController.deleteParticipantFromProject
+)
+
 module.exports = router;

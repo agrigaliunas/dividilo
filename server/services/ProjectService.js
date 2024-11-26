@@ -157,18 +157,48 @@ const updateProject = async (id, req) => {
         if (!project) {
             throw new Error("Proyecto no existente.");
         }
-  
+
         await project.update({
             title: req.title || project.title,
             description: req.description || project.description,
             state: req.state || project.state,
         });
-        
+
         return "Proyecto actualizado con exito.";
     } catch (error) {
         throw new Error("Ocurrio un error al intentar actualizar el proyecto: " + error.message);
     }
 }
+
+const deleteParticipantFromProject = async (id, req) => {
+    try {
+
+        const projects = await ProjectUser.findAll({
+            where: {
+                project_id: id,
+                user_id: req.userId
+            }
+        });
+
+        if (!projects) {
+            throw new Error("El participante no pertenece al proyecto.")
+        }
+
+        await ProjectUser.destroy({
+            where: {
+                project_id: id,
+                user_id: req.userId
+            },
+        });
+
+        return "Participante borrado con exito del proyecto.";
+
+    } catch (err) {
+        throw new Error("Ocurrio un error al intentar eliminar el parcitipante del proyecto: " + error.message);
+
+    }
+}
+
 
 module.exports = {
     addProject,
@@ -177,5 +207,6 @@ module.exports = {
     getProjectsByUserId,
     getUsersByProjectId,
     getProjectById,
-    updateProject
+    updateProject,
+    deleteParticipantFromProject
 };
