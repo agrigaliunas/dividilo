@@ -13,6 +13,6 @@ export const ProjectScreen = () => {
       <ProjectLayout projectId={id}/>
     </MainCenter>
   ) : (
-    <Navigate to="/" />
+    <Navigate to={`/projects/${id}`} />
   );
 };

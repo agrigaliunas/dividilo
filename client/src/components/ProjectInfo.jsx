@@ -5,14 +5,13 @@ import { UserPlus } from "./icons/UserPlus";
 import { ChevronDown } from "./icons/ChevronDown";
 import NewParticipantModal from "./modals/NewParcitipantModal";
 import { ArrowsUpDown } from "./icons/ArrowsUpDown";
-import { deleteProject } from "../services/ProjectService";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { ProjectParticipantRounded } from "./ProjectParticipantRounded";
 import { CrossButton } from "./buttons/CrossButton";
 import { NewGastoModal } from "./modals/NewGastoModal";
 import NewTicketModal from "./modals/NewTicketModal";
-import { updateProject } from "../services/ProjectService";
+import {deleteProject, updateProject, eliminarParticipanteDelProyecto } from "../services/ProjectService";
 
 export const ProjectInfo = ({ proyecto, participantesProyecto }) => {
   const [projectData, setProjectData] = useState({
@@ -62,16 +61,19 @@ export const ProjectInfo = ({ proyecto, participantesProyecto }) => {
     }
   }, [proyecto]);
 
-  const eliminarParticipante = (participanteId) => {
-    const nuevosParticipantes = projectData.participantes.filter(
-      (id) => id !== participanteId
-    );
-
-    setProjectData((prevData) => ({
-      ...prevData,
-      participantes: nuevosParticipantes,
-    }));
+  const eliminarParticipante = async (projectId, participanteId) => {
+    try {
+      await eliminarParticipanteDelProyecto(projectId, participanteId);
+  
+      setProjectData((prevData) => ({
+        ...prevData,
+        participantes: prevData.participantes.filter((p) => p.user_id !== participanteId),
+      }));
+    } catch (error) {
+      console.error("Error al eliminar al participante:", error);
+    }
   };
+  
 
   const eliminarGasto = (gastoId) => {
 
@@ -277,11 +279,11 @@ export const ProjectInfo = ({ proyecto, participantesProyecto }) => {
               <h2 className="text-2xl text-left font-bold">
                 Monto total gastado
               </h2>
-              {/* <span className="text-4xl font-bold mt-auto">
+              <span className="text-4xl font-bold mt-auto">
                 $
                 {projectData.montoTotalProyecto &&
                   projectData.montoTotalProyecto.toFixed(2)}
-              </span> */}
+              </span>
             </div>
             <div className="flex flex-col w-full border border-1 bg-white rounded-xl shadow-md p-5 lg:w-[50%] gap-4">
               <h2 className="text-2xl text-left font-bold">Participantes</h2>
@@ -446,6 +448,7 @@ export const ProjectInfo = ({ proyecto, participantesProyecto }) => {
         <>
           {
             <NewParticipantModal
+              projectId={projectData.id}
               participantesId={projectData.participantes}
               isOpen={modalParticipanteIsOpen}
               onClose={closeParticipanteModal}
@@ -547,7 +550,7 @@ export const ProjectInfo = ({ proyecto, participantesProyecto }) => {
                   projectData.montoTotalProyecto.toFixed(2)}
               </span>
             </div>
-            {/* <div className="flex flex-col w-full border border-1 bg-white rounded-xl shadow-md p-5 lg:w-[50%] gap-4">
+            <div className="flex flex-col w-full border border-1 bg-white rounded-xl shadow-md p-5 lg:w-[50%] gap-4">
               <h2 className="text-2xl text-left font-bold">Participantes</h2>
               <span className="text-4xl font-bold">
                 {projectData.participantes.length || "1"}
@@ -557,9 +560,9 @@ export const ProjectInfo = ({ proyecto, participantesProyecto }) => {
                   projectData.participantes.map(p => (
                     <div className="relative inline-block">
                       <ProjectParticipantRounded participant={p} />
-                      {p !== user.id && (
+                      {p.user_id !== user.user_id && (
                         <CrossButton
-                          handleFunction={() => eliminarParticipante(p)}
+                          handleFunction={() => eliminarParticipante(projectData.id, p.user_id)}
                         />
                       )}
                     </div>
@@ -571,7 +574,7 @@ export const ProjectInfo = ({ proyecto, participantesProyecto }) => {
                   <UserPlus />
                 </button>
               </div>
-            </div> */}
+            </div>
           </div>
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-4 border border-1 bg-white p-5 rounded-xl shadow-md">

@@ -72,21 +72,31 @@ export const deleteProject = async (id) => {
   return response;
 };
 
-export const eliminarParticipanteDelProyecto = async (proyectoId, participanteId) => {
-  const proyecto = await fetch(`http://localhost:8000/proyectos/${proyectoId}`).then((res) => res.json());
+export const eliminarParticipanteDelProyecto = async (id, participanteId) => {
+    const response = await fetch(`${BACKEND_URL}/projects/${id}/users`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: participanteId,
+      }),
+    });
 
-  const participantesActualizados = proyecto.participantes.filter(id => id !== participanteId);
+    return response;
+    }
 
-  const response = await fetch(`http://localhost:8000/proyectos/${proyectoId}`, {
-    method: "PUT",
+
+export const agregarParticipanteAlProyecto = async (proyectoId, participanteEmail) => {
+  const response = await fetch(`${BACKEND_URL}/projects/${proyectoId}`, {
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      ...proyecto, 
-      participantes: participantesActualizados 
+      email: participanteEmail
     }),
   });
 
   return response;
-};
+}

@@ -1,65 +1,45 @@
 import React, { useEffect, useState } from "react";
-import { checkEmailExists } from "../../services/AuthService";
+import { agregarParticipanteAlProyecto, fetchUsersByProjectId } from "../../services/ProjectService";
 
-const NewParticipantModal = ({ participantesId, isOpen, onClose, onAddParticipant }) => {
-  
-  const [participanteNoExiste, setParticipanteNoExiste] = useState(true);
+const NewParticipantModal = ({ projectId, isOpen, onClose, onAddParticipant }) => {
   const [participanteAgregando, setParticipanteAgregando] = useState("");
   const [participanteYaAgregado, setParticipanteYaAgregado] = useState(false);
-  const [usuariosId, setUsuariosId] = useState([]);
+  const [usuariosProyecto, setUsuariosProyecto] = useState([]);
 
   useEffect(() => {
-    const loggedUser = JSON.parse(localStorage.getItem("user"));
-    // if (loggedUser && loggedUser.email && !participantesId.includes(loggedUser.email)) {
-      setUsuariosId(participantesId.filter(p => participantesId.includes(p)));
-    // }
-  }, []);
+    const fetchUsuarios = async () => {
+      if (isOpen) {
+        const usuarios = await fetchUsersByProjectId(projectId);
+        setUsuariosProyecto(usuarios);
+      }
+    };
+    fetchUsuarios();
+  }, [isOpen, projectId]);
 
-  const handleEmailChange = async (e) => {
+  const handleEmailChange = (e) => {
     const email = e.target.value;
     setParticipanteAgregando(email);
-    
+
     if (email) {
-      const userExists = await checkEmailExiste(email);
-      const alreadyAdded = await checkParticipanteYaAgregado(email);
-      setParticipanteNoExiste(!userExists);
-      setParticipanteYaAgregado(alreadyAdded);
+      const yaAgregado = usuariosProyecto.some((u) => u.email === email);
+      setParticipanteYaAgregado(yaAgregado);
     } else {
-      setParticipanteNoExiste(true);
       setParticipanteYaAgregado(false);
     }
-  };
-
-  const checkEmailExiste = async (email) => {
-    const usuario = await checkEmailExists(email);
-
-    if (usuario) {
-      if (!usuariosId.includes(usuario.id)) {
-        console.log(usuariosId)
-        const newUsers = usuariosId.push(usuario.id)
-        setUsuariosId(newUsers);
-        console.log(usuariosId)
-      }
-      return true;
-    }
-    return false;
-  };
-
-  const checkParticipanteYaAgregado = async (email) => {
-    const usuario = await checkEmailExists(email);
-
-    if (usuario) {
-      return participantesId.includes(usuario.id);
-    }
-    return false;
   };
 
   const handleAddParticipant = async (e) => {
     e.preventDefault();
     if (participanteAgregando && !participanteYaAgregado) {
-      onAddParticipant(usuariosId);
-      onClose();
-    }
+      await agregarParticipanteAlProyecto(projectId, participanteAgregando);
+
+      setUsuariosProyecto((prev) => [...prev, { participanteAgregando }]);
+
+      onAddParticipant(participanteAgregando);
+      setParticipanteAgregando("");
+
+      setParticipanteAgregando("");
+      onClose();    }
   };
 
   if (!isOpen) return null;
@@ -77,7 +57,7 @@ const NewParticipantModal = ({ participantesId, isOpen, onClose, onAddParticipan
             placeholder="Ingrese el correo electrónico..."
           />
           {participanteYaAgregado && (
-            <p className="text-red-500 text-sm">El participante está en el proyecto.</p>
+            <p className="text-red-500 text-sm">El participante ya está agregado al proyecto.</p>
           )}
           <div className="flex justify-end gap-4">
             <button
@@ -89,8 +69,8 @@ const NewParticipantModal = ({ participantesId, isOpen, onClose, onAddParticipan
             </button>
             <button
               type="submit"
-              disabled={participanteNoExiste || participanteYaAgregado}
-              className={`${participanteNoExiste || participanteYaAgregado ? "bg-gray-600" : "bg-brandblue"} text-white px-4 py-2 rounded-md hover:opacity-85`}
+              disabled={participanteYaAgregado || !participanteAgregando}
+              className={`${participanteYaAgregado ? "bg-gray-600" : "bg-brandblue"} text-white px-4 py-2 rounded-md hover:opacity-85`}
             >
               Agregar
             </button>
