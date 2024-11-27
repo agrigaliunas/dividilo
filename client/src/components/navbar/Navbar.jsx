@@ -2,7 +2,7 @@ import React from "react";
 import { useMenu } from "../../contexts/MenuContext";
 import { useAuth } from "../../contexts/AuthContext.js";
 import { Cross } from "../icons/Cross";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { Bell } from "../icons/Bell";
 import { InfoAccount } from "../icons/InfoAccount";
 import { Logout } from "../icons/Logout";
@@ -14,10 +14,11 @@ import { Adjustment } from "../icons/Adjustment.jsx";
 export const Navbar = () => {
   const { isMenuOpen, closeMenu } = useMenu();
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
   const logoutUser = async () => {
     await logout();
-    <Navigate to="/" />;
+    navigate("/home");
   };
 
   return (

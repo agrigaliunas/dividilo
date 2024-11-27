@@ -11,6 +11,17 @@ export const getExpensesByProjectId = async (projectId, token) => {
   return data;
 };
 
+export const getExpensesWithTicketsByProjectId = async (projectId, token) => {
+  const data = await fetch(`${BACKEND_URL}/expenses/project/${projectId}/expenses-with-tickets`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": token,
+    },
+  }).then((data) => data.json());
+  return data;
+};
+
 export const addExpense = async (projectId, expenseTitle, token) => {
   const data = await fetch(`${BACKEND_URL}/expenses`, {
     method: "POST",

@@ -45,3 +45,19 @@ export const actualizarUsuario = async (id, nombre, apellido, email) => {
 
   return response;
 };
+
+
+export const completarOnboarding = async (id, data) => {
+  const response = await fetch(
+    `${BACKEND_URL}/users/${id}/complete-onboarding`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }
+  );
+
+  return response;
+};

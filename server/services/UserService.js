@@ -80,6 +80,39 @@ const deleteAccount = async (id, req) => {
   }
 };
 
+const completeOnboarding = async (id, req) => {
+  try {
+    const user = await User.findByPk(id);
+    if (!user) {
+        throw new Error("Usuario no existente.");
+    }
+
+    if (user.finished_onboarding === 1) {
+      throw new Error("Usuario ya completo el onboarding anteriormente.");
+    }
+
+    const newInitials = getInitialsFromNameAndLastname(
+      req.name, 
+      req.lastname
+    );
+    
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(req.password, salt);
+
+    await user.update({
+        name: req.name,
+        lastname: req.lastname,
+        initials: newInitials,
+        password: hashedPassword,
+        finished_onboarding: 1
+    });
+    
+    return "Onboarding finalizado. Usuario actualizado con exito.";
+} catch (error) {
+    throw new Error("Ocurrio un error al intentar actualizar el onboarding del usuario: " + error.message);
+}
+}
+
 
 const updateUser = async (id, req) => {
   try {
@@ -109,11 +142,6 @@ const updateUser = async (id, req) => {
   }
 };
 
-// cambiar datos (email, nombre, apellido)
-// si cambia nombre y apellido cambiar iniciales
-
-// updateOnboarding
-
 const getInitials = (user) => {
   return (user.name.charAt(0) + user.lastname.charAt(0)).toUpperCase();
 };
@@ -128,5 +156,6 @@ module.exports = {
   deleteAccount,
   getInitials,
   getUsersByIdList,
-  updateUser
+  updateUser,
+  completeOnboarding
 };

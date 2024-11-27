@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ProjectInfo } from "../ProjectInfo";
+import { ProjectInfo2 } from "../ProjectInfo2";
 import { fetchUsersByProjectId, fetchProjectById } from "../../services/ProjectService.js";
 import { useAuth } from "../../contexts/AuthContext.js";
 
@@ -27,7 +27,7 @@ const ProjectLayout = ({ projectId }) => {
 
   return (
     <>
-      <ProjectInfo proyecto={project} participantesProyecto={usuarios}/>
+      <ProjectInfo2 proyecto={project} participantesProyecto={usuarios}/>
     </>
   );
 };

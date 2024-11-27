@@ -12,7 +12,7 @@ import { CrossButton } from "./buttons/CrossButton";
 import { NewGastoModal } from "./modals/NewGastoModal";
 import NewTicketModal from "./modals/NewTicketModal";
 import {deleteProject, updateProject, eliminarParticipanteDelProyecto } from "../services/ProjectService";
-import { getExpensesByProjectId } from "../services/ExpenseService";
+import { getExpensesByProjectId, getExpensesWithTicketsByProjectId } from "../services/ExpenseService";
 
 export const ProjectInfo = ({ proyecto, participantesProyecto }) => {
 
@@ -53,8 +53,7 @@ export const ProjectInfo = ({ proyecto, participantesProyecto }) => {
   useEffect(() => {
     const actualizarProyecto = async () => {
       if (proyecto) {
-        const gastos = await getExpensesByProjectId(proyecto.project_id, user.token);
-  
+        const gastos = await getExpensesWithTicketsByProjectId(proyecto.project_id, user.token);
         setGastos(gastos);
   
         const datosProyecto = {
@@ -321,8 +320,8 @@ export const ProjectInfo = ({ proyecto, participantesProyecto }) => {
                 </h2>
               </div>
               <div className={`flex flex-col gap-2`}>
-                {projectData.gastos.length > 0 ? (
-                  projectData.gastos.map((gasto, index) => (
+                {gastos.length > 0 ? (
+                  gastos.map((gasto, index) => (
                     <div
                       key={index}
                       className="flex flex-col items-center border-2 rounded-xl gap-2 w-full"
@@ -345,7 +344,7 @@ export const ProjectInfo = ({ proyecto, participantesProyecto }) => {
                         {gastosExpandidos[index] && (
                           <>
                             {gasto.tickets?.length > 0 &&
-                              gasto.tickets.map((ticket, ticketIndex) => (
+                              gastos.tickets.map((ticket, ticketIndex) => (
                                 <div
                                   key={ticketIndex}
                                   className="flex flex-col gap-2 bg-gray-100 border-2 rounded-lg w-full text-base px-5 py-2 justify-center"

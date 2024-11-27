@@ -10,7 +10,7 @@ const NotificationsScreen = () => {
     return user ? (
       <NotificationsLayout />
       ) : (
-        <Navigate to="/" />
+        <Navigate to="/home" />
       );
     
   };

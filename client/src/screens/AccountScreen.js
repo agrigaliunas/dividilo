@@ -11,7 +11,7 @@ const AccountScreen = () => {
       <MyAccountLayout />
     </MainCenter>
   ) : (
-    <Navigate to="/"/>
+    <Navigate to="/home"/>
   );
 };
 

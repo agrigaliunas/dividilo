@@ -21,6 +21,11 @@ router.delete(
 router.patch(
     "/:userId",
     UserController.updateUser
-  );
+);
+
+router.patch(
+  "/:userId/complete-onboarding",
+  UserController.completeOnboarding
+);
 
 module.exports = router;

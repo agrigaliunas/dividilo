@@ -83,8 +83,8 @@ const RegisterForm = () => {
       return;
     }
     const nuevosDatos = {
-      "name": name,
-      "lastname": surname,
+      "name": name.charAt(0).toUpperCase()+name.slice(1),
+      "lastname": surname.charAt(0).toUpperCase()+surname.slice(1),
       "email": email,
       "password": password
     }
