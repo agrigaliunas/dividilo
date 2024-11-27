@@ -1,17 +1,17 @@
 const BACKEND_URL = "http://localhost:5000/api";
 
-export const getExpensesByProjectId = async (projectId, token) => {
-  const data = await fetch(`${BACKEND_URL}/expenses/project/${projectId}`, {
+export const getTicketsByExpenseId = async (expenseId, token) => {
+  const data = await fetch(`${BACKEND_URL}/tickets/expense/${expenseId}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": token,
+      // "Authorization": token,
     },
   }).then((data) => data.json());
   return data;
 };
 
-export const addExpense = async (projectId, expenseTitle, token) => {
+export const addTicket = async (expenseId, description, ticketAmount, ticketDate, token) => {
   const data = await fetch(`${BACKEND_URL}/expenses`, {
     method: "POST",
     headers: {
@@ -19,8 +19,10 @@ export const addExpense = async (projectId, expenseTitle, token) => {
       // "Authorization": token,
     },
     body: JSON.stringify({
-      title: expenseTitle,
-      project_id: projectId
+      description: description,
+      amount: ticketAmount,
+      ticket_date: ticketDate,
+      expense_id: expenseId
     }),
   }).then((data) => data.json());
   return data;

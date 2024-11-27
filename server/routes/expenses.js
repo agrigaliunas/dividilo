@@ -11,10 +11,6 @@ router.post('/',
       .not().isEmpty().withMessage('El título es requerido')
       .trim()
       .isLength({ min: 2 }).withMessage('El título debe tener al menos 2 caracteres'),
-
-    check("total_amount")
-      .not().isEmpty().withMessage('El monto total es requerido')
-      .trim(),
     check("project_id")
       .not().isEmpty().withMessage('El id del proyecto es requerido')
       .trim(),
@@ -35,5 +31,10 @@ router.patch("/:expenseId",
 router.get('/project/:projectId',
   ExpenseController.getExpensesByProjectId
 )
+
+router.get('/project/:projectId/expenses-with-tickets',
+  ExpenseController.getExpensesWithTicketsByProjectId
+)
+
 
 module.exports = router;

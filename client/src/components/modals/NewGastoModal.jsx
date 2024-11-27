@@ -1,6 +1,7 @@
 import { useState } from "react";
+import { addExpense } from "../../services/ExpenseService";
 
-export const NewGastoModal = ({ gastos, isOpen, onClose, onAddGasto }) => {
+export const NewGastoModal = ({ projectId, gastos, isOpen, onClose, onAddGasto }) => {
 
     const [descripcionNuevoGasto, setDescripcionNuevoGasto] = useState("");
 
@@ -10,15 +11,8 @@ export const NewGastoModal = ({ gastos, isOpen, onClose, onAddGasto }) => {
     }
 
 
-    const handleAddGasto = () => {
-
-        const nuevoGasto = {
-            id: "9999",
-            descripcion: descripcionNuevoGasto,
-            montoTotalGasto: 0,
-            tickets: []
-        }
-
+    const handleAddGasto = async () => {
+        const nuevoGasto = await addExpense(projectId, descripcionNuevoGasto)
         onAddGasto(nuevoGasto)
         onClose();
     };

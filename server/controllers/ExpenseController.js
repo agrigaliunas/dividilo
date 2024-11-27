@@ -45,9 +45,22 @@ const getExpensesByProjectId = async (req, res) => {
 }
 
 
+const getExpensesWithTicketsByProjectId = async (req, res) => {
+  try {
+      const response = await ExpenseService.getExpensesWithTicketsByProjectId(req.params.projectId)
+      res.status(200).json(response);
+  } catch (err) {
+      res.status(500).json({
+          message: err.message
+      });
+  }
+}
+
+
 module.exports = {
   addExpense,
   deleteExpense,
   updateExpense,
-  getExpensesByProjectId
+  getExpensesByProjectId,
+  getExpensesWithTicketsByProjectId
 };

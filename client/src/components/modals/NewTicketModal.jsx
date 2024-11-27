@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { addTicket } from "../../services/TicketService";
 
 export const NewTicketModal = ({
+  expenseId,
   isOpen,
   onClose,
   onAddTicket,
@@ -8,21 +10,21 @@ export const NewTicketModal = ({
   getParticipanteNombreApellido,
 }) => {
   const [descripcionNuevoTicket, setDescripcionNuevoTicket] = useState("");
-  const [montos, setMontos] = useState(
-    participantes.reduce((acc, participante) => {
-      acc[participante.id] = 0;
-      return acc;
-    }, {})
-  );
+  // const [montos, setMontos] = useState(
+  //   participantes.reduce((acc, participante) => {
+  //     acc[participante.id] = 0;
+  //     return acc;
+  //   }, {})
+  // );
 
-  const totalTicket = Object.values(montos).reduce((acc, monto) => acc + parseFloat(monto || 0), 0);
+  // const totalTicket = Object.values(montos).reduce((acc, monto) => acc + parseFloat(monto || 0), 0);
 
-  const handleMontoChange = (participanteId, nuevoMonto) => {
-    setMontos((prevMontos) => ({
-      ...prevMontos,
-      [participanteId]: nuevoMonto,
-    }));
-  };
+  // const handleMontoChange = (participanteId, nuevoMonto) => {
+  //   setMontos((prevMontos) => ({
+  //     ...prevMontos,
+  //     [participanteId]: nuevoMonto,
+  //   }));
+  // };
 
   const resetForm = () => {
     setDescripcionNuevoTicket("");
@@ -34,25 +36,18 @@ export const NewTicketModal = ({
     );
   };
 
-  const handleAddTicket = () => {
-    const split = participantes.map((p) => {
-      const montoParticipante = parseFloat(montos[p] || 0);
-      const porcentaje = (montoParticipante / totalTicket) * 100;
-      return {
-        participanteId: p,
-        porcentaje,
-        montoParticipante,
-      };
-    });
+  const handleAddTicket = async () => {
+    // const split = participantes.map((p) => {
+    //   const montoParticipante = parseFloat(montos[p] || 0);
+    //   const porcentaje = (montoParticipante / totalTicket) * 100;
+    //   return {
+    //     participanteId: p,
+    //     porcentaje,
+    //     montoParticipante,
+    //   };
+    // });
 
-    const nuevoTicket = {
-      id: "9999",
-      descripcion: descripcionNuevoTicket,
-      montoTotalTicket: totalTicket,
-      fecha: new Date().toJSON().slice(0, 10),
-      imagen: "",
-      split,
-    };
+    const nuevoTicket = await addTicket(expenseId, descripcionNuevoTicket, totalTicket, new Date().toJSON().slice(0, 10))
 
     onAddTicket(nuevoTicket);
     resetForm();

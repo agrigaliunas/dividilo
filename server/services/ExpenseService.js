@@ -1,5 +1,6 @@
-const { Expense } = require("../db/config");
+const { Expense, Ticket } = require("../db/config");
 const { Op } = require("sequelize");
+const { deleteExpenseAmount, addExpenseAmount } = require("./ProjectService");
 
 const addExpense = async (expenseData) => {
   try {
@@ -21,6 +22,8 @@ const deleteExpense = async (id) => {
           expense_id: id,
         },
       });
+
+      await deleteExpenseAmount(expense.project_id, expense.total_amount)
 
       return "Gasto borrado con exito.";
     }
@@ -67,9 +70,99 @@ const getExpensesByProjectId = async (projectId) => {
   }
 };
 
+const getExpensesWithTicketsByProjectId = async (projectId) => {
+  try {
+    const expenses = await getExpensesByProjectId(projectId);
+
+    if (expenses && expenses.length > 0) {
+      const expensesWithTickets = await Promise.all(
+        expenses.map(async (exp) => {
+          const { getTicketsByExpenseId } = require("./TicketService");
+          const ticketsByExpenseId = await getTicketsByExpenseId(exp.expense_id);
+          return {
+            expense_id: exp.expense_id,
+            title: exp.title,
+            total_amount: exp.total_amount,
+            project_id: exp.project_id,
+            tickets: ticketsByExpenseId
+          };
+        })
+      );
+
+      return expensesWithTickets;
+    }
+
+    return []; 
+  } catch (error) {
+    console.error("Error al obtener gastos con tickets:", error);
+    throw new Error("Falla al obtener gastos con tickets.");
+  }
+};
+
+
+
+const addTicketAmount = async (id, amount) => {
+  try {
+      const expense = await Expense.findByPk(id);
+      if (!expense) {
+        throw new Error("Gasto no existente.");
+      }
+  
+      await expense.update({
+        total_amount: expense.total_amount + amount || expense.total_amount
+      });
+
+      await addExpenseAmount(expense.project_id, amount)
+
+  } catch (error) {
+      console.error("Error actualizando monto del gasto:", error.message);
+      throw new Error("Falla al actualizar monto del gasto.");
+  }
+}
+
+const deleteTicketAmount = async (id, amount) => {
+  try {
+      const expense = await Expense.findByPk(id);
+      if (!expense) {
+        throw new Error("Gasto no existente.");
+      }
+  
+      await expense.update({
+        total_amount: expense.total_amount - amount || expense.total_amount
+      });
+
+      await deleteExpenseAmount(expense.project_id, amount)
+
+
+  } catch (error) {
+      console.error("Error actualizando monto del gasto:", error.message);
+      throw new Error("Falla al actualizar monto del gasto.");
+  }
+}
+
+
+const getTicketsByExpenseId = async (expenseId) => {
+  try {
+    const tickets = await Ticket.findAll({
+      where: {
+        expense_id: expenseId,
+      },
+    });
+
+    return tickets;
+  } catch (err) {
+    console.error("Error al obtener tickets:", err.message);
+    throw new Error("No se pudieron obtener los tickets.");
+  }
+};
+
+
 module.exports = {
   addExpense,
   deleteExpense,
   updateExpense,
   getExpensesByProjectId,
+  addTicketAmount,
+  deleteTicketAmount,
+  getExpensesWithTicketsByProjectId
 };

@@ -4,7 +4,6 @@ dotenv.config();
 
 const validateJwt = async (req, res, next) => {
   try {
-    console.log(req.headers)
     const jwtValidate = jwt.verify(
       req.headers.authorization,
       process.env.JWT_SECRET

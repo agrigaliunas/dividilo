@@ -51,26 +51,30 @@ export const ProjectInfo = ({ proyecto, participantesProyecto }) => {
   
 
   useEffect(() => {
-    if (proyecto) {
-      const getGastos = async () => {
-        const gastos = await getExpensesByProjectId(proyecto.project_id)
+    const actualizarProyecto = async () => {
+      if (proyecto) {
+        const gastos = await getExpensesByProjectId(proyecto.project_id, user.token);
+  
         setGastos(gastos);
-      };
-
-      getGastos();
-
-      setProjectData({
-        id: proyecto.project_id,
-        nombre: proyecto.title,
-        descripcion: proyecto.description,
-        montoTotalProyecto: proyecto.total_amount,
-        estado: proyecto.state,
-        participantes: participantesProyecto,
-        gastos: gastos || [],
-      });
-      setProjectStatus(projectData.estado);
-    }
-  }, [proyecto]);
+  
+        const datosProyecto = {
+          id: proyecto.project_id,
+          nombre: proyecto.title,
+          descripcion: proyecto.description,
+          montoTotalProyecto: proyecto.total_amount,
+          estado: proyecto.state,
+          participantes: participantesProyecto,
+          gastos: gastos || [],
+        };
+  
+        setProjectData(datosProyecto);
+        setProjectStatus(datosProyecto.estado);
+      }
+    };
+  
+    actualizarProyecto();
+  }, [proyecto, user.token, participantesProyecto]);
+  
 
   const eliminarParticipante = async (projectId, participanteId) => {
     try {
@@ -133,18 +137,18 @@ export const ProjectInfo = ({ proyecto, participantesProyecto }) => {
 
   //   if (balance < 0) {
   //     return {
-  //       texto: `+ $${(balance * -1).toFixed(2)}`,
+  //       texto: `+ $${(balance * -1)}`,
   //       color: "text-green-500",
   //     };
   //   } else if (balance === 0) {
   //     return {
-  //       texto: `$${(balance).toFixed(2)}`,
+  //       texto: `$${(balance)}`,
   //       color: "text-gray-500",
   //     };
   //   }
     
   //   else {
-  //     return { texto: `- $${balance.toFixed(2)}`, color: "text-red-500" };
+  //     return { texto: `- $${balance}`, color: "text-red-500" };
   //   }
   // };
 
@@ -213,9 +217,9 @@ export const ProjectInfo = ({ proyecto, participantesProyecto }) => {
   };
 
   const handleAddGasto = (gastoAgregando) => {
-    setProjectData((prevData) => ({
+    setGastos((prevData) => ({
       ...prevData,
-      gastos: [...prevData.gastos, gastoAgregando],
+      gastoAgregando
     }));
   };
 
@@ -293,7 +297,7 @@ export const ProjectInfo = ({ proyecto, participantesProyecto }) => {
               <span className="text-4xl font-bold mt-auto">
                 $
                 {projectData.montoTotalProyecto &&
-                  projectData.montoTotalProyecto.toFixed(2)}
+                  projectData.montoTotalProyecto}
               </span>
             </div>
             <div className="flex flex-col w-full border border-1 bg-white rounded-xl shadow-md p-5 lg:w-[50%] gap-4">
@@ -309,7 +313,7 @@ export const ProjectInfo = ({ proyecto, participantesProyecto }) => {
               </div>
             </div>
           </div>
-          {/* <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-4 border border-1 bg-white p-5 rounded-xl shadow-md">
               <div className="flex flex-row justify-between items-center">
                 <h2 className="text-2xl text-left font-bold">
@@ -332,10 +336,10 @@ export const ProjectInfo = ({ proyecto, participantesProyecto }) => {
                             <ChevronDown />
                           </button>
                           <span className="font-semibold text-xl lg:text-2xl rounded-lg">
-                            {gasto.descripcion}
+                            {gasto.title}
                           </span>
                           <span className="font-bold text-xl lg:text-2xl rounded-lg ml-auto">
-                            ${gasto.montoTotalGasto.toFixed(2)}
+                            ${gasto.total_amount}
                           </span>
                         </div>
                         {gastosExpandidos[index] && (
@@ -375,7 +379,7 @@ export const ProjectInfo = ({ proyecto, participantesProyecto }) => {
                                                 )}
                                               </span>
                                               <span className="text-red-500">
-                                                ({sp.porcentaje.toFixed(2)}%)
+                                                ({sp.porcentaje}%)
                                               </span>
                                             </div>
                                           </div>
@@ -383,7 +387,7 @@ export const ProjectInfo = ({ proyecto, participantesProyecto }) => {
                                       ))}
                                     <span className="font-bold text-lg ml-auto">
                                       Total ticket: $
-                                      {ticket.montoTotalTicket.toFixed(2)}
+                                      {ticket.montoTotalTicket}
                                     </span>
                                   </div>
                                   {ticket.imagen && (
@@ -418,7 +422,7 @@ export const ProjectInfo = ({ proyecto, participantesProyecto }) => {
                 )}
               </div>
             </div>
-          </div> */}
+          </div>
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-4 border border-1 bg-white p-5 rounded-xl shadow-md">
               <h2 className="text-2xl text-left font-bold">Balances</h2>
@@ -468,6 +472,7 @@ export const ProjectInfo = ({ proyecto, participantesProyecto }) => {
           }
           {
             <NewGastoModal
+            projectId={projectData.id}
               gastos={projectData.gastos}
               isOpen={modalGastoIsOpen}
               onClose={closeGastoModal}
@@ -558,7 +563,7 @@ export const ProjectInfo = ({ proyecto, participantesProyecto }) => {
               <span className="text-4xl font-bold mt-auto">
                 $
                 {projectData.montoTotalProyecto &&
-                  projectData.montoTotalProyecto.toFixed(2)}
+                  projectData.montoTotalProyecto}
               </span>
             </div>
             <div className="flex flex-col w-full border border-1 bg-white rounded-xl shadow-md p-5 lg:w-[50%] gap-4">
@@ -622,7 +627,7 @@ export const ProjectInfo = ({ proyecto, participantesProyecto }) => {
                             {gasto.descripcion}
                           </span>
                           <span className="font-bold text-xl lg:text-2xl rounded-lg ml-auto">
-                            ${gasto.montoTotalGasto.toFixed(2)}
+                            ${gasto.montoTotalGasto}
                           </span>
                         </div>
                         {gastosExpandidos[gastoIndex] && (
@@ -735,7 +740,7 @@ export const ProjectInfo = ({ proyecto, participantesProyecto }) => {
                                             )}
 
                                             <span className="text-red-500">
-                                              ({sp.porcentaje.toFixed(2)}%)
+                                              ({sp.porcentaje}%)
                                             </span>
                                           </div>
                                         </div>
@@ -786,7 +791,7 @@ export const ProjectInfo = ({ proyecto, participantesProyecto }) => {
                                     )}
                                     <span className="font-bold text-lg ml-auto">
                                       Total ticket: $
-                                      {ticket.montoTotalTicket.toFixed(2)}
+                                      {ticket.montoTotalTicket}
                                     </span>
                                   </div>
                                 </div>
