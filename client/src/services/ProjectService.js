@@ -22,11 +22,12 @@ export const fetchUsersByProjectId = async (projectId) => {
   return data;
 };
 
-export const createProject = async (nombre, descripcion, userId) => {
+export const createProject = async (nombre, descripcion, userId, token) => {
   const response = await fetch(`${BACKEND_URL}/projects`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      "Authorization": token
     },
     body: JSON.stringify({
       title: nombre,

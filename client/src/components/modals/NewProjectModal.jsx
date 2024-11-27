@@ -11,8 +11,10 @@ export const NewProjectModal = ({ closeModal }) => {
   const {user} = useAuth()
 
   const handleCrearProyecto = async () => {
+    console.log("asdasdasdsa")
+    console.log(user)
     try {
-      const response = await createProject(nombre, descripcion, user.user_id)
+      const response = await createProject(nombre, descripcion, user.user_id, user.token)
       if (response.ok) {
         window.location.reload();
       } else {

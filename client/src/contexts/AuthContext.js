@@ -17,36 +17,27 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const storeIntoLocalStorage = (userData) => {
-    localStorage.setItem("access-token", JSON.stringify(userData.token));
-    localStorage.setItem("user", JSON.stringify(userData.user));
-    setUser(userData);
+    const userWithToken = {
+      ...userData.user,
+      token: userData.token,
+    };
+    localStorage.setItem("user", JSON.stringify(userWithToken));
+    setUser(userWithToken);
   };
 
   const updateLocalStorage = (newUser) => {
-    const currentToken = JSON.parse(localStorage.getItem("access-token"));
-    const updatedUser = { ...newUser, token: currentToken };
-    
+    const currentUser = JSON.parse(localStorage.getItem("user"));
+    const updatedUser = {
+      ...currentUser,
+      ...newUser,
+    };
     localStorage.setItem("user", JSON.stringify(updatedUser));
     setUser(updatedUser);
   };
 
   const logout = () => {
     localStorage.removeItem("user");
-    localStorage.removeItem("access-token");
     setUser(null);
-  };
-
-  const updateUserLocalStorage = (userData) => {
-    localStorage.setItem(
-      "user",
-      JSON.stringify({
-        ...user,
-        name: userData.name,
-        lastname: userData.lastname,
-        initials: userData.initials,
-        email: userData.email,
-      })
-    );
   };
 
   return (
