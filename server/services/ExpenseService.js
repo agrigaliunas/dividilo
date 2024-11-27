@@ -101,44 +101,41 @@ const getExpensesWithTicketsByProjectId = async (projectId) => {
 
 
 
-const addTicketAmount = async (id, amount) => {
+const addTicketAmount = async (id, amount, transaction) => {
   try {
-      const expense = await Expense.findByPk(id);
-      if (!expense) {
-        throw new Error("Gasto no existente.");
-      }
-  
-      await expense.update({
-        total_amount: expense.total_amount + amount || expense.total_amount
-      });
+    const expense = await Expense.findByPk(id, { transaction });
+    if (!expense) {
+      throw new Error("Gasto no existente.");
+    }
 
-      await addExpenseAmount(expense.project_id, amount)
+    await expense.update(
+      { total_amount: Number(expense.total_amount) + Number(amount) },
+      { transaction }
+    );
 
+    await addExpenseAmount(expense.project_id, amount, transaction);
   } catch (error) {
-      console.error("Error actualizando monto del gasto:", error.message);
-      throw new Error("Falla al actualizar monto del gasto.");
+    throw new Error("Falla al actualizar monto del gasto: " + error.message);
   }
-}
+};
 
-const deleteTicketAmount = async (id, amount) => {
+const deleteTicketAmount = async (id, amount, transaction) => {
   try {
-      const expense = await Expense.findByPk(id);
-      if (!expense) {
-        throw new Error("Gasto no existente.");
-      }
-  
-      await expense.update({
-        total_amount: expense.total_amount - amount || expense.total_amount
-      });
+    const expense = await Expense.findByPk(id, { transaction });
+    if (!expense) {
+      throw new Error("Gasto no existente.");
+    }
 
-      await deleteExpenseAmount(expense.project_id, amount)
+    await expense.update(
+      { total_amount: Number(expense.total_amount) - Number(amount) },
+      { transaction }
+    );
 
-
+    await deleteExpenseAmount(expense.project_id, amount, transaction);
   } catch (error) {
-      console.error("Error actualizando monto del gasto:", error.message);
-      throw new Error("Falla al actualizar monto del gasto.");
+    throw new Error("Falla al actualizar monto del gasto: " + error.message);
   }
-}
+};
 
 
 const getTicketsByExpenseId = async (expenseId) => {

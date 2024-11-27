@@ -1,6 +1,7 @@
 const { Ticket } = require("../db/config");
 const { addTicketAmount, deleteTicketAmount } = require("./ExpenseService");
 const { uploadImageToCloudinary } = require("./ImageService");
+const { sequelize } = require('../db/config');
 
 const uploadImage = async (imageBuffer) => {
   try {
@@ -58,23 +59,35 @@ const deleteTicket = async (id) => {
 };
 
 const updateTicket = async (id, req) => {
+  const transaction = await sequelize.transaction();
   try {
-    const ticket = await Ticket.findByPk(id);
+    const ticket = await Ticket.findByPk(id, { transaction });
     if (!ticket) {
       throw new Error("Ticket no existente.");
     }
 
-    await ticket.update({
-      title: req.title || ticket.title,
-      total_amount: req.total_amount || ticket.total_amount,
-      project_id: req.project_id || ticket.project_id,
-    });
+    const originalAmount = ticket.amount;
 
-    return "Ticket actualizado con exito.";
-  } catch (error) {
-    throw new Error(
-      "Ocurrio un error al intentar actualizar el ticket: " + error.message
+    await deleteTicketAmount(ticket.expense_id, originalAmount, transaction);
+
+    await ticket.update(
+      {
+        description: req.description || ticket.description,
+        amount: req.amount || ticket.amount,
+        ticket_date: req.ticket_date || ticket.ticket_date
+      },
+      { transaction }
     );
+
+    await ticket.reload({ transaction });
+
+    await addTicketAmount(ticket.expense_id, ticket.amount, transaction);
+
+    await transaction.commit();
+    return "Ticket actualizado con éxito.";
+  } catch (error) {
+    await transaction.rollback();
+    throw new Error("Ocurrió un error al intentar actualizar el ticket: " + error.message);
   }
 };
 

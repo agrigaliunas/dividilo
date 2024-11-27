@@ -33,7 +33,7 @@ export const ProjectCard = ({ project }) => {
       <div className="flex flex-col justify-end items-center gap-10">
         <div className="border border-1 rounded-full bg-gray-100 w-full h-fit">
           <div className="text-xl text-center p-2 font-bold">
-            Restante: ${project.total_amount.toFixed(2)}
+            Restante: ${project.total_amount}
           </div>
         </div>
         <div className="flex flex-row gap-3 w-full items-center justify-center">

@@ -13,7 +13,7 @@ module.exports = (sequelize) => {
             allowNull: false
         },
         total_amount: {
-            type: DataTypes.DOUBLE,
+            type: DataTypes.DECIMAL(13, 2),
             allowNull: false,
             defaultValue: 0
         },

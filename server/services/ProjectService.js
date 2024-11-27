@@ -22,39 +22,37 @@ const addProject = async (projectData) => {
   }
 };
 
-const addExpenseAmount = async (id, amount) => {
-    try {
-        const project = await Project.findByPk(id);
-        if (!project) {
-          throw new Error("Proyecto no existente.");
-        }
-    
-        await project.update({
-          total_amount: project.total_amount + amount || project.total_amount
-        });
-
-    } catch (error) {
-        console.error("Error actualizando monto del proyecto:", error.message);
-        throw new Error("Falla al actualizar monto del proyecto.");
+const addExpenseAmount = async (id, amount, transaction) => {
+  try {
+    const project = await Project.findByPk(id, { transaction });
+    if (!project) {
+      throw new Error("Proyecto no existente.");
     }
-}
 
-const deleteExpenseAmount = async (id, amount) => {
-    try {
-        const project = await Project.findByPk(id);
-        if (!project) {
-          throw new Error("Proyecto no existente.");
-        }
-    
-        await project.update({
-          total_amount: project.total_amount - amount || project.total_amount
-        });
-        
-    } catch (error) {
-        console.error("Error actualizando monto del proyecto:", error.message);
-        throw new Error("Falla al actualizar monto del proyecto.");
+    await project.update(
+      { total_amount: Number(project.total_amount) + Number(amount) },
+      { transaction }
+    );
+  } catch (error) {
+    throw new Error("Falla al actualizar monto del proyecto: " + error.message);
+  }
+};
+
+const deleteExpenseAmount = async (id, amount, transaction) => {
+  try {
+    const project = await Project.findByPk(id, { transaction });
+    if (!project) {
+      throw new Error("Proyecto no existente.");
     }
-}
+
+    await project.update(
+      { total_amount: Number(project.total_amount) - Number(amount) },
+      { transaction }
+    );
+  } catch (error) {
+    throw new Error("Falla al actualizar monto del proyecto: " + error.message);
+  }
+};
 
 
 const addParticipant = async (id, req) => {

@@ -15,4 +15,6 @@ router.post("/", TicketController.addTicket);
 
 router.delete("/:ticketId", TicketController.deleteTicket);
 
+router.patch("/:ticketId",TicketController.updateTicket);
+
 module.exports = router;
