@@ -29,7 +29,7 @@ module.exports = (sequelize) => {
             allowNull: false
         },
         user_percentage: {
-            type: DataTypes.DECIMAL(3, 2),
+            type: DataTypes.DECIMAL(5, 4),
             allowNull: false
         }
     }, {

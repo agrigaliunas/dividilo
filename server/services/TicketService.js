@@ -64,7 +64,7 @@ const getTicketById = async (ticketId) => {
 
     return ticket;
   } catch (error) {
-    console.error("Error al obtener ticket:", err.message);
+    console.error("Error al obtener ticket:", error.message);
     throw new Error("No se pudo obtener el ticket.");
   }
 };

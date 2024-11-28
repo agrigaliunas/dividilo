@@ -16,6 +16,7 @@ app.use('/api/tickets/image', require('./routes/tickets'))
 app.use('/api/projects', require('./routes/project'));
 app.use('/api/tickets', require('./routes/tickets'))
 app.use('/api/expenses', require('./routes/expenses'))
+app.use('/api/splits', require('./routes/splits'))
 
 app.use((err, req, res, next) => {
     console.error(err.stack);
