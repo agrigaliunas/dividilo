@@ -1,7 +1,7 @@
 import React from "react";
 import { ProjectExpense } from "./ProjectExpense";
 
-export const ProjectExpenses = ({ project, expenses, participantesProyecto }) => {
+export const ProjectExpenses = ({ project, expenses, participantesProyecto, editMode }) => {
   return (
     <div className="flex flex-col gap-4 border border-1 bg-white p-5 rounded-xl shadow-md">
       <div className="flex flex-row justify-between items-center">

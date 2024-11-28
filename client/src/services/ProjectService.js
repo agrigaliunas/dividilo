@@ -39,13 +39,14 @@ export const createProject = async (nombre, descripcion, userId, token) => {
   return response;
 };
 
-export const updateProject = async (id, nombre, descripcion, estado) => {
+export const updateProject = async (id, nombre, descripcion, estado, token) => {
   const response = await fetch(
     `${BACKEND_URL}/projects/${id}`,
     {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": token
       },
       body: JSON.stringify({
         title: nombre,
