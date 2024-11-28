@@ -74,7 +74,7 @@ export const ProjectInfo2 = ({
       const totalGasto = gastosProyecto.reduce((acc, gasto) => {
         const tickets = gasto.tickets || [];
         const ticketGasto = tickets.reduce((sum, ticket) => {
-          const split = ticket.split.find(
+          const split = ticket.split?.find(
             (s) => s.participanteId === participanteId
           );
           return (
