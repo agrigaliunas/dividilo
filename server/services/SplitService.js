@@ -1,5 +1,20 @@
-const { Split } = require("../db/config");
-const { getTicketById } = require("./TicketService");
+const { Split, Ticket } = require("../db/config");
+
+
+const getTicketById = async (ticketId) => {
+  try {
+    const ticket = await Ticket.findByPk(ticketId);
+
+    if (!ticket) {
+      throw new Error("Ticket no encontrado.");
+    }
+
+    return ticket;
+  } catch (error) {
+    console.error("Error al obtener ticket:", error.message);
+    throw new Error("No se pudo obtener el ticket.");
+  }
+};
 
 const addSplit = async (splitData) => {
   try {
@@ -68,21 +83,42 @@ const removeSplit = async (splitId, ticketId) => {
     throw new Error("Falla al eliminar un split.");
   }
 };
+
+const updateSplitPercentage = async (splitId, newPercentage) => {
+  try {
+    const updatedSplit = await Split.update(
+      {
+        user_percentage: newPercentage,
+      },
+      {
+        where: {
+          split_id: splitId,
+        },
+      }
+    );
+    return updatedSplit;
+  } catch (err) {
+    throw new Error("Error al actualizar split: " + err.message);
+  }
+};
+
 const updateSplit = async (splitId, splitData) => {
   try {
+    const splitToUpdate = await getSplitById(splitId);
 
-    const splitToUpdate = await getSplitById(splitId)
-    
     if (!splitToUpdate) {
       throw new Error("El split que intentas actualizar no existe.");
     }
 
     const splitsFromTicket = await getSplitsByTicketId(splitToUpdate.ticket_id);
 
-    const ticket = await getTicketById(splitToUpdate.ticket_id)
+    const ticket = await getTicketById(splitToUpdate.ticket_id);
 
-    const totalFromSplits = splitsFromTicket
-      .reduce((sum, split) => sum + parseFloat(split.user_amount), 0.0) - splitToUpdate.user_amount;
+    const totalFromSplits =
+      splitsFromTicket.reduce(
+        (sum, split) => sum + parseFloat(split.user_amount),
+        0.0
+      ) - splitToUpdate.user_amount;
 
     const ticketTotalAmount = ticket.amount;
 
@@ -90,12 +126,7 @@ const updateSplit = async (splitId, splitData) => {
       throw new Error("El monto del split excede el total del ticket.");
     }
 
-    console.log(ticketTotalAmount)
-    console.log(totalFromSplits)
-    console.log(splitToUpdate.user_amount)
-    console.log(splitData.user_amount)
-
-    if (splitData.user_amount > ticketTotalAmount-totalFromSplits) {
+    if (splitData.user_amount > ticketTotalAmount - totalFromSplits) {
       throw new Error(
         "El monto del split excede el total de los splits del ticket."
       );
@@ -158,4 +189,5 @@ module.exports = {
   removeSplit,
   getSplitById,
   getSplitsByTicketId,
+  updateSplitPercentage
 };
