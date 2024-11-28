@@ -9,6 +9,8 @@ const router = Router();
 
 router.get("/:userId", UserController.getUserById);
 
+router.get("/", UserController.getUserByEmail);
+
 router.delete(
   "/:userId",
   [

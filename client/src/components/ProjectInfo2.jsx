@@ -6,21 +6,29 @@ import { ProjectTotalAmount } from "./cards/ProjectTotalAmount";
 import { ProjectParticipants } from "./cards/ProjectParticipants";
 import { ProjectExpenses } from "./cards/ProjectExpenses";
 import { ProjectEditToolbar } from "./cards/ProjectEditToolbar";
-import { deleteProject, eliminarParticipanteDelProyecto, updateProject } from "../services/ProjectService";
+import {
+  agregarParticipanteAlProyecto,
+  deleteProject,
+  eliminarParticipanteDelProyecto,
+  updateProject,
+} from "../services/ProjectService";
 import { useAuth } from "../contexts/AuthContext";
+import NewParticipantModal from "./modals/NewParcitipantModal";
+import { fetchUsuarioByEmail } from "../services/UserService";
 
 export const ProjectInfo2 = ({
   proyecto,
   participantesProyecto,
   gastosProyecto,
   onProjectUpdate,
-  onParticipantsUpdate
+  onParticipantsUpdate,
 }) => {
   const [editandoProyectoMode, setEditandoProyectoMode] = useState(false);
   const [project, setProject] = useState(proyecto);
-  const [participants, setParticipants] = useState(participantesProyecto)
+  const [participants, setParticipants] = useState(participantesProyecto);
+  const [modalParticipanteIsOpen, setModalParticipanteIsOpen] = useState(false);
 
-  const {user} = useAuth()
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   const handleChangeProjectStatus = (newStatus) => {
@@ -49,11 +57,11 @@ export const ProjectInfo2 = ({
   };
 
   const handleDeleteProject = async () => {
-    const response = await deleteProject(project.project_id)
-    
+    const response = await deleteProject(project.project_id);
+
     if (response.status === 200) {
       setEditandoProyectoMode(false);
-      navigate("/dashboard")
+      navigate("/dashboard");
     }
   };
 
@@ -61,15 +69,50 @@ export const ProjectInfo2 = ({
     setEditandoProyectoMode((prevState) => !prevState);
   }, []);
 
-  const handleDeleteParticipant = async (userId) => {
-    const response = await eliminarParticipanteDelProyecto(project.project_id, userId);
-    if (response.status === 200) {
-      setParticipants((prevData) => prevData.filter((p) => p.user_id !== userId))
-      onParticipantsUpdate(participants)
-      // TODO: actualizar split ticket del participante
-      setEditandoProyectoMode(false)
+  const openParticipanteModal = () => {
+    setModalParticipanteIsOpen(true);
+  };
+
+  const closeParticipanteModal = () => {
+    setModalParticipanteIsOpen(false);
+  };
+
+  const handleAddParticipant = async (email) => {
+    try {
+      const response = await agregarParticipanteAlProyecto(project.project_id, email);
+      
+      const participant = await fetchUsuarioByEmail(email);
+  
+      if (response.status === 200 && participant) {
+        setParticipants((prevParticipants) => {
+          const updatedParticipants = [...prevParticipants, participant];
+          return updatedParticipants;
+        });
+  
+        onParticipantsUpdate(participants);
+  
+        closeParticipanteModal();
+      }
+    } catch (error) {
+      console.error("Error al agregar participante:", error);
+      alert("No se pudo agregar el participante. Por favor, inténtalo de nuevo.");
     }
-  }
+  };
+  
+
+  const handleDeleteParticipant = async (userId) => {
+    const response = await eliminarParticipanteDelProyecto(
+      project.project_id,
+      userId
+    );
+    if (response.status === 200) {
+      setParticipants((prevData) =>
+        prevData.filter((p) => p.user_id !== userId)
+      );
+      onParticipantsUpdate(participants);
+      // TODO: actualizar split ticket del participante
+    }
+  };
 
   const getParticipanteNombreApellido = useCallback(
     (participanteId) => {
@@ -172,6 +215,7 @@ export const ProjectInfo2 = ({
           projectParticipants={participants}
           editMode={editandoProyectoMode}
           onDeleteParticipant={handleDeleteParticipant}
+          openNewParticipanteModal={openParticipanteModal}
         />
       </div>
 
@@ -185,6 +229,19 @@ export const ProjectInfo2 = ({
       </div>
 
       {/* {ParticipantBalance} */}
+      {editandoProyectoMode && (
+        <>
+          {
+            <NewParticipantModal
+              projectId={project.project_id}
+              projectParticipants={participants}
+              isOpen={modalParticipanteIsOpen}
+              onClose={closeParticipanteModal}
+              onAddParticipant={(email) => handleAddParticipant(email)}
+            />
+          }
+        </>
+      )}
     </div>
   );
 };

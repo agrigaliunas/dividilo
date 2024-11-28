@@ -1,45 +1,36 @@
 import React, { useEffect, useState } from "react";
-import { agregarParticipanteAlProyecto, fetchUsersByProjectId } from "../../services/ProjectService";
+import {
+  agregarParticipanteAlProyecto,
+  fetchUsersByProjectId,
+} from "../../services/ProjectService";
 
-const NewParticipantModal = ({ projectId, isOpen, onClose, onAddParticipant }) => {
-  const [participanteAgregando, setParticipanteAgregando] = useState("");
-  const [participanteYaAgregado, setParticipanteYaAgregado] = useState(false);
-  const [usuariosProyecto, setUsuariosProyecto] = useState([]);
-
-  useEffect(() => {
-    const fetchUsuarios = async () => {
-      if (isOpen) {
-        const usuarios = await fetchUsersByProjectId(projectId);
-        setUsuariosProyecto(usuarios);
-      }
-    };
-    fetchUsuarios();
-  }, [isOpen, projectId]);
+const NewParticipantModal = ({
+  projectId,
+  projectParticipants,
+  isOpen,
+  onClose,
+  onAddParticipant,
+}) => {
+  const [newParticipantEmail, setNewParticipantEmail] = useState("");
+  const [participantAlreadyInProject, setParticipantAlreadyInProject] =
+    useState(false);
 
   const handleEmailChange = (e) => {
     const email = e.target.value;
-    setParticipanteAgregando(email);
-
-    if (email) {
-      const yaAgregado = usuariosProyecto.some((u) => u.email === email);
-      setParticipanteYaAgregado(yaAgregado);
+    setNewParticipantEmail(email);
+    if (email && projectParticipants.some((p) => p.email === email)) {
+      setParticipantAlreadyInProject(true);
     } else {
-      setParticipanteYaAgregado(false);
+      setParticipantAlreadyInProject(false);
     }
   };
 
   const handleAddParticipant = async (e) => {
     e.preventDefault();
-    if (participanteAgregando && !participanteYaAgregado) {
-      await agregarParticipanteAlProyecto(projectId, participanteAgregando);
-
-      setUsuariosProyecto((prev) => [...prev, { participanteAgregando }]);
-
-      onAddParticipant(participanteAgregando);
-      setParticipanteAgregando("");
-
-      setParticipanteAgregando("");
-      onClose();    }
+    if (newParticipantEmail && !participantAlreadyInProject) {
+      onAddParticipant(newParticipantEmail);
+      onClose();
+    }
   };
 
   if (!isOpen) return null;
@@ -51,13 +42,15 @@ const NewParticipantModal = ({ projectId, isOpen, onClose, onAddParticipant }) =
         <form onSubmit={handleAddParticipant} className="flex flex-col gap-4">
           <input
             type="email"
-            value={participanteAgregando}
+            value={newParticipantEmail}
             onChange={handleEmailChange}
             className="px-2 py-3 border border-1 border-[#e9e9ef] shadow-sm outline-none rounded-md text-sm"
             placeholder="Ingrese el correo electrónico..."
           />
-          {participanteYaAgregado && (
-            <p className="text-red-500 text-sm">El participante ya está agregado al proyecto.</p>
+          {participantAlreadyInProject && (
+            <p className="text-red-500 text-sm">
+              Error. El participante ya está agregado al proyecto.
+            </p>
           )}
           <div className="flex justify-end gap-4">
             <button
@@ -69,8 +62,10 @@ const NewParticipantModal = ({ projectId, isOpen, onClose, onAddParticipant }) =
             </button>
             <button
               type="submit"
-              disabled={participanteYaAgregado || !participanteAgregando}
-              className={`${participanteYaAgregado ? "bg-gray-600" : "bg-brandblue"} text-white px-4 py-2 rounded-md hover:opacity-85`}
+              disabled={participantAlreadyInProject || !newParticipantEmail}
+              className={`${
+                participantAlreadyInProject ? "bg-gray-600" : "bg-brandblue"
+              } text-white px-4 py-2 rounded-md hover:opacity-85`}
             >
               Agregar
             </button>

@@ -9,7 +9,9 @@ export const ProjectParticipantRounded = ({ participant }) => {
       <span className="tooltip">
         {participant.initials}
         <span className="tooltiptext">
-          {participant.name + " " + participant.lastname}
+          {participant.finished_onboarding === false
+            ? participant.email
+            : participant.name + " " + participant.lastname}
         </span>
       </span>
     </div>
