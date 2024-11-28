@@ -20,7 +20,7 @@ export const ProjectTitle = ({
 
     return (
       <div
-        className={`flex flex-row gap-1 ${bgColor} w-fit lg:p-3 p-1.5 bg-opacity-40 rounded-xl ${textColor} cursor-default select-none text-xs lg:text-sm`}
+        className={`flex flex-row gap-1 ${bgColor} w-fit lg:p-3 mb-3 p-1.5 bg-opacity-40 rounded-xl ${textColor} cursor-default select-none text-xs lg:text-sm`}
       >
         {editMode && (
           <button
