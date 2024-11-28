@@ -221,6 +221,10 @@ export const ProjectInfo2 = ({
 
   return (
     <div className="flex flex-col w-full lg:px-[20vw] lg:py-[5vw] px-[5vw] py-[5vw] gap-8">
+      <div className="flex flex-col gap-2">
+      <h2 className="text-5xl font-extrabold">Información del proyecto</h2>
+      <span className="text-gray-500 text-lg">Acá vas a poder ver los participantes del proyecto, el monto total gastado, y el monto por cada gasto adjunto a cada ticket subido.</span>
+      </div>
       {editandoProyectoMode ? (
         <ProjectEditToolbar
           onSaveProject={handleSaveProject}

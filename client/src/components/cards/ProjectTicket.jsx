@@ -13,14 +13,32 @@ export const ProjectTicket = ({ ticket, index, participantes }) => {
   return (
     <div
       key={index}
-      className="flex flex-col gap-2 bg-gray-100 border-2 rounded-lg w-full text-base px-5 py-2 justify-center"
+      className="flex flex-col gap-2 rounded-lg w-full text-base px-5 py-2 justify-center"
     >
-      <div className="flex flex-row gap-4">
-        <span className="font-extrabold text-xl">{ticket.description}</span>
-        <span className="text-black text-sm ml-auto">{ticket.date}</span>
+      <div className="flex flex-col">
+        <span className="text-gray-400 text-md">
+          {ticket.ticket_date.substring(0, 10)}
+        </span>
+        <div className="flex flex-row justify-between mt-1">
+          <span className="text-xl">{ticket.description}</span>
+          <span className="font-bold text-xl">${ticket.amount}</span>
+        </div>
       </div>
-      <div className="flex flex-col gap-1 w-full">
-        {/* {ticket.split?.length > 0 &&
+      {ticket.image && (
+        <button
+          onClick={() => setShowTicketImagen(!showTicketImagen)}
+          className="bg-green-200 text-green-900 upper rounded-md py-1 hover:opacity-80 px-4 flex justify-center"
+        >
+          {showTicketImagen
+            ? "Esconder imagen del ticket"
+            : "Ver imagen del ticket"}
+        </button>
+      )}
+      {ticket.image && showTicketImagen && (
+        <img src={ticket.image} className="w-100 h-100 " />
+      )}
+      {/* <div className="flex flex-col gap-1 w-full"> */}
+      {/* {ticket.split?.length > 0 &&
           ticket.split.map((sp, spIndex) => (
             <div
               key={spIndex}
@@ -39,23 +57,7 @@ export const ProjectTicket = ({ ticket, index, participantes }) => {
               </div>
             </div>
           ))} */}
-        <span className="font-bold text-lg ml-auto">
-          Total ticket: ${ticket.amount}
-        </span>
-      </div>
-      {ticket.imagen && (
-        <button
-          onClick={() => setShowTicketImagen(!showTicketImagen)}
-          className="text-left underline text-xs hover:opacity-90 text-brandblue"
-        >
-          {showTicketImagen
-            ? "Esconder imagen del ticket"
-            : "Ver imagen del ticket"}
-        </button>
-      )}
-      {ticket.imagen && showTicketImagen && (
-        <img src={ticket.imagen} className="w-96 h-96" />
-      )}
+      {/* </div> */}
     </div>
   );
 };

@@ -1,12 +1,41 @@
 const { Ticket } = require("../db/config");
 const { addTicketAmount, deleteTicketAmount } = require("./ExpenseService");
 const { uploadImageToCloudinary } = require("./ImageService");
-const { sequelize } = require('../db/config');
+const { sequelize } = require("../db/config");
 
-const uploadImage = async (imageBuffer) => {
+const uploadImage = async (ticketId, imageBuffer) => {
   try {
-    const response = await uploadImageToCloudinary(imageBuffer);
-    return response;
+    const ticket = await Ticket.findByPk(ticketId);
+
+    if (!ticket) {
+      throw new Error("Ticket no encontrado.");
+    }
+
+    const imageUrl = await uploadImageToCloudinary(imageBuffer);
+
+    await ticket.update({
+      image: imageUrl,
+    });
+
+    return imageUrl;
+  } catch (error) {
+    throw new Error("Error al subir imagen. Intente nuevamente");
+  }
+};
+
+const deleteImage = async (ticketId) => {
+  try {
+    const ticket = await Ticket.findByPk(ticketId);
+
+    if (!ticket) {
+      throw new Error("Ticket no encontrado.");
+    }
+
+    await ticket.update({
+      image: "",
+    });
+    
+    return "Imagen borrada con exito.";
   } catch (error) {
     throw new Error("Error al subir imagen. Intente nuevamente");
   }
@@ -28,6 +57,10 @@ const addTicket = async (ticketData) => {
 const getTicketById = async (ticketId) => {
   try {
     const ticket = await Ticket.findByPk(ticketId);
+
+    if (!ticket) {
+      throw new Error("Ticket no encontrado.");
+    }
 
     return ticket;
   } catch (error) {
@@ -74,7 +107,7 @@ const updateTicket = async (id, req) => {
       {
         description: req.description || ticket.description,
         amount: req.amount || ticket.amount,
-        ticket_date: req.ticket_date || ticket.ticket_date
+        ticket_date: req.ticket_date || ticket.ticket_date,
       },
       { transaction }
     );
@@ -87,7 +120,9 @@ const updateTicket = async (id, req) => {
     return "Ticket actualizado con éxito.";
   } catch (error) {
     await transaction.rollback();
-    throw new Error("Ocurrió un error al intentar actualizar el ticket: " + error.message);
+    throw new Error(
+      "Ocurrió un error al intentar actualizar el ticket: " + error.message
+    );
   }
 };
 
@@ -113,4 +148,5 @@ module.exports = {
   updateTicket,
   getTicketsByExpenseId,
   getTicketById,
+  deleteImage
 };

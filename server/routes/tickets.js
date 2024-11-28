@@ -5,7 +5,10 @@ const TicketController = require("../controllers/TicketController");
 const upload = multer();
 const router = Router();
 
-router.post("/images", upload.single("file"), TicketController.uploadImage);
+router.post("/:ticketId/images", upload.single("file"), TicketController.uploadImage);
+
+router.delete("/:ticketId/images", TicketController.deleteImage);
+
 
 router.get("/:ticketId", TicketController.getTicketById);
 

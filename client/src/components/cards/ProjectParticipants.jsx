@@ -14,7 +14,14 @@ export const ProjectParticipants = ({
 
   return (
     <div className="flex flex-col w-full border border-1 bg-white rounded-xl shadow-md p-5 lg:w-[50%] gap-4">
-      <h2 className="text-2xl text-left font-bold">Participantes</h2>
+      <div>
+        <h2 className="text-2xl text-left font-bold">Participantes</h2>
+        {projectParticipants.length === 1 && (
+          <span className="text-gray-500">
+            Agrega participantes para empezar a dividir gastos.
+          </span>
+        )}
+      </div>
       <span className="text-4xl font-bold">
         {projectParticipants.length || "1"}
       </span>

@@ -12,9 +12,9 @@ export const ProjectEditToolbar = ({onSaveProject, onCancelEdit, onDeleteProject
         </button>
         <button
           onClick={onCancelEdit}
-          className="flex flex-row bg-white border-red-600 rounded-xl border-2 w-fit p-3 gap-2 hover:bg-opacity-80"
+          className="flex flex-row bg-white border-black rounded-xl border-2 w-fit p-3 gap-2 hover:bg-opacity-80"
         >
-          <span className=" text-red-600  text-sm">Cancelar edición</span>
+          <span className=" text-sm">Cancelar edición</span>
         </button>
         <button
           className="flex flex-row bg-red-600 rounded-xl border border-1 w-fit p-3 gap-2 hover:bg-opacity-80 ml-auto"
