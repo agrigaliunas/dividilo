@@ -1,13 +1,20 @@
 const { Project } = require("../db/config");
 const { ProjectUser } = require("../db/config");
 const { registerPendingUser } = require("../services/AuthService");
-const { getUserByEmail, getUsersByIdList } = require("../services/UserService");
+const { getUserByEmail, getUsersByIdList, getUserById } = require("../services/UserService");
 const { Op } = require("sequelize");
 
 const ADDED_PARTICIPANT_SUCCESFULLY = "Participante agregado correctamente.";
 
 const addProject = async (projectData) => {
   try {
+
+    const user = await getUserById(projectData.user_id);
+
+    if (!user) {
+      throw new Error("El usuario no existe.")
+    }
+
     const newProject = await Project.create(projectData);
 
     await ProjectUser.create({
