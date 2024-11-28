@@ -27,7 +27,7 @@ export const addExpense = async (projectId, expenseTitle, token) => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      // "Authorization": token,
+      "Authorization": token,
     },
     body: JSON.stringify({
       title: expenseTitle,

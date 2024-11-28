@@ -5,7 +5,6 @@ import { ProjectTicket } from "./ProjectTicket";
 export const ProjectExpense = ({ expense, index, participantesproyecto }) => {
   const [gastosExpandidos, setGastosExpandidos] = useState({});
 
-
   const toggleGasto = (index) => {
     setGastosExpandidos((prev) => ({
       ...prev,

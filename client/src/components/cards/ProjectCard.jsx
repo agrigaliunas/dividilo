@@ -22,7 +22,7 @@ export const ProjectCard = ({ project }) => {
   return (
     <Link
       to={`/projects/${project.project_id}`}
-      className="hover:bg-gray-50 border border-1 rounded-lg p-2 min-h-[30vh] shadow-md flex flex-col overflow-hidden gap-5 "
+      className="hover:bg-gray-50 border border-1 p-2 min-h-[30vh] flex flex-col overflow-hidden gap-5 bg-white rounded-xl shadow-md"
     >
       <div className="text-center">
         <div className="lg:text-2xl text-xl font-semibold">

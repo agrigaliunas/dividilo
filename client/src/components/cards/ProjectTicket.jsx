@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 
 export const ProjectTicket = ({ ticket, index, participantes }) => {
+  const [showTicketImagen, setShowTicketImagen] = useState(false);
+
   const getParticipanteNombreApellido = (participanteId) => {
     const usuario = participantes.find(
       (user) => user.user_id === participanteId
@@ -41,19 +43,19 @@ export const ProjectTicket = ({ ticket, index, participantes }) => {
           Total ticket: ${ticket.amount}
         </span>
       </div>
-      {/* {ticket.imagen && (
-                    <button
-                      onClick={() => setShowTicketImagen(!showTicketImagen)}
-                      className="text-left underline text-xs hover:opacity-90 text-brandblue"
-                    >
-                      {showTicketImagen
-                        ? "Esconder imagen del ticket"
-                        : "Ver imagen del ticket"}
-                    </button>
-                  )}
-                  {ticket.imagen && showTicketImagen && (
-                    <img src={ticket.imagen} className="w-96 h-96" />
-                  )} */}
+      {ticket.imagen && (
+        <button
+          onClick={() => setShowTicketImagen(!showTicketImagen)}
+          className="text-left underline text-xs hover:opacity-90 text-brandblue"
+        >
+          {showTicketImagen
+            ? "Esconder imagen del ticket"
+            : "Ver imagen del ticket"}
+        </button>
+      )}
+      {ticket.imagen && showTicketImagen && (
+        <img src={ticket.imagen} className="w-96 h-96" />
+      )}
     </div>
   );
 };

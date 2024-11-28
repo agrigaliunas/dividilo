@@ -15,6 +15,8 @@ import {
 import { useAuth } from "../contexts/AuthContext";
 import NewParticipantModal from "./modals/NewParcitipantModal";
 import { fetchUsuarioByEmail } from "../services/UserService";
+import NewGastoModal from "./modals/NewGastoModal";
+import NewTicketModal from "./modals/NewTicketModal";
 
 export const ProjectInfo2 = ({
   proyecto,
@@ -23,11 +25,15 @@ export const ProjectInfo2 = ({
   onProjectUpdate,
   onParticipantsUpdate,
 }) => {
-  const [editandoProyectoMode, setEditandoProyectoMode] = useState(false);
   const [project, setProject] = useState(proyecto);
   const [participants, setParticipants] = useState(participantesProyecto);
-  const [modalParticipanteIsOpen, setModalParticipanteIsOpen] = useState(false);
+  const [expenses, setExpenses] = useState(gastosProyecto)
+  
+  const [editandoProyectoMode, setEditandoProyectoMode] = useState(false);
 
+  const [modalParticipanteIsOpen, setModalParticipanteIsOpen] = useState(false);
+  const [modalGastoIsOpen, setModalGastoIsOpen] = useState(false);
+  const [modalTicketIsOpen, setModalTicketIsOpen] = useState(false);
   const { user } = useAuth();
   const navigate = useNavigate();
 
@@ -38,7 +44,6 @@ export const ProjectInfo2 = ({
 
   const handleSaveProject = async () => {
     try {
-      console.log(project);
       const savedProject = await updateProject(
         project.project_id,
         project.title,
@@ -77,6 +82,22 @@ export const ProjectInfo2 = ({
     setModalParticipanteIsOpen(false);
   };
 
+  const openGastoModal = () => {
+    setModalGastoIsOpen(true);
+  };
+
+  const closeGastoModal = () => {
+    setModalGastoIsOpen(false);
+  };
+
+  const openTicketModal = (gastoIndex) => {
+    setModalTicketIsOpen(true);
+  };
+
+  const closeTicketModal = () => {
+    setModalTicketIsOpen(false);
+  };
+
   const handleAddParticipant = async (email) => {
     try {
       const response = await agregarParticipanteAlProyecto(project.project_id, email);
@@ -112,6 +133,13 @@ export const ProjectInfo2 = ({
       onParticipantsUpdate(participants);
       // TODO: actualizar split ticket del participante
     }
+  };
+
+  const handleAddGasto = (newExpense) => {
+    setExpenses((prevData) => ({
+      ...prevData,
+      newExpense
+    }));
   };
 
   const getParticipanteNombreApellido = useCallback(
@@ -221,10 +249,10 @@ export const ProjectInfo2 = ({
 
       <div className="flex flex-col gap-4">
         <ProjectExpenses
-          project={proyecto}
-          expenses={gastosProyecto}
+          expenses={expenses}
           participantesProyecto={participantesProyecto}
           editMode={editandoProyectoMode}
+          openGastoModal={openGastoModal}
         />
       </div>
 
@@ -239,7 +267,25 @@ export const ProjectInfo2 = ({
               onClose={closeParticipanteModal}
               onAddParticipant={(email) => handleAddParticipant(email)}
             />
+            
           }
+          {
+            <NewGastoModal
+            projectId={project.project_id}
+              gastos={expenses}
+              isOpen={modalGastoIsOpen}
+              onClose={closeGastoModal}
+              onAddGasto={handleAddGasto}
+            />
+          }
+          {/* {
+            <NewTicketModal
+              isOpen={modalTicketIsOpen}
+              onClose={closeTicketModal}
+              onAddTicket={handleAddTicket}
+              participantes={participants}
+            />
+          } */}
         </>
       )}
     </div>

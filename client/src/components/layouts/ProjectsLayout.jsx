@@ -47,8 +47,8 @@ const ProjectsLayout = () => {
       {modalIsOpen && <NewProjectModal closeModal={closeModal} />}
 
       <div className="py-16">
-        <div className="bg-white rounded-xl p-4 flex flex-col lg:gap-10 gap-5 w-[90vw] ">
-          <div className="flex lg:flex-row flex-col lg:gap-5 gap-2 lg:items-end items-start justify-center lg:justify-start">
+        <div className=" rounded-xl p-4 flex flex-col lg:gap-10 gap-5 w-[90vw] ">
+          <div className="flex lg:flex-row flex-col lg:gap-5 gap-2 lg:items-end items-start justify-center lg:justify-start border border-1 bg-white p-5 rounded-xl shadow-md">
             <h2 className="lg:text-5xl text-4xl font-semibold">Proyectos</h2>
             <button
               onClick={openModal}
