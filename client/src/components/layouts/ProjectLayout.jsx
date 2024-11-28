@@ -46,6 +46,13 @@ const ProjectLayout = ({ projectId }) => {
     }));
   };
 
+  const updateParticipantsState = (updatedParticipants) => {
+    setUsuarios((prevUsers) => ({
+      ...prevUsers,
+      updatedParticipants
+    }))
+  }
+
 
   if (isLoading) {
     return <div className="lg:text-2xl text-xl font-bold">Cargando proyecto...</div>;
@@ -61,6 +68,7 @@ const ProjectLayout = ({ projectId }) => {
       participantesProyecto={usuarios}
       gastosProyecto={gastos}
       onProjectUpdate={updateProjectState} 
+      onParticipantsUpdate={updateParticipantsState}
     />
   );
 };
