@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { ChevronDown } from "../icons/ChevronDown";
 import { ProjectTicket } from "./ProjectTicket";
 
-export const ProjectExpense = ({ expense, index, participantesproyecto }) => {
+export const ProjectExpense = ({ expense, modeEdit, onEditExpenseTitle, index, participantesproyecto }) => {
   const [gastosExpandidos, setGastosExpandidos] = useState({});
 
   const toggleGasto = (index) => {
@@ -18,9 +18,20 @@ export const ProjectExpense = ({ expense, index, participantesproyecto }) => {
       className="flex flex-col items-center border-2 rounded-xl gap-2 w-full"
     >
       <div className="flex flex-col gap-3 items-left bg-white p-5 rounded-xl shadow-md w-full">
+      {modeEdit ? (
+        <input
+          type="text"
+          className="font-bold text-center text-xl lg:text-2xl rounded-lg border-b border-black bg-transparent border-dashed border-spacing-3"
+          value={expense.title || ""}
+          onChange={(e) => onEditExpenseTitle(e.target.value)}
+          placeholder="Ingrese título del gasto..."
+          aria-label="Editar título del gasto"
+        />
+      ) : (
         <span className="font-bold text-center text-xl lg:text-2xl rounded-lg">
           {expense.title}
         </span>
+      )}
         <span className="font-bold text-xl text-center lg:text-3xl rounded-lg">
           Total ${expense.total_amount}
         </span>
