@@ -27,8 +27,8 @@ export const ProjectInfo2 = ({
 }) => {
   const [project, setProject] = useState(proyecto);
   const [participants, setParticipants] = useState(participantesProyecto);
-  const [expenses, setExpenses] = useState(gastosProyecto)
-  
+  const [expenses, setExpenses] = useState(gastosProyecto);
+
   const [editandoProyectoMode, setEditandoProyectoMode] = useState(false);
 
   const [modalParticipanteIsOpen, setModalParticipanteIsOpen] = useState(false);
@@ -100,26 +100,30 @@ export const ProjectInfo2 = ({
 
   const handleAddParticipant = async (email) => {
     try {
-      const response = await agregarParticipanteAlProyecto(project.project_id, email);
-      
+      const response = await agregarParticipanteAlProyecto(
+        project.project_id,
+        email
+      );
+
       const participant = await fetchUsuarioByEmail(email);
-  
+
       if (response.status === 200 && participant) {
         setParticipants((prevParticipants) => {
           const updatedParticipants = [...prevParticipants, participant];
           return updatedParticipants;
         });
-  
+
         onParticipantsUpdate(participants);
-  
+
         closeParticipanteModal();
       }
     } catch (error) {
       console.error("Error al agregar participante:", error);
-      alert("No se pudo agregar el participante. Por favor, inténtalo de nuevo.");
+      alert(
+        "No se pudo agregar el participante. Por favor, inténtalo de nuevo."
+      );
     }
   };
-  
 
   const handleDeleteParticipant = async (userId) => {
     const response = await eliminarParticipanteDelProyecto(
@@ -138,7 +142,7 @@ export const ProjectInfo2 = ({
   const handleAddGasto = (newExpense) => {
     setExpenses((prevData) => ({
       ...prevData,
-      newExpense
+      newExpense,
     }));
   };
 
@@ -267,11 +271,10 @@ export const ProjectInfo2 = ({
               onClose={closeParticipanteModal}
               onAddParticipant={(email) => handleAddParticipant(email)}
             />
-            
           }
           {
             <NewGastoModal
-            projectId={project.project_id}
+              projectId={project.project_id}
               gastos={expenses}
               isOpen={modalGastoIsOpen}
               onClose={closeGastoModal}

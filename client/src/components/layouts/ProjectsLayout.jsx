@@ -19,9 +19,8 @@ const ProjectsLayout = () => {
   useEffect(() => {
     const loadProjects = async () => {
       const projectsData = await fetchProjectsByUserId(user.user_id);
-
+      setLoading(false)
       setProjects(projectsData);
-      setLoading(false);
     };
     loadProjects();
   }, []);
@@ -41,6 +40,10 @@ const ProjectsLayout = () => {
   const handleToggleFinished = () => {
     setToggleFinished(!toggleFinished);
   };
+
+  if (loading) {
+    return <div className="lg:text-2xl text-xl font-bold">Cargando proyectos...</div>;
+  }
 
   return (
     <>
@@ -78,6 +81,7 @@ const ProjectsLayout = () => {
                   ></ProjectsGrid>
                 )}
               </section>
+              
               <section className="w-full">
                 <div className="flex flex-row p-2 bg-green-600 bg-opacity-40 rounded-xl lg:w-[15vw] w-[40vw] items-center justify-center gap-2 text-gray-800 cursor-default select-none text-xs lg:text-sm">
                   <button
@@ -90,7 +94,7 @@ const ProjectsLayout = () => {
                     FINALIZADOS
                   </span>
                 </div>
-                {!toggleFinished && (
+                {!toggleFinished &&  (
                   <ProjectsGrid
                     projects={projects}
                     estado={"Finalizado"}
