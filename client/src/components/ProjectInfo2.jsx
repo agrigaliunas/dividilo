@@ -17,6 +17,7 @@ import NewParticipantModal from "./modals/NewParcitipantModal";
 import { fetchUsuarioByEmail } from "../services/UserService";
 import NewGastoModal from "./modals/NewGastoModal";
 import NewTicketModal from "./modals/NewTicketModal";
+import { updateExpense } from "../services/ExpenseService"
 
 export const ProjectInfo2 = ({
   proyecto,
@@ -44,6 +45,7 @@ export const ProjectInfo2 = ({
 
   const handleSaveProject = async () => {
     try {
+
       const savedProject = await updateProject(
         project.project_id,
         project.title,
@@ -51,13 +53,25 @@ export const ProjectInfo2 = ({
         project.state,
         user.token
       );
+  
+      const updatedExpensesPromises = expenses.map((expense) =>
+        updateExpense(expense.expense_id, expense.title)
+      );
+  
+      await Promise.all(updatedExpensesPromises);
 
+      setExpenses(expenses);
       setProject(project);
       onProjectUpdate(project);
+
+      console.log(project)
+
       setEditandoProyectoMode(false);
+  
+      alert("Proyecto y gastos actualizados con éxito.");
     } catch (error) {
-      console.error("Error al guardar el proyecto:", error);
-      alert("No se pudo guardar el proyecto. Por favor, inténtalo de nuevo.");
+      console.error("Error al guardar el proyecto o los gastos:", error);
+      alert("No se pudo guardar el proyecto o los gastos. Por favor, inténtalo de nuevo.");
     }
   };
 
@@ -155,6 +169,14 @@ export const ProjectInfo2 = ({
     },
     [participantesProyecto]
   );
+
+  const handleEditExpenseTitle = (index, newTitle) => {
+    setExpenses((prevExpenses) => {
+      const updatedExpenses = [...prevExpenses];
+      updatedExpenses[index] = { ...updatedExpenses[index], title: newTitle };
+      return updatedExpenses;
+    });
+  };
 
   // const calcularGastoParticipante = useCallback(
   //   (participanteId) => {
@@ -259,6 +281,7 @@ export const ProjectInfo2 = ({
         <ProjectExpenses
           expenses={expenses}
           participantesProyecto={participantesProyecto}
+          onEditExpenseTitle={handleEditExpenseTitle}
           editMode={editandoProyectoMode}
           openGastoModal={openGastoModal}
         />

@@ -36,3 +36,21 @@ export const addExpense = async (projectId, expenseTitle, token) => {
   }).then((data) => data.json());
   return data;
 };
+
+export const updateExpense = async (id, newExpenseTitle) => {
+  const response = await fetch(
+    `${BACKEND_URL}/expenses/${id}`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        // "Authorization": token
+      },
+      body: JSON.stringify({
+        title: newExpenseTitle,
+      })
+    }
+  );
+
+  return response;
+};

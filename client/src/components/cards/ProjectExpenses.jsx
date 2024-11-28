@@ -4,6 +4,7 @@ import { ProjectExpense } from "./ProjectExpense";
 export const ProjectExpenses = ({
   expenses,
   participantesProyecto,
+  onEditExpenseTitle,
   editMode,
   openGastoModal,
 }) => {
@@ -33,6 +34,8 @@ export const ProjectExpenses = ({
           expenses.map((exp, i) => (
             <ProjectExpense
               expense={exp}
+              onEditExpenseTitle={(newTitle) => onEditExpenseTitle(i, newTitle)}
+              modeEdit={editMode}
               index={i}
               participantesproyecto={participantesProyecto}
             />
