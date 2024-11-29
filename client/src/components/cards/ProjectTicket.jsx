@@ -10,6 +10,7 @@ import { Eye } from "../icons/Eye";
 import { EyeSlash } from "../icons/EyeSlash";
 import { DocumentPlus } from "../icons/DocumentPlus";
 import { useAuth } from "../../contexts/AuthContext";
+import { addSplit, deleteSplit } from "../../services/SplitService";
 
 export const ProjectTicket = ({
   editMode,
@@ -35,8 +36,9 @@ export const ProjectTicket = ({
     user_amount: "",
   });
 
-  const { user } = useAuth();
+  const [selectedSplitType, setSelectedSplitType] = useState("Monto");
 
+  const { user } = useAuth();
 
   const getParticipanteNombreApellido = (participanteId) => {
     const usuario = participantes.find(
@@ -110,19 +112,27 @@ export const ProjectTicket = ({
   };
 
   const handleAddSplit = () => {
-    setShowModal(true); // Mostrar el modal cuando se hace clic en "Agregar split"
+    setShowModal(true);
   };
 
   const handleCloseModal = () => {
-    setShowModal(false); // Cerrar el modal
+    setShowModal(false);
   };
 
-  const handleSaveSplit = () => {
-    // Lógica para agregar el nuevo split al ticket
-    // Aquí deberías actualizar el ticket con el nuevo split
-    // Dependiendo de la lógica de tu aplicación, podrías hacer un llamado a un servicio
-    console.log("Nuevo split agregado:", newSplit);
-    setShowModal(false); // Cerrar el modal después de guardar el split
+  const handleSplitTypeChange = (type) => {
+    setSelectedSplitType(type);
+  };
+
+  const handleSaveSplit = async () => {
+    await addSplit(newSplit, ticket.ticket_id, selectedSplitType, user.token);
+    setShowModal(false);
+    window.location.reload(true);
+  };
+
+  const handleDeleteSplit = async (splitId) => {
+    console.log(splitId)
+    await deleteSplit(splitId, user.token);
+    window.location.reload(true);
   };
 
   return (
@@ -216,11 +226,17 @@ export const ProjectTicket = ({
         {ticket.splits?.length > 0 &&
           ticket.splits.map((sp, spIndex) => {
             const percentage = parseFloat(sp.user_percentage) * 100;
+            const splitId = sp.split_id
             return (
               <div
                 key={spIndex}
                 className="flex items-center gap-4 w-full my-2"
               >
+                {editMode && (
+                  <button onClick={() => handleDeleteSplit(splitId)}>
+                    <Trash style="w-6 h-6" />
+                  </button>
+                )}
                 <div className="flex flex-col">
                   <span className="font-semibold w-48 text-left">
                     {getParticipanteNombreApellido(sp.user_id)}
@@ -290,6 +306,30 @@ export const ProjectTicket = ({
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded-lg w-96">
             <h2 className="text-xl mb-4">Agregar un nuevo split</h2>
+
+            <div className="flex mb-4">
+              <div
+                onClick={() => handleSplitTypeChange("Monto")}
+                className={`w-1/2 text-center py-2 cursor-pointer ${
+                  selectedSplitType === "Monto"
+                    ? "bg-brandblue text-white"
+                    : "bg-gray-200"
+                }`}
+              >
+                Monto
+              </div>
+              <div
+                onClick={() => handleSplitTypeChange("Porcentaje")}
+                className={`w-1/2 text-center py-2 cursor-pointer ${
+                  selectedSplitType === "Porcentaje"
+                    ? "bg-brandblue text-white"
+                    : "bg-gray-200"
+                }`}
+              >
+                Porcentaje
+              </div>
+            </div>
+
             <div className="mb-4">
               <select
                 value={newSplit.user_id}
@@ -299,53 +339,69 @@ export const ProjectTicket = ({
                 className="w-full p-2 border rounded"
               >
                 <option value="">Seleccione un participante</option>
-                {participantes.map((participante) => (
-                  <option
-                    key={participante.user_id}
-                    value={participante.user_id}
-                  >
-                    {participante.name} {participante.lastname}
-                  </option>
-                ))}
+                {participantes
+                  .filter((participante) => {
+                    return !ticket.splits.some(
+                      (split) => split.user_id === participante.user_id
+                    );
+                  })
+                  .map((participante) => (
+                    <option
+                      key={participante.user_id}
+                      value={participante.user_id}
+                    >
+                      {participante.finished_onboarding
+                        ? `${participante.name} ${participante.lastname}`
+                        : participante.email}
+                    </option>
+                  ))}
               </select>
             </div>
-            <div className="mb-4">
-              <input
-                type="number"
-                value={newSplit.user_percentage}
-                onChange={(e) =>
-                  setNewSplit({ ...newSplit, user_percentage: e.target.value })
-                }
-                className="w-full p-2 border rounded"
-                placeholder="Porcentaje del split"
-              />
-            </div>
-            <div className="mb-4">
-              <input
-                type="number"
-                value={newSplit.user_amount}
-                onChange={(e) =>
-                  setNewSplit({ ...newSplit, user_amount: e.target.value })
-                }
-                className="w-full p-2 border rounded"
-                placeholder="Monto a asignar"
-              />
-            </div>
+
+            {selectedSplitType === "Monto" ? (
+              <div className="mb-4">
+                <input
+                  type="number"
+                  value={parseFloat(newSplit.user_amount).toFixed(2)}
+                  onChange={(e) =>
+                    setNewSplit({ ...newSplit, user_amount: e.target.value })
+                  }
+                  className="w-full p-2 border rounded"
+                  placeholder="Monto a asignar"
+                />
+              </div>
+            ) : (
+              <div className="mb-4">
+                <input
+                  type="number"
+                  value={parseFloat(newSplit.user_percentage).toFixed(2)}
+                  onChange={(e) =>
+                    setNewSplit({
+                      ...newSplit,
+                      user_percentage: e.target.value,
+                    })
+                  }
+                  className="w-full p-2 border rounded"
+                  placeholder="Porcentaje del split"
+                />
+              </div>
+            )}
+
             <div className="flex justify-end gap-4">
-            <button
-              type="button"
-              onClick={handleCloseModal}
-              className="bg-red-500 text-white px-4 py-2 rounded-md hover:opacity-80"
-            >
-              Cancelar
-            </button>
-            <button
-              onClick={handleSaveSplit}
-              className="bg-brandblue text-white px-4 py-2 rounded-md hover:opacity-85"
-            >
-              Agregar
-            </button>
-          </div>
+              <button
+                type="button"
+                onClick={handleCloseModal}
+                className="bg-red-500 text-white px-4 py-2 rounded-md hover:opacity-80"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={handleSaveSplit}
+                className="bg-brandblue text-white px-4 py-2 rounded-md hover:opacity-85"
+              >
+                Agregar
+              </button>
+            </div>
           </div>
         </div>
       )}

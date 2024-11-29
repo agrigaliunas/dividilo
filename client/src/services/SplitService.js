@@ -17,3 +17,32 @@ export const eliminarSplitsDelParticipante = async (
   );
   return response;
 };
+
+export const addSplit = async (newSplit, ticketId, selectedSplitType, token) => {
+  const data = await fetch(`${BACKEND_URL}/splits`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": token,
+    },
+    body: JSON.stringify({
+      ticket_id: ticketId,
+      user_id: newSplit.user_id,
+      user_amount: newSplit.user_amount,
+      split_type: selectedSplitType,
+      user_percentage: newSplit.user_percentage || null
+    }),
+  }).then((data) => data.json());
+  return data;
+}
+
+
+export const deleteSplit = async (splitId, token) => {
+  const data = await fetch(`${BACKEND_URL}/splits/${splitId}`, {
+    method: "DELETE",
+    headers: {
+      "Authorization": token,
+    }
+  }).then((data) => data.json());
+  return data;
+}

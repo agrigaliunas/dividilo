@@ -46,26 +46,53 @@ const addSplit = async (splitData) => {
 
     const ticketTotalAmount = ticket.amount;
 
-    if (splitData.user_amount > ticketTotalAmount) {
-      throw new Error("El monto del split excede el total del ticket.");
+    const userAmount = parseFloat(splitData.user_amount)
+    console.log("USER AMOUNT " + userAmount)
+    console.log("USER AMOUNT tiy" + typeof userAmount)
+
+
+    if (splitData.split_type === "Monto") {
+      if (userAmount > ticketTotalAmount) {
+        throw new Error("El monto del split excede el total del ticket.");
+      }
+  
+      if (ticketTotalAmount - totalFromSplits < userAmount) {
+        throw new Error(
+          "El monto del split excede el total de los splits del ticket."
+        );
+      }
+  
+      const percentage = splitData.user_amount / ticketTotalAmount;
+  
+      await Split.create({
+        user_id: splitData.user_id,
+        ticket_id: splitData.ticket_id,
+        user_amount: userAmount,
+        user_percentage: percentage,
+      });
+  
+      return { message: "Split añadido correctamente" };
+    } else {
+
+      console.log(splitData.user_percentage)
+
+      if (splitData.user_percentage > 1) {
+        throw new Error("El porcentaje debe ser menor a 1.");
+      }
+  
+      const amount = splitData.user_percentage*ticketTotalAmount;
+  
+      await Split.create({
+        user_id: splitData.user_id,
+        ticket_id: splitData.ticket_id,
+        user_amount: amount,
+        user_percentage: splitData.user_percentage,
+      });
+  
+      return { message: "Split añadido correctamente" };
     }
 
-    if (ticketTotalAmount - totalFromSplits < splitData.user_amount) {
-      throw new Error(
-        "El monto del split excede el total de los splits del ticket."
-      );
-    }
 
-    const percentage = splitData.user_amount / ticketTotalAmount;
-
-    await Split.create({
-      user_id: splitData.user_id,
-      ticket_id: splitData.ticket_id,
-      user_amount: splitData.user_amount,
-      user_percentage: percentage,
-    });
-
-    return { message: "Split añadido correctamente" };
   } catch (err) {
     console.error("Error creando split:", err.message);
     throw new Error("Falla al crear un split.");

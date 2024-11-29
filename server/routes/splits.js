@@ -24,12 +24,10 @@ router.post(
       .isInt()
       .withMessage("El user_id debe ser un número entero"),
 
-    check("user_amount")
+    check("split_type")
       .not()
       .isEmpty()
-      .withMessage("El monto es requerido")
-      .isFloat({ min: 0 })
-      .withMessage("El monto debe ser un número mayor a 0"),
+      .withMessage("El split type es requerido"),
 
     validateRequest,
   ],
