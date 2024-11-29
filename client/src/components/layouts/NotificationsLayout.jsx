@@ -1,56 +1,58 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useAuth } from "../../contexts/AuthContext.js";
+import { fetchNotificationsByUserId } from "../../services/NotificationService.js";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
 
-const notifications = [
-  {
-    id: 1,
-    message:
-      "Participante agregado en Proyecto de trabajo colaborativo: Juan Pérez",
-    type: "info",
-  },
-  {
-    id: 2,
-    message: "Nuevo proyecto agregado: Proyecto de trabajo colaborativo",
-    type: "info",
-  },
-  {
-    id: 3,
-    message: "Ticket agregado para el viaje a Bariloche",
-    type: "success",
-  },
-  { id: 4, message: "Gasto pendiente: Viaje MDQ", type: "warning" },
-];
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
-const Notification = ({ message, type }) => {
+const Notification = ({ message, type, notification_datetime }) => {
+
   const getTypeClass = () => {
-    switch (type) {
-      case "success":
-        return "bg-green-100 border-green-500 text-green-700";
-      case "warning":
-        return "bg-yellow-100 border-yellow-500 text-yellow-700";
-      case "info":
-      default:
-        return "bg-blue-100 border-blue-500 text-blue-700";
-    }
-  };
+      switch (type) {
+        case "Success":
+          return "bg-green-100 border-green-500 text-green-700";
+        case "Warning":
+          return "bg-red-100 border-red-500 text-red-700";
+      }
+    };
+
+
+    const formattedDate = dayjs(notification_datetime)
+    .tz("America/Argentina/Buenos_Aires")
+    .format("DD/MM/YYYY HH:mm");
 
   return (
-    <div
-      className={`flex items-center p-4 mb-2 border-l-4 rounded ${getTypeClass()}`}
-    >
+    <div className={`flex items-center p-4 mb-2 border-l-4 rounded ${getTypeClass()}`}>
       <div className="flex-1">{message}</div>
+      <div className="">{formattedDate}</div>
     </div>
   );
 };
 
 const NotificationsLayout = () => {
+  const [notifications, setNotifications] = useState([]);
+  const { user } = useAuth();
+
+  useEffect(() => {
+    const loadNotifications = async () => {
+      const notificationsData = await fetchNotificationsByUserId(user.user_id);
+      setNotifications(notificationsData.reverse());
+    };
+    loadNotifications();
+  }, [user.user_id]);
+
   return (
     <div className="p-4 space-y-3">
       <h2 className="lg:text-5xl text-4xl font-semibold">Notificaciones</h2>
       {notifications.map((notification) => (
         <Notification
-          key={notification.id}
+          key={notification.notification_id}
           message={notification.message}
           type={notification.type}
+          notification_datetime={notification.notification_datetime}
         />
       ))}
     </div>

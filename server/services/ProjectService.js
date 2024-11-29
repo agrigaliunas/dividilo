@@ -3,6 +3,7 @@ const { ProjectUser } = require("../db/config");
 const { registerPendingUser } = require("../services/AuthService");
 const { getUserByEmail, getUsersByIdList, getUserById } = require("../services/UserService");
 const { Op } = require("sequelize");
+const { addNotification } = require("./NotificationsService");
 
 const ADDED_PARTICIPANT_SUCCESFULLY = "Participante agregado correctamente.";
 
@@ -73,6 +74,10 @@ const addParticipant = async (id, req) => {
 
   const existingParticipant = await getUserByEmail(req.email);
 
+  const userFromNotification = await getUserById(req.user_from_id)
+
+  const notificationMessage = `${userFromNotification.name} ${userFromNotification.lastname} te ha agregado al proyecto ${existingProject.title}`;
+
   if (!existingParticipant) {
     try {
       const pendingUser = await registerPendingUser(req.email);
@@ -80,6 +85,14 @@ const addParticipant = async (id, req) => {
       await ProjectUser.create({
         user_id: pendingUser.user_id,
         project_id: id,
+      });
+
+      await addNotification({
+        user_from_id: userFromNotification.user_id,
+        user_to_id: pendingUser.user_id,
+        project_id: id,
+        message: notificationMessage,
+        type: 'Success'
       });
 
       return ADDED_PARTICIPANT_SUCCESFULLY;
@@ -91,6 +104,14 @@ const addParticipant = async (id, req) => {
   await ProjectUser.create({
     user_id: existingParticipant.user_id,
     project_id: id,
+  });
+
+  await addNotification({
+    user_from_id: req.user_from_id,
+    user_to_id: existingParticipant.user_id,
+    project_id: id,
+    message: notificationMessage,
+    type: 'Success'
   });
 
   return ADDED_PARTICIPANT_SUCCESFULLY;
@@ -219,6 +240,19 @@ const deleteParticipantFromProject = async (id, req) => {
         project_id: id,
         user_id: req.userId,
       },
+    });
+
+    const userFromNotification = await getUserById(req.user_from_id)
+    const project = await getProjectById(id)
+
+    const notificationMessage = `${userFromNotification.name} ${userFromNotification.lastname} te ha borrado del proyecto ${project.title}`;
+
+    await addNotification({
+      user_from_id: userFromNotification.user_id,
+      user_to_id: req.userId,
+      project_id: id,
+      message: notificationMessage,
+      type: 'Warning'
     });
 
     return "Participante borrado con éxito del proyecto.";

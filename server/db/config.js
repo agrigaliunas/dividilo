@@ -23,6 +23,7 @@ const ProjectUser = require('./models/ProjectUser')(sequelize);
 const Ticket = require('./models/Ticket')(sequelize);
 const Split = require('./models/Split')(sequelize);
 const Expense = require('./models/Expense')(sequelize)
+const Notification = require('./models/Notification')(sequelize)
 
 dotenv.config();
 
@@ -40,6 +41,10 @@ Split.belongsTo(User, { foreignKey: 'user_id' });
 
 Ticket.hasMany(Split, { foreignKey: 'ticket_id' });
 Split.belongsTo(Ticket, { foreignKey: 'ticket_id' });
+
+Notification.belongsTo(User, { as: 'UserFrom', foreignKey: 'user_from_id' });
+Notification.belongsTo(User, { as: 'UserTo', foreignKey: 'user_to_id' });
+Notification.belongsTo(Project, { foreignKey: 'project_id' });
 
 const initializeDatabase = async () => {
     try {
@@ -66,5 +71,6 @@ module.exports = {
     ProjectUser,
     Expense,
     Ticket,
-    Split
+    Split,
+    Notification
 };

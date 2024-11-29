@@ -115,6 +115,7 @@ export const ProjectInfo2 = ({
   const handleAddParticipant = async (email) => {
     try {
       const response = await agregarParticipanteAlProyecto(
+        user.user_id,
         project.project_id,
         email
       );
@@ -141,6 +142,7 @@ export const ProjectInfo2 = ({
 
   const handleDeleteParticipant = async (userId) => {
     const response = await eliminarParticipanteDelProyecto(
+      user.user_id,
       project.project_id,
       userId
     );

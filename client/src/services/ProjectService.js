@@ -74,13 +74,14 @@ export const deleteProject = async (id) => {
   return response;
 };
 
-export const eliminarParticipanteDelProyecto = async (id, participanteId) => {
+export const eliminarParticipanteDelProyecto = async (userFromId, id, participanteId) => {
     const response = await fetch(`${BACKEND_URL}/projects/${id}/users`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        user_from_id: userFromId,
         userId: participanteId,
       }),
     });
@@ -89,13 +90,14 @@ export const eliminarParticipanteDelProyecto = async (id, participanteId) => {
     }
 
 
-export const agregarParticipanteAlProyecto = async (proyectoId, participanteEmail) => {
+export const agregarParticipanteAlProyecto = async (userId, proyectoId, participanteEmail) => {
   const response = await fetch(`${BACKEND_URL}/projects/${proyectoId}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
+      user_from_id: userId,
       email: participanteEmail
     }),
   });
