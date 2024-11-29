@@ -7,14 +7,8 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-  }, []);
+  const storedUser = JSON.parse(localStorage.getItem("user"));
+  const [user, setUser] = useState(storedUser || null);
 
   const storeIntoLocalStorage = (userData) => {
     const userWithToken = {

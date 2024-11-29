@@ -1,6 +1,6 @@
 const welcomeTemplate = {
-    subject: '¡Bienvenido a Dividilo!',
-    html: `<!DOCTYPE html>
+  subject: "¡Bienvenido a Dividilo!",
+  html: `<!DOCTYPE html>
     <html>
     <head>
         <meta charset="utf-8">
@@ -16,12 +16,12 @@ const welcomeTemplate = {
             </ul>
         </div>
     </body>
-    </html>`
+    </html>`,
 };
 
 const accountDeletedTemplate = {
-    subject: 'Tu cuenta ha sido eliminada',
-    html: `<!DOCTYPE html>
+  subject: "Tu cuenta ha sido eliminada",
+  html: `<!DOCTYPE html>
     <html>
     <head>
         <meta charset="utf-8">
@@ -38,12 +38,12 @@ const accountDeletedTemplate = {
             </ul>
         </div>
     </body>
-    </html>`
+    </html>`,
 };
 
 const inviteToProjectTemplate = (password) => ({
-    subject: 'Te han invitado a un proyecto en Dividilo',
-    html: `<!DOCTYPE html>
+  subject: "Te han invitado a un proyecto en Dividilo",
+  html: `<!DOCTYPE html>
     <html>
     <head>
         <meta charset="utf-8">
@@ -69,12 +69,12 @@ const inviteToProjectTemplate = (password) => ({
             <p style="color: #95a5a6;">El equipo de Dividilo</p>
         </div>
     </body>
-    </html>`
+    </html>`,
 });
 
 const passwordUpdatedTemplate = {
-    subject: 'Tu contraseña fué actualizada exitosamente',
-    html: `<!DOCTYPE html>
+  subject: "Tu contraseña fué actualizada exitosamente",
+  html: `<!DOCTYPE html>
     <html>
     <head>
         <meta charset="utf-8">
@@ -94,13 +94,13 @@ const passwordUpdatedTemplate = {
             <p>Si vos fuiste quien realizó el cambio, no necesitas hacer nada más. ¡Gracias por ser parte de la comunidad Dividilo!</p>
         </div>
     </body>
-    </html>`
+    </html>`,
 };
 
 module.exports = {
-    welcomeTemplate,
-    accountDeletedTemplate,
-    passwordUpdatedTemplate,
-    inviteToProjectTemplate,
-    passwordUpdatedTemplate
-}
+  welcomeTemplate,
+  accountDeletedTemplate,
+  passwordUpdatedTemplate,
+  inviteToProjectTemplate,
+  passwordUpdatedTemplate,
+};

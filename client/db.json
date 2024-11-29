@@ -72,10 +72,7 @@
       "descripcion": "Viaje con la familia",
       "montoTotalProyecto": 3100,
       "estado": "Finalizado",
-      "participantes": [
-        "2",
-        "4"
-      ],
+      "participantes": ["2", "4"],
       "gastos": [
         {
           "id": "1",
@@ -156,10 +153,7 @@
       "descripcion": "Remodelando la cocina del departamento",
       "montoTotalProyecto": 6000,
       "estado": "En progreso",
-      "participantes": [
-        "1",
-        "3"
-      ],
+      "participantes": ["1", "3"],
       "gastos": [
         {
           "id": "3",
@@ -259,10 +253,7 @@
       "descripcion": "Organización de la fiesta de cumpleaños de Maria",
       "montoTotalProyecto": 1500,
       "estado": "Finalizado",
-      "participantes": [
-        "3",
-        "4"
-      ],
+      "participantes": ["3", "4"],
       "gastos": [
         {
           "id": "5",
@@ -324,11 +315,7 @@
       "descripcion": "Viaje grupal a Bariloche con amigos",
       "montoTotalProyecto": 5000,
       "estado": "Finalizado",
-      "participantes": [
-        "1",
-        "2",
-        "4"
-      ],
+      "participantes": ["1", "2", "4"],
       "gastos": [
         {
           "id": "7",
@@ -400,12 +387,7 @@
       "descripcion": "Desarrollo de una app con el equipo",
       "montoTotalProyecto": 8000,
       "estado": "En progreso",
-      "participantes": [
-        "1",
-        "2",
-        "3",
-        "4"
-      ],
+      "participantes": ["1", "2", "3", "4"],
       "gastos": [
         {
           "id": "9",
@@ -485,10 +467,7 @@
       "id": "edf1",
       "nombre": "Viaje a MDQ",
       "descripcion": "Viaje con la familia",
-      "participantes": [
-        null,
-        "1"
-      ],
+      "participantes": [null, "1"],
       "montoTotalProyecto": 0,
       "gastos": [],
       "estado": "En progreso"
@@ -497,10 +476,7 @@
       "id": "e20e",
       "nombre": "Viaje a MDQ",
       "descripcion": "Viaje con la familia",
-      "participantes": [
-        "93042587-8a65-495c-9ef3-9ad9f28e81c3",
-        "1"
-      ],
+      "participantes": ["93042587-8a65-495c-9ef3-9ad9f28e81c3", "1"],
       "montoTotalProyecto": 0,
       "gastos": [],
       "estado": "En progreso"
@@ -509,9 +485,7 @@
       "id": "927e",
       "nombre": "proyecto test",
       "descripcion": "asdasd",
-      "participantes": [
-        "93042587-8a65-495c-9ef3-9ad9f28e81c3"
-      ],
+      "participantes": ["93042587-8a65-495c-9ef3-9ad9f28e81c3"],
       "montoTotalProyecto": 0,
       "gastos": [],
       "estado": "En progreso"

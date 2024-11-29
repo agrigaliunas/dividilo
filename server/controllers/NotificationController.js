@@ -2,7 +2,9 @@ const NotifiactionsService = require("../services/NotificationsService");
 
 const getNotificationsByUserId = async (req, res) => {
   try {
-    const notifications = await NotifiactionsService.getNotificationsByUserId(req.params.userId);
+    const notifications = await NotifiactionsService.getNotificationsByUserId(
+      req.params.userId
+    );
     res.status(200).json(notifications);
   } catch (err) {
     res.status(500).json({
@@ -11,10 +13,11 @@ const getNotificationsByUserId = async (req, res) => {
   }
 };
 
-
 const deleteNotification = async (req, res) => {
   try {
-    const notification = await NotifiactionsService.deleteNotification(req.params.notificationId);
+    const notification = await NotifiactionsService.deleteNotification(
+      req.params.notificationId
+    );
     res.status(200).json(notification);
   } catch (err) {
     res.status(500).json({
@@ -37,5 +40,5 @@ const addNotification = async (req, res) => {
 module.exports = {
   addNotification,
   deleteNotification,
-  getNotificationsByUserId
+  getNotificationsByUserId,
 };

@@ -11,7 +11,6 @@ const addNotification = async (notificationData) => {
   }
 };
 
-
 const getNotificationsByUserId = async (userId) => {
   try {
     const notifications = await Notification.findAll({
@@ -50,5 +49,5 @@ const deleteNotification = async (id) => {
 module.exports = {
   addNotification,
   getNotificationsByUserId,
-  deleteNotification
+  deleteNotification,
 };

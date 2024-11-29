@@ -20,9 +20,9 @@ const ProjectLayout = ({ projectId }) => {
 
       try {
         const [projectData, usuariosData, gastosData] = await Promise.all([
-          fetchProjectById(projectId),
-          fetchUsersByProjectId(projectId),
-          getExpensesWithTicketsByProjectId(projectId, user.token),
+          await fetchProjectById(projectId, user.token),
+          await fetchUsersByProjectId(projectId, user.token),
+          await getExpensesWithTicketsByProjectId(projectId, user.token),
         ]);
 
         setProject(projectData);

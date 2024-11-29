@@ -1,24 +1,32 @@
-const BACKEND_URL = "http://localhost:5000/api"
+const BACKEND_URL = "http://localhost:5000/api";
 
-export const fetchProjectsByUserId = async (userId) => {
-  const data = await fetch(`${BACKEND_URL}/projects/user/${userId}`).then((data) =>
-    data.json()
-  );
+export const fetchProjectsByUserId = async (userId, token) => {
+  const data = await fetch(`${BACKEND_URL}/projects/user/${userId}`, {
+    method: "GET",
+    headers: {
+      "Authorization": token,
+    },
+  }).then((data) => data.json());
   return data;
 };
 
-
-export const fetchProjectById = async (projectId) => {
-  const data = await fetch(`${BACKEND_URL}/projects/${projectId}`).then((data) =>
-    data.json()
-  );
+export const fetchProjectById = async (projectId, token) => {
+  const data = await fetch(`${BACKEND_URL}/projects/${projectId}`, {
+    method: "GET",
+    headers: {
+      "Authorization": token,
+    },
+  }).then((data) => data.json());
   return data;
 };
 
-export const fetchUsersByProjectId = async (projectId) => {
-  const data = await fetch(`${BACKEND_URL}/projects/${projectId}/users`).then((data) =>
-    data.json()
-  );
+export const fetchUsersByProjectId = async (projectId, token) => {
+  const data = await fetch(`${BACKEND_URL}/projects/${projectId}/users`, {
+    method: "GET",
+    headers: {
+      "Authorization": token,
+    },
+  }).then((data) => data.json());
   return data;
 };
 
@@ -27,12 +35,12 @@ export const createProject = async (nombre, descripcion, userId, token) => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": token
+      "Authorization": token,
     },
     body: JSON.stringify({
       title: nombre,
       description: descripcion,
-      user_id: userId
+      user_id: userId,
     }),
   });
 
@@ -40,67 +48,72 @@ export const createProject = async (nombre, descripcion, userId, token) => {
 };
 
 export const updateProject = async (id, nombre, descripcion, estado, token) => {
-  const response = await fetch(
-    `${BACKEND_URL}/projects/${id}`,
-    {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": token
-      },
-      body: JSON.stringify({
-        title: nombre,
-        description: descripcion,
-        state: estado
-      })
-    }
-  );
-
-  return response;
-};
-
-
-export const deleteProject = async (id) => {
-  const response = await fetch(
-    `${BACKEND_URL}/projects/${id}`,
-    {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
-
-  return response;
-};
-
-export const eliminarParticipanteDelProyecto = async (userFromId, id, participanteId) => {
-    const response = await fetch(`${BACKEND_URL}/projects/${id}/users`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        user_from_id: userFromId,
-        userId: participanteId,
-      }),
-    });
-
-    return response;
-    }
-
-
-export const agregarParticipanteAlProyecto = async (userId, proyectoId, participanteEmail) => {
-  const response = await fetch(`${BACKEND_URL}/projects/${proyectoId}`, {
-    method: "POST",
+  const response = await fetch(`${BACKEND_URL}/projects/${id}`, {
+    method: "PATCH",
     headers: {
       "Content-Type": "application/json",
+      "Authorization": token,
     },
     body: JSON.stringify({
-      user_from_id: userId,
-      email: participanteEmail
+      title: nombre,
+      description: descripcion,
+      state: estado,
     }),
   });
 
   return response;
-}
+};
+
+export const deleteProject = async (id, token) => {
+  const response = await fetch(`${BACKEND_URL}/projects/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": token,
+    },
+  });
+
+  return response;
+};
+
+export const eliminarParticipanteDelProyecto = async (
+  userFromId,
+  id,
+  participanteId,
+  token
+) => {
+  const response = await fetch(`${BACKEND_URL}/projects/${id}/users`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": token,
+    },
+    body: JSON.stringify({
+      user_from_id: userFromId,
+      userId: participanteId,
+    }),
+  });
+
+  return response;
+};
+
+export const agregarParticipanteAlProyecto = async (
+  userId,
+  proyectoId,
+  participanteEmail,
+  token
+) => {
+  const response = await fetch(`${BACKEND_URL}/projects/${proyectoId}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": token,
+    },
+    body: JSON.stringify({
+      user_from_id: userId,
+      email: participanteEmail,
+    }),
+  });
+
+  return response;
+};

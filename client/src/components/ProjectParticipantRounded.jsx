@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { fetchUsuarios } from "../services/UserService";
+import React from "react";
 
 export const ProjectParticipantRounded = ({ participant }) => {
   return (

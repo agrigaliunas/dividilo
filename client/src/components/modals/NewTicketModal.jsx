@@ -1,5 +1,5 @@
 import { React, useState } from "react";
-import { addTicket } from "../../services/TicketService";
+import { addTicket, uploadTicketImage } from "../../services/TicketService";
 import { useAuth } from "../../contexts/AuthContext";
 
 const NewTicketModal = ({ expenseId, isOpen, onClose }) => {
@@ -7,6 +7,8 @@ const NewTicketModal = ({ expenseId, isOpen, onClose }) => {
   const [amount, setAmount] = useState();
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
   const [image, setImage] = useState(null);
+
+  const [loading, setLoading] = useState(false)
 
   const { user } = useAuth();
 
@@ -27,21 +29,31 @@ const NewTicketModal = ({ expenseId, isOpen, onClose }) => {
     setImage(file);
   };
 
-  const handleAddTicket = async () => {
+  const handleAddTicket = async (e) => {
+    e.preventDefault()
     if (description && amount > 0 && date) {
       const formData = new FormData();
       if (image) {
         formData.append("file", image);
       }
+
+      setLoading(true)
+
       const newTicket = await addTicket(
         expenseId,
         description,
         amount,
         date,
-        formData,
         user.token
       );
+
+      await uploadTicketImage(newTicket.ticket_id, formData, user.token)
+
+      setLoading(false)
+
       onClose();
+
+      window.location.reload(true)
     }
   };
 
@@ -83,6 +95,7 @@ const NewTicketModal = ({ expenseId, isOpen, onClose }) => {
           <div className="flex justify-end gap-4">
             <button
               type="button"
+              disabled={loading}
               onClick={onClose}
               className="bg-red-500 text-white px-4 py-2 rounded-md hover:opacity-80"
             >
@@ -90,10 +103,10 @@ const NewTicketModal = ({ expenseId, isOpen, onClose }) => {
             </button>
             <button
               type="submit"
-              disabled={!description || amount <= 0 || !date}
+              disabled={!description || amount <= 0 || !date || loading}
               className={`bg-brandblue text-white px-4 py-2 rounded-md hover:opacity-85`}
             >
-              Agregar
+              {!loading ? 'Agregar' : 'Cargando...'} 
             </button>
           </div>
         </form>

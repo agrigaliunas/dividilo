@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { addExpense } from "../../services/ExpenseService";
 import { useAuth } from "../../contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 
 export const NewGastoModal = ({
   projectId,
@@ -12,13 +13,15 @@ export const NewGastoModal = ({
 }) => {
   const [descripcionNuevoGasto, setDescripcionNuevoGasto] = useState("");
 
+  const {user} = useAuth()
+
   const handleDescriptionChange = (e) => {
     const descripcion = e.target.value;
     setDescripcionNuevoGasto(descripcion);
   };
 
   const handleAddGasto = async () => {
-    const nuevoGasto = await addExpense(projectId, user, descripcionNuevoGasto);
+    const nuevoGasto = await addExpense(projectId, user, descripcionNuevoGasto, user.token);
     onAddGasto(nuevoGasto);
     onClose();
   };

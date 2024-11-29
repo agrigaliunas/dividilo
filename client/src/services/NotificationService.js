@@ -5,7 +5,7 @@ export const fetchNotificationsByUserId = async (userId, token) => {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      // "Authorization": token,
+      "Authorization": token,
     },
   }).then((data) => data.json());
   return data;

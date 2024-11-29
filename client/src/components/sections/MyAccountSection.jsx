@@ -11,14 +11,14 @@ export const MyAccountSection = ({
   onInputChange,
 }) => {
   const navigate = useNavigate();
-  const { token, user, logout, updateLocalStorage} = useAuth();
+  const { user, logout, updateLocalStorage} = useAuth();
 
   const handleSubmit = async () => {
     try {
       switch (section.step) {
         case 0:
-          await actualizarUsuario(user.user_id, formValues["Nombre"], formValues["Apellido"], formValues["Correo electrónico"]);
-          const updatedUser = await fetchUsuarioById(user.user_id)
+          await actualizarUsuario(user.user_id, formValues["Nombre"], formValues["Apellido"], formValues["Correo electrónico"], user.token);
+          const updatedUser = await fetchUsuarioById(user.user_id, user.token)
           await updateLocalStorage(updatedUser)
           alert("Información actualizada correctamente.");
           navigate('/dashboard')
@@ -40,7 +40,7 @@ export const MyAccountSection = ({
               user.email,
               formValues["Contraseña actual"],
               formValues["Nueva contraseña"],
-              token
+              user.token
             );
             alert("Contraseña actualizada correctamente.");
             navigate('/account')
@@ -52,7 +52,7 @@ export const MyAccountSection = ({
           const password =
             formValues["¡Atención! ¡Esta acción no tiene vuelta atrás!"];
           if (password) {
-            const resp = await eliminarUsuario(user.user_id, password);
+            const resp = await eliminarUsuario(user.user_id, password, user.token);
             if (resp.status === 200) {
               alert("Cuenta eliminada exitosamente.");
               logout()

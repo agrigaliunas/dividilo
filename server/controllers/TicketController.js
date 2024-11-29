@@ -19,17 +19,15 @@ const uploadImage = async (req, res) => {
 };
 
 const deleteImage = async (req, res) => {
-    try {
-      const response = await TicketService.deleteImage(
-        req.params.ticketId
-      );
-      res.status(200).json(response);
-    } catch (err) {
-      res.status(500).json({
-        message: err.message,
-      });
-    }
-  };
+  try {
+    const response = await TicketService.deleteImage(req.params.ticketId);
+    res.status(200).json(response);
+  } catch (err) {
+    res.status(500).json({
+      message: err.message,
+    });
+  }
+};
 
 const addTicket = async (req, res) => {
   try {
@@ -98,5 +96,5 @@ module.exports = {
   getTicketById,
   getTicketsByExpenseId,
   updateTicket,
-  deleteImage
+  deleteImage,
 };

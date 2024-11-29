@@ -38,7 +38,7 @@ const NotificationsLayout = () => {
 
   useEffect(() => {
     const loadNotifications = async () => {
-      const notificationsData = await fetchNotificationsByUserId(user.user_id);
+      const notificationsData = await fetchNotificationsByUserId(user.user_id, user.token);
       setNotifications(notificationsData.reverse());
     };
     loadNotifications();
@@ -47,6 +47,9 @@ const NotificationsLayout = () => {
   return (
     <div className="p-4 space-y-3">
       <h2 className="lg:text-5xl text-4xl font-semibold">Notificaciones</h2>
+      {!notifications || notifications.length === 0 && (
+          <span className="text-gray-500 text-center">No tenés notificaciones actualmente.</span>
+        )} 
       {notifications.map((notification) => (
         <Notification
           key={notification.notification_id}

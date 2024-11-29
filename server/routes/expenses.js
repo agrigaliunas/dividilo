@@ -2,17 +2,25 @@ const { Router } = require("express");
 const validateRequest = require("../middlewares/request_validator");
 const { check } = require("express-validator");
 const ExpenseController = require("../controllers/ExpenseController");
+const validateJwt = require("../middlewares/jwt_validator");
 
 const router = Router();
 
-router.post('/',
+router.post(
+  "/",
+  validateJwt,
   [
     check("title")
-      .not().isEmpty().withMessage('El título es requerido')
+      .not()
+      .isEmpty()
+      .withMessage("El título es requerido")
       .trim()
-      .isLength({ min: 2 }).withMessage('El título debe tener al menos 2 caracteres'),
+      .isLength({ min: 2 })
+      .withMessage("El título debe tener al menos 2 caracteres"),
     check("project_id")
-      .not().isEmpty().withMessage('El id del proyecto es requerido')
+      .not()
+      .isEmpty()
+      .withMessage("El id del proyecto es requerido")
       .trim(),
 
     validateRequest,
@@ -20,21 +28,20 @@ router.post('/',
   ExpenseController.addExpense
 );
 
-router.delete('/:expenseId',
-  ExpenseController.deleteExpense
-)
+router.delete("/:expenseId", validateJwt, ExpenseController.deleteExpense);
 
-router.patch("/:expenseId",
-  ExpenseController.updateExpense
+router.patch("/:expenseId", validateJwt, ExpenseController.updateExpense);
+
+router.get(
+  "/project/:projectId",
+  validateJwt,
+  ExpenseController.getExpensesByProjectId
 );
 
-router.get('/project/:projectId',
-  ExpenseController.getExpensesByProjectId
-)
-
-router.get('/project/:projectId/expenses-with-tickets',
+router.get(
+  "/project/:projectId/expenses-with-tickets",
+  validateJwt,
   ExpenseController.getExpensesWithTicketsByProjectId
-)
-
+);
 
 module.exports = router;

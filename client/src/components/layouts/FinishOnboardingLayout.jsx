@@ -54,7 +54,7 @@ const FinishOnboardingLayout = ({ pendingUser }) => {
       password: password,
     };
 
-    const response = await completarOnboarding(user.user_id, data);
+    const response = await completarOnboarding(user.user_id, data, user.token);
     if (response.status === 200) {
         await logout()
         navigate("/login")

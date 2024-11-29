@@ -2,12 +2,15 @@ const { Ticket } = require("../db/config");
 const { addTicketAmount, deleteTicketAmount } = require("./ExpenseService");
 const { uploadImageToCloudinary } = require("./ImageService");
 const { sequelize } = require("../db/config");
-const { getSplitsByTicketId, updateSplitPercentage } = require("./SplitService");
+const {
+  getSplitsByTicketId,
+  updateSplitPercentage,
+} = require("./SplitService");
 
 const uploadImage = async (ticketId, imageBuffer) => {
   try {
     const ticket = await Ticket.findByPk(ticketId);
-    
+
     if (!ticket) {
       throw new Error("Ticket no encontrado.");
     }
@@ -35,7 +38,7 @@ const deleteImage = async (ticketId) => {
     await ticket.update({
       image: "",
     });
-    
+
     return "Imagen borrada con exito.";
   } catch (error) {
     throw new Error("Error al subir imagen. Intente nuevamente");
@@ -100,15 +103,15 @@ const updateTicket = async (id, req) => {
       throw new Error("Ticket no existente.");
     }
 
-    const splitsFromTicket = await getSplitsByTicketId(id)
+    const splitsFromTicket = await getSplitsByTicketId(id);
 
     const totalFromSplits = splitsFromTicket.reduce(
       (sum, split) => sum + parseFloat(split.user_amount),
       0.0
     );
 
-    if (totalFromSplits > req.amount){
-      throw new Error("Error. El nuevo total es menor al total de los splits.")
+    if (totalFromSplits > req.amount) {
+      throw new Error("Error. El nuevo total es menor al total de los splits.");
     }
 
     const originalAmount = ticket.amount;
@@ -130,10 +133,9 @@ const updateTicket = async (id, req) => {
 
     await transaction.commit();
 
-
     splitsFromTicket.forEach(async (split) => {
       const newPercentage = split.user_amount / req.amount;
-      await updateSplitPercentage(split.split_id, newPercentage)
+      await updateSplitPercentage(split.split_id, newPercentage);
     });
 
     return "Ticket actualizado con éxito.";
@@ -167,5 +169,5 @@ module.exports = {
   updateTicket,
   getTicketsByExpenseId,
   getTicketById,
-  deleteImage
+  deleteImage,
 };
