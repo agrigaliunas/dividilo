@@ -356,7 +356,6 @@ export const ProjectInfo2 = ({
 
       <NewGastoModal
         projectId={project.project_id}
-        user = {user.user_id}
         gastos={expenses}
         isOpen={modalGastoIsOpen}
         onClose={closeGastoModal}
