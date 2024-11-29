@@ -110,6 +110,7 @@ const updateTicket = async (id, req) => {
       0.0
     );
 
+    
     if (totalFromSplits > req.amount) {
       throw new Error("Error. El nuevo total es menor al total de los splits.");
     }

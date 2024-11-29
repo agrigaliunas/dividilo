@@ -30,7 +30,7 @@ export const ProjectInfo2 = ({
 }) => {
   const [project, setProject] = useState(proyecto);
   const [participants, setParticipants] = useState(participantesProyecto);
-  const [expenses, setExpenses] = useState(gastosProyecto);
+  const [expenses, setExpenses] = useState(gastosProyecto || []);
   const [editandoProyectoMode, setEditandoProyectoMode] = useState(false);
   const [modalParticipanteIsOpen, setModalParticipanteIsOpen] = useState(false);
   const [modalGastoIsOpen, setModalGastoIsOpen] = useState(false);
@@ -56,7 +56,7 @@ export const ProjectInfo2 = ({
         project.state,
         user.token
       );
-  
+
       const updatedTicketsPromises = expenses.flatMap((expense) =>
         expense.tickets?.map((ticket) =>
           updateTicket(
@@ -68,20 +68,23 @@ export const ProjectInfo2 = ({
           )
         )
       );
-  
+
       const updatedExpensesPromises = expenses.map((expense) =>
         updateExpense(expense.expense_id, expense.title, user.token)
       );
-  
-      await Promise.all([...updatedTicketsPromises, ...updatedExpensesPromises]);
-  
+
+      await Promise.all([
+        ...updatedTicketsPromises,
+        ...updatedExpensesPromises,
+      ]);
+
       // Actualizar el estado local
       setExpenses(expenses);
       setProject(project);
       onProjectUpdate(project);
-  
+
       setEditandoProyectoMode(false);
-  
+
       window.location.reload();
     } catch (error) {
       console.error("Error al guardar el proyecto o los gastos:", error);
@@ -90,7 +93,6 @@ export const ProjectInfo2 = ({
       );
     }
   };
-  
 
   const handleDeleteProject = async () => {
     const response = await deleteProject(project.project_id, user.token);
@@ -180,10 +182,14 @@ export const ProjectInfo2 = ({
   };
 
   const handleAddGasto = (newExpense) => {
-    setExpenses((prevData) => ({
-      ...prevData,
-      newExpense,
-    }));
+    setExpenses((prevExpenses) => {
+      if (!Array.isArray(prevExpenses)) {
+        console.error("Expenses no es un array:", prevExpenses);
+        return [];
+      }
+
+      return [...prevExpenses, newExpense];
+    });
   };
 
   const handleEditExpenseTitle = (index, newTitle) => {
@@ -195,7 +201,6 @@ export const ProjectInfo2 = ({
   };
 
   const handleEditTicket = async (ticketId, description, date, amount) => {
-
     setExpenses((prevExpenses) => {
       return prevExpenses.map((expense) => {
         const updatedTickets = expense.tickets.map((ticket) => {
@@ -220,30 +225,38 @@ export const ProjectInfo2 = ({
 
   const calcularGastoParticipante = useCallback(
     (participanteId) => {
-      let totalGasto = 0;
-      let splits = [];
+      let totalGasto = 0; 
+      let totalPorPagar = 0; 
 
-      for (const expense of expenses) {
-        for (const ticket of expense.tickets) {
-          const split = ticket.splits.find((s) => s.user_id === participanteId);
-          if (split) {
-            totalGasto += split.user_amount;
-            splits.push(split);
-          } else {
-            totalGasto = 0;
-          }
+      let tieneParticipacion = false; 
 
-          if (ticket.user_id === participanteId) {
-            totalGasto += ticket.amount;
+      expenses?.map((expense) => {
+        expense.tickets?.map((ticket) => {
+          const splits = ticket.splits;
+
+          if (Array.isArray(splits) && splits.length > 0) {
+            
+            const split = splits.find((s) => s.user_id === participanteId);
+
+            if (split) {
+              tieneParticipacion = true; 
+
+              const amount = parseFloat(split.user_amount);
+              if (!isNaN(amount)) {
+                totalGasto += amount;
+              }
+
+              totalPorPagar += ticket.amount / splits.length;
+            }
           }
-        }
+        });
+      });
+
+      if (!tieneParticipacion) {
+        return { texto: "$0.00", color: "text-gray-500" };
       }
 
-      var balance = 0;
-
-      if (totalGasto !== 0) {
-        balance = project.total_amount / participants.length - totalGasto;
-      }
+      const balance = totalPorPagar - totalGasto;
 
       return {
         texto:
@@ -260,7 +273,7 @@ export const ProjectInfo2 = ({
             : "text-red-500",
       };
     },
-    [expenses, project, participants]
+    [expenses]
   );
 
   const ParticipantBalance = useMemo(
