@@ -47,9 +47,6 @@ const addSplit = async (splitData) => {
     const ticketTotalAmount = ticket.amount;
 
     const userAmount = parseFloat(splitData.user_amount)
-    console.log("USER AMOUNT " + userAmount)
-    console.log("USER AMOUNT tiy" + typeof userAmount)
-
 
     if (splitData.split_type === "Monto") {
       if (userAmount > ticketTotalAmount) {
@@ -73,8 +70,6 @@ const addSplit = async (splitData) => {
   
       return { message: "Split añadido correctamente" };
     } else {
-
-      console.log(splitData.user_percentage)
 
       if (splitData.user_percentage > 1) {
         throw new Error("El porcentaje debe ser menor a 1.");
