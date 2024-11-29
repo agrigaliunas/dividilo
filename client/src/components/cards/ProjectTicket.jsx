@@ -13,9 +13,9 @@ export const ProjectTicket = ({ editMode, ticket, index, participantes }) => {
   };
 
   const handleDeleteTicket = async () => {
-    await deleteTicket(ticket.ticket_id)
-    window.location.reload()
-  }
+    await deleteTicket(ticket.ticket_id);
+    window.location.reload();
+  };
 
   return (
     <div
@@ -28,14 +28,34 @@ export const ProjectTicket = ({ editMode, ticket, index, participantes }) => {
         </span>
         <div className="flex flex-row justify-between mt-1">
           <div className="flex flex-row gap-1 items-center">
-            {editMode && (
-              <button onClick={handleDeleteTicket}>
-                <Trash style="w-6 h-6" />
-              </button>
+            {editMode ? (
+              <>
+                <button onClick={handleDeleteTicket}>
+                  <Trash style="w-6 h-6" />
+                </button>
+                <input
+                  type="text"
+                  className="font-bold text-center text-xl rounded-lg border-b border-black bg-transparent border-dashed border-spacing-3"
+                  value={ticket.description || ""}
+                  // onChange={(e) => onEditTicketAmount(e.target.value)}
+                  placeholder="Ingrese descripcion del ticket..."
+                />
+              </>
+            ) : (
+              <span className="text-xl">{ticket.description}</span>
             )}
-            <span className="text-xl">{ticket.description}</span>
           </div>
-          <span className="font-bold text-xl">${ticket.amount}</span>
+          {editMode ? (
+            <input
+              type="number"
+              className="font-bold text-center text-xl lg:text-2xl rounded-lg border-b border-black bg-transparent border-dashed border-spacing-3"
+              value={ticket.amount || ""}
+              // onChange={(e) => onEditTicketAmount(e.target.value)}
+              placeholder="Ingrese monto del ticket..."
+            />
+          ) : (
+            <span className="font-bold text-xl">${ticket.amount}</span>
+          )}
         </div>
       </div>
       {ticket.image && (

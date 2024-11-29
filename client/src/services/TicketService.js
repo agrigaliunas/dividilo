@@ -33,7 +33,11 @@ export const addTicket = async (
     }),
   }).then((data) => data.json());
 
-  await fetch(`${BACKEND_URL}/tickets/${data.ticket_id}/images`, {
+  return data;
+};
+
+export const uploadTicketImage = async (ticketId, formData, token) => {
+  const url = await fetch(`${BACKEND_URL}/tickets/${ticketId}/images`, {
     method: "POST",
     headers: {
       "Authorization": token,
@@ -41,8 +45,8 @@ export const addTicket = async (
     body: formData,
   });
 
-  return data;
-};
+  return url
+}
 
 
 export const deleteTicket = async (id) => {
