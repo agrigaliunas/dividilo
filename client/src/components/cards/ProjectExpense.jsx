@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { ChevronDown } from "../icons/ChevronDown";
 import { ProjectTicket } from "./ProjectTicket";
 
-export const ProjectExpense = ({ expense, modeEdit, onEditExpenseTitle, index, participantesproyecto }) => {
+export const ProjectExpense = ({ expense, modeEdit, onEditExpenseTitle, index, participantesproyecto, openAddTicketModal}) => {
   const [gastosExpandidos, setGastosExpandidos] = useState({});
 
   const toggleGasto = (index) => {
@@ -35,31 +35,43 @@ export const ProjectExpense = ({ expense, modeEdit, onEditExpenseTitle, index, p
         <span className="font-bold text-xl text-center lg:text-3xl rounded-lg">
           Total ${expense.total_amount}
         </span>
-        <div className="flex my-1">
-          <button
-            onClick={() => toggleGasto(index)}
-            className="bg-gray-200 rounded-full p-1 hover:opacity-80 w-full flex justify-center"
-          >
-            <ChevronDown />
-          </button>
-        </div>
+        {expense.tickets?.length > 0 && (
+          <div className="flex my-1">
+            <button
+              onClick={() => toggleGasto(index)}
+              className="bg-gray-200 rounded-full p-1 hover:opacity-80 w-full flex justify-center"
+            >
+              <ChevronDown />
+            </button>
+          </div>
+        )}
         {gastosExpandidos[index] && (
           <>
             {expense.tickets?.length > 0 &&
               expense.tickets.map((expenseTicket, ticketIndex) => (
                 <>
                   <ProjectTicket
+                  editMode={modeEdit}
                     ticket={expenseTicket}
                     index={ticketIndex}
                     participantes={participantesproyecto}
                   />
-                  {ticketIndex !== 1 && (
+                  { expense.tickets.length > 1 && (
                     <div className="border border-t-5 border-gray-300"></div>
                   )}
                 </>
               ))}
           </>
         )}
+        <div className="flex my-1">
+            
+            <button
+              onClick={() => openAddTicketModal(expense)}
+              className="border-2 border-brandblue text-brandblue w-full rounded-lg lg:py-2 lg:px-4 p-1 lg:text-base text-sm hover:opacity-80"
+        >
+          Agregar ticket
+        </button>
+          </div>
       </div>
     </div>
   );

@@ -2,7 +2,8 @@ const { Router } = require("express");
 const multer = require("multer");
 const TicketController = require("../controllers/TicketController");
 
-const upload = multer();
+const storage = multer.memoryStorage(); // Almacena el archivo en memoria como un Buffer
+const upload = multer({ storage })
 const router = Router();
 
 router.post("/:ticketId/images", upload.single("file"), TicketController.uploadImage);

@@ -17,7 +17,7 @@ import NewParticipantModal from "./modals/NewParcitipantModal";
 import { fetchUsuarioByEmail } from "../services/UserService";
 import NewGastoModal from "./modals/NewGastoModal";
 import NewTicketModal from "./modals/NewTicketModal";
-import { updateExpense } from "../services/ExpenseService"
+import { updateExpense } from "../services/ExpenseService";
 
 export const ProjectInfo2 = ({
   proyecto,
@@ -29,12 +29,14 @@ export const ProjectInfo2 = ({
   const [project, setProject] = useState(proyecto);
   const [participants, setParticipants] = useState(participantesProyecto);
   const [expenses, setExpenses] = useState(gastosProyecto);
-
   const [editandoProyectoMode, setEditandoProyectoMode] = useState(false);
-
   const [modalParticipanteIsOpen, setModalParticipanteIsOpen] = useState(false);
   const [modalGastoIsOpen, setModalGastoIsOpen] = useState(false);
   const [modalTicketIsOpen, setModalTicketIsOpen] = useState(false);
+
+  const [selectedExpenseNewTicket, setSelectedExpenseNewTicket] =
+    useState(null);
+
   const { user } = useAuth();
   const navigate = useNavigate();
 
@@ -45,7 +47,6 @@ export const ProjectInfo2 = ({
 
   const handleSaveProject = async () => {
     try {
-
       const savedProject = await updateProject(
         project.project_id,
         project.title,
@@ -53,25 +54,25 @@ export const ProjectInfo2 = ({
         project.state,
         user.token
       );
-  
+
       const updatedExpensesPromises = expenses.map((expense) =>
         updateExpense(expense.expense_id, expense.title)
       );
-  
+
       await Promise.all(updatedExpensesPromises);
 
       setExpenses(expenses);
       setProject(project);
       onProjectUpdate(project);
 
-      console.log(project)
+      console.log(project);
 
       setEditandoProyectoMode(false);
-  
-      alert("Proyecto y gastos actualizados con éxito.");
     } catch (error) {
       console.error("Error al guardar el proyecto o los gastos:", error);
-      alert("No se pudo guardar el proyecto o los gastos. Por favor, inténtalo de nuevo.");
+      alert(
+        "No se pudo guardar el proyecto o los gastos. Por favor, inténtalo de nuevo."
+      );
     }
   };
 
@@ -104,7 +105,8 @@ export const ProjectInfo2 = ({
     setModalGastoIsOpen(false);
   };
 
-  const openTicketModal = (gastoIndex) => {
+  const openTicketModal = (selectedExpense) => {
+    setSelectedExpenseNewTicket(selectedExpense);
     setModalTicketIsOpen(true);
   };
 
@@ -244,8 +246,11 @@ export const ProjectInfo2 = ({
   return (
     <div className="flex flex-col w-full lg:px-[20vw] lg:py-[5vw] px-[5vw] py-[5vw] gap-8">
       <div className="flex flex-col gap-2">
-      <h2 className="text-5xl font-extrabold">Información del proyecto</h2>
-      <span className="text-gray-500 text-lg">Acá vas a poder ver los participantes del proyecto, el monto total gastado, y el monto por cada gasto adjunto a cada ticket subido.</span>
+        <h2 className="text-5xl font-extrabold">Información del proyecto</h2>
+        <span className="text-gray-500 text-lg">
+          Acá vas a poder ver los participantes del proyecto, el monto total
+          gastado, y el monto por cada gasto adjunto a cada ticket subido.
+        </span>
       </div>
       {editandoProyectoMode ? (
         <ProjectEditToolbar
@@ -280,44 +285,34 @@ export const ProjectInfo2 = ({
       <div className="flex flex-col gap-4">
         <ProjectExpenses
           expenses={expenses}
-          participantesProyecto={participantesProyecto}
+          participantesProyecto={participants}
           onEditExpenseTitle={handleEditExpenseTitle}
           editMode={editandoProyectoMode}
           openGastoModal={openGastoModal}
+          handleOpenAddTicketModal={openTicketModal}
         />
       </div>
 
+      <NewGastoModal
+        projectId={project.project_id}
+        gastos={expenses}
+        isOpen={modalGastoIsOpen}
+        onClose={closeGastoModal}
+        onAddGasto={handleAddGasto}
+      />
+      <NewParticipantModal
+        projectId={project.project_id}
+        projectParticipants={participants}
+        isOpen={modalParticipanteIsOpen}
+        onClose={closeParticipanteModal}
+        onAddParticipant={(email) => handleAddParticipant(email)}
+      />
+      <NewTicketModal
+        expenseId={selectedExpenseNewTicket?.expense_id}
+        isOpen={modalTicketIsOpen}
+        onClose={closeTicketModal}
+      />
       {/* {ParticipantBalance} */}
-      {editandoProyectoMode && (
-        <>
-          {
-            <NewParticipantModal
-              projectId={project.project_id}
-              projectParticipants={participants}
-              isOpen={modalParticipanteIsOpen}
-              onClose={closeParticipanteModal}
-              onAddParticipant={(email) => handleAddParticipant(email)}
-            />
-          }
-          {
-            <NewGastoModal
-              projectId={project.project_id}
-              gastos={expenses}
-              isOpen={modalGastoIsOpen}
-              onClose={closeGastoModal}
-              onAddGasto={handleAddGasto}
-            />
-          }
-          {/* {
-            <NewTicketModal
-              isOpen={modalTicketIsOpen}
-              onClose={closeTicketModal}
-              onAddTicket={handleAddTicket}
-              participantes={participants}
-            />
-          } */}
-        </>
-      )}
     </div>
   );
 };

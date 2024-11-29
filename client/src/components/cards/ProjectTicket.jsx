@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { Trash } from "../icons/Trash";
+import { deleteTicket } from "../../services/TicketService";
 
-export const ProjectTicket = ({ ticket, index, participantes }) => {
+export const ProjectTicket = ({ editMode, ticket, index, participantes }) => {
   const [showTicketImagen, setShowTicketImagen] = useState(false);
 
   const getParticipanteNombreApellido = (participanteId) => {
@@ -9,6 +11,11 @@ export const ProjectTicket = ({ ticket, index, participantes }) => {
     );
     return usuario && usuario.initials;
   };
+
+  const handleDeleteTicket = async () => {
+    await deleteTicket(ticket.ticket_id)
+    window.location.reload()
+  }
 
   return (
     <div
@@ -20,7 +27,14 @@ export const ProjectTicket = ({ ticket, index, participantes }) => {
           {ticket.ticket_date.substring(0, 10)}
         </span>
         <div className="flex flex-row justify-between mt-1">
-          <span className="text-xl">{ticket.description}</span>
+          <div className="flex flex-row gap-1 items-center">
+            {editMode && (
+              <button onClick={handleDeleteTicket}>
+                <Trash style="w-6 h-6" />
+              </button>
+            )}
+            <span className="text-xl">{ticket.description}</span>
+          </div>
           <span className="font-bold text-xl">${ticket.amount}</span>
         </div>
       </div>

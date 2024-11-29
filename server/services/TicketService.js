@@ -7,7 +7,7 @@ const { getSplitsByTicketId, updateSplitPercentage } = require("./SplitService")
 const uploadImage = async (ticketId, imageBuffer) => {
   try {
     const ticket = await Ticket.findByPk(ticketId);
-
+    
     if (!ticket) {
       throw new Error("Ticket no encontrado.");
     }

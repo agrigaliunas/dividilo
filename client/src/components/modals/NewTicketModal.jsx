@@ -1,145 +1,105 @@
-// import { useState } from "react";
-// import { addTicket } from "../../services/TicketService";
+import { React, useState } from "react";
+import { addTicket } from "../../services/TicketService";
+import { useAuth } from "../../contexts/AuthContext";
 
-// export const NewTicketModal = ({
-//   expenseId,
-//   isOpen,
-//   onClose,
-//   onAddTicket,
-//   participantes
-// }) => {
-//   const [descripcionNuevoTicket, setDescripcionNuevoTicket] = useState("");
-//   // const [montos, setMontos] = useState(
-//   //   participantes.reduce((acc, participante) => {
-//   //     acc[participante.id] = 0;
-//   //     return acc;
-//   //   }, {})
-//   // );
+const NewTicketModal = ({ expenseId, isOpen, onClose }) => {
+  const [description, setDescription] = useState("");
+  const [amount, setAmount] = useState();
+  const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
+  const [image, setImage] = useState(null);
 
-//   // const totalTicket = Object.values(montos).reduce((acc, monto) => acc + parseFloat(monto || 0), 0);
+  const { user } = useAuth();
 
-//   // const handleMontoChange = (participanteId, nuevoMonto) => {
-//   //   setMontos((prevMontos) => ({
-//   //     ...prevMontos,
-//   //     [participanteId]: nuevoMonto,
-//   //   }));
-//   // };
+  const handleDescriptionChange = (e) => {
+    setDescription(e.target.value);
+  };
 
-//   const resetForm = () => {
-//     setDescripcionNuevoTicket("");
-//     setMontos(
-//       participantes.reduce((acc, participante) => {
-//         acc[participante.id] = 0;
-//         return acc;
-//       }, {})
-//     );
-//   };
+  const handleAmountChange = (e) => {
+    setAmount(parseFloat(e.target.value));
+  };
 
-//   const handleAddTicket = async () => {
-//     // const split = participantes.map((p) => {
-//     //   const montoParticipante = parseFloat(montos[p] || 0);
-//     //   const porcentaje = (montoParticipante / totalTicket) * 100;
-//     //   return {
-//     //     participanteId: p,
-//     //     porcentaje,
-//     //     montoParticipante,
-//     //   };
-//     // });
+  const handleDateChange = (e) => {
+    setDate(e.target.value);
+  };
 
-//     const nuevoTicket = await addTicket(
-//       expenseId,
-//       descripcionNuevoTicket,
-//       totalTicket,
-//       new Date().toJSON().slice(0, 10)
-//     );
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setImage(file);
+  };
 
-//     onAddTicket(nuevoTicket);
-//     resetForm();
-//     onClose();
-//   };
+  const handleAddTicket = async () => {
+    if (description && amount > 0 && date) {
+      const formData = new FormData();
+      if (image) {
+        formData.append("file", image);
+      }
+      const newTicket = await addTicket(
+        expenseId,
+        description,
+        amount,
+        date,
+        formData,
+        user.token
+      );
+      onClose();
+    }
+  };
 
-//   const handleCancel = () => {
-//     resetForm();
-//     onClose();
-//   };
+  if (!isOpen) return null;
 
-//   if (!isOpen) return null;
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-[90vw] lg:w-[30vw]">
+        <h2 className="text-2xl font-semibold mb-4">Agregar ticket</h2>
+        <form onSubmit={handleAddTicket} className="flex flex-col gap-4">
+          <input
+            type="text"
+            value={description}
+            onChange={handleDescriptionChange}
+            className="px-2 py-3 border border-1 border-[#e9e9ef] shadow-sm outline-none rounded-md text-sm"
+            placeholder="Ingrese el título del ticket..."
+          />
+          <input
+            type="number"
+            value={amount}
+            onChange={handleAmountChange}
+            className="px-2 py-3 border border-1 border-[#e9e9ef] shadow-sm outline-none rounded-md text-sm"
+            placeholder="Monto del ticket"
+            min="0.01"
+            step="0.01"
+          />
+          <input
+            type="date"
+            value={date}
+            onChange={handleDateChange}
+            className="px-2 py-3 border border-1 border-[#e9e9ef] shadow-sm outline-none rounded-md text-sm"
+          />
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            className="px-2 py-3 border border-1 border-[#e9e9ef] shadow-sm outline-none rounded-md text-sm"
+          />
+          <div className="flex justify-end gap-4">
+            <button
+              type="button"
+              onClick={onClose}
+              className="bg-red-500 text-white px-4 py-2 rounded-md hover:opacity-80"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              disabled={!description || amount <= 0 || !date}
+              className={`bg-brandblue text-white px-4 py-2 rounded-md hover:opacity-85`}
+            >
+              Agregar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
 
-//   const getParticipanteNombreApellido = useCallback(
-//     (participanteId) => {
-//       const usuario = participantesProyecto.find(
-//         (user) => user.user_id === participanteId
-//       );
-//       return usuario?.initials || "Desconocido";
-//     },
-//     [participantesProyecto]
-//   );
-
-//   return (
-//     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-//       <div className="bg-white p-6 rounded-lg shadow-lg w-[90vw] lg:w-[30vw]">
-//         <h2 className="text-2xl font-semibold mb-4">Agregar ticket</h2>
-//         <form onSubmit={handleAddTicket} className="flex flex-col gap-4">
-//           <input
-//             type="text"
-//             value={descripcionNuevoTicket}
-//             onChange={(e) => setDescripcionNuevoTicket(e.target.value)}
-//             className="px-2 py-3 border border-1 border-[#e9e9ef] shadow-sm outline-none rounded-md text-sm"
-//             placeholder="Ingrese la descripción del ticket..."
-//           />
-//           <div className="flex flex-col gap-2 justify-center">
-//             {participantes.map((p) => {
-//               const montoParticipante = parseFloat(montos[p] || 0);
-//               const porcentaje = totalTicket
-//                 ? (montoParticipante / totalTicket) * 100
-//                 : 0;
-//               return (
-//                 <div key={p} className="flex flex-row gap-1 justify-between">
-//                   <span className="text-xl">
-//                     {getParticipanteNombreApellido(p)}
-//                   </span>
-//                   <div className="flex items-center">
-//                     <span className="font-semibold text-xl">paga $</span>
-//                     <input
-//                       type="number"
-//                       value={montos[p] || ""}
-//                       onChange={(e) => handleMontoChange(p, e.target.value)}
-//                       className="p-1 border-b border-black border-dashed border-spacing-2 w-20"
-//                       placeholder="0.00"
-//                     />
-//                     <span className="text-red-500 ml-2">
-//                       {porcentaje.toFixed(2)}%
-//                     </span>
-//                   </div>
-//                 </div>
-//               );
-//             })}
-//             <span className="text-2xl font-bold">
-//               Total: $ {totalTicket.toFixed(2)}
-//             </span>
-//           </div>
-//           <div className="flex justify-end gap-4">
-//             <button
-//               type="button"
-//               onClick={handleCancel}
-//               className="bg-red-500 text-white px-4 py-2 rounded-md hover:opacity-80"
-//             >
-//               Cancelar
-//             </button>
-//             <button
-//               disabled={!descripcionNuevoTicket}
-//               type="submit"
-//               className={` ${
-//                 !descripcionNuevoTicket ? "bg-gray-400" : "bg-brandblue"
-//               } text-white px-4 py-2 rounded-md hover:opacity-85`}
-//             >
-//               Agregar
-//             </button>
-//           </div>
-//         </form>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default NewTicketModal;
+export default NewTicketModal;
