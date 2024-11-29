@@ -18,6 +18,7 @@ import { fetchUsuarioByEmail } from "../services/UserService";
 import NewGastoModal from "./modals/NewGastoModal";
 import NewTicketModal from "./modals/NewTicketModal";
 import { updateExpense } from "../services/ExpenseService";
+import { eliminarSplitsDelParticipante } from "../services/SplitService"
 
 export const ProjectInfo2 = ({
   proyecto,
@@ -153,7 +154,7 @@ export const ProjectInfo2 = ({
         prevData.filter((p) => p.user_id !== userId)
       );
       onParticipantsUpdate(participants);
-      // TODO: actualizar split ticket del participante
+      await eliminarSplitsDelParticipante(userId, project.project_id);
     }
   };
 
