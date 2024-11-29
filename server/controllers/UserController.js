@@ -13,7 +13,7 @@ const getUserById = async (req, res) => {
 
 const getUserByEmail = async (req, res) => {
   try {
-    const { email } = req.query
+    const { email } = req.query;
     if (!email) {
       return res.status(400).json({ message: "El email es requerido." });
     }
@@ -48,10 +48,12 @@ const updateUser = async (req, res) => {
   }
 };
 
-
 const completeOnboarding = async (req, res) => {
   try {
-    const user = await UserService.completeOnboarding(req.params.userId, req.body);
+    const user = await UserService.completeOnboarding(
+      req.params.userId,
+      req.body
+    );
     res.status(200).json(user);
   } catch (err) {
     res.status(500).json({
@@ -65,5 +67,5 @@ module.exports = {
   deleteAccount,
   updateUser,
   completeOnboarding,
-  getUserByEmail
+  getUserByEmail,
 };

@@ -1,65 +1,65 @@
-const BACKEND_URL = "http://localhost:5000/api"
+const BACKEND_URL = "http://localhost:5000/api";
 
-
-export const fetchUsuarios = async () => {
-  const response = await fetch("http://localhost:8000/usuarios");
+export const fetchUsuarioById = async (id, token) => {
+  const response = await fetch(`${BACKEND_URL}/users/${id}`, {
+    headers: {
+      "Authorization": token,
+    },
+  });
   const data = await response.json();
   return data;
 };
 
-export const fetchUsuarioById = async (id) => {
-  const response = await fetch(`${BACKEND_URL}/users/${id}`);
+export const fetchUsuarioByEmail = async (email, token) => {
+  const response = await fetch(`${BACKEND_URL}/users?email=${email}`, {
+    headers: {
+      "Authorization": token,
+    },
+  });
   const data = await response.json();
   return data;
 };
 
-export const fetchUsuarioByEmail = async (email) => {
-  const response = await fetch(`${BACKEND_URL}/users?email=${email}`);
-  const data = await response.json();
-  return data;
-};
-
-export const eliminarUsuario = async (id, confirmationPassword) => {
+export const eliminarUsuario = async (id, confirmationPassword, token) => {
   const response = await fetch(`${BACKEND_URL}/users/${id}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
+      "Authorization": token,
     },
     body: JSON.stringify({
-      password: confirmationPassword
+      password: confirmationPassword,
     }),
   });
 
   return response;
 };
 
-export const actualizarUsuario = async (id, nombre, apellido, email) => {
-  const response = await fetch(
-    `${BACKEND_URL}/users/${id}`,
-    {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: nombre,
-        lastname: apellido,
-        email
-      }),
-    }
-  );
+export const actualizarUsuario = async (id, nombre, apellido, email, token) => {
+  const response = await fetch(`${BACKEND_URL}/users/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": token,
+    },
+    body: JSON.stringify({
+      name: nombre,
+      lastname: apellido,
+      email,
+    }),
+  });
 
   return response;
 };
 
-
-export const completarOnboarding = async (id, data) => {
+export const completarOnboarding = async (id, data, token) => {
   const response = await fetch(
     `${BACKEND_URL}/users/${id}/complete-onboarding`,
     {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": token,
       },
       body: JSON.stringify(data),
     }

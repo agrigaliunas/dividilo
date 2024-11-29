@@ -62,6 +62,9 @@ router.get(
   SplitController.getSplitsByTicketId
 );
 
-router.delete("/splits/:projectId/user/:userId", SplitController.removeSplitFromUserByProjectId);
+router.delete(
+  "/splits/:projectId/user/:userId",
+  SplitController.removeSplitFromUserByProjectId
+);
 
 module.exports = router;

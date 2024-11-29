@@ -5,9 +5,12 @@ import { DocumentMinus } from "../icons/DocumentMinus";
 import { Eye } from "../icons/Eye";
 import { EyeSlash } from "../icons/EyeSlash";
 import { DocumentPlus } from "../icons/DocumentPlus";
+import { useAuth } from "../../contexts/AuthContext";
 
 export const ProjectTicket = ({ editMode, ticket, index, participantes }) => {
   const [showTicketImagen, setShowTicketImagen] = useState(false);
+
+  const {user} = useAuth()
 
   const getParticipanteNombreApellido = (participanteId) => {
     const usuario = participantes.find(
@@ -17,7 +20,7 @@ export const ProjectTicket = ({ editMode, ticket, index, participantes }) => {
   };
 
   const handleDeleteTicket = async () => {
-    await deleteTicket(ticket.ticket_id);
+    await deleteTicket(ticket.ticket_id, user.token);
     window.location.reload();
   };
 

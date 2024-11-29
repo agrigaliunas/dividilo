@@ -48,7 +48,7 @@ export const ProjectInfo2 = ({
 
   const handleSaveProject = async () => {
     try {
-      const savedProject = await updateProject(
+      await updateProject(
         project.project_id,
         project.title,
         project.description,
@@ -57,7 +57,7 @@ export const ProjectInfo2 = ({
       );
 
       const updatedExpensesPromises = expenses.map((expense) =>
-        updateExpense(expense.expense_id, expense.title)
+        updateExpense(expense.expense_id, expense.title, user.token)
       );
 
       await Promise.all(updatedExpensesPromises);
@@ -78,7 +78,7 @@ export const ProjectInfo2 = ({
   };
 
   const handleDeleteProject = async () => {
-    const response = await deleteProject(project.project_id);
+    const response = await deleteProject(project.project_id, user.token);
 
     if (response.status === 200) {
       setEditandoProyectoMode(false);
@@ -120,10 +120,11 @@ export const ProjectInfo2 = ({
       const response = await agregarParticipanteAlProyecto(
         user.user_id,
         project.project_id,
-        email
+        email,
+        user.token
       );
 
-      const participant = await fetchUsuarioByEmail(email);
+      const participant = await fetchUsuarioByEmail(email, user.token);
 
       if (response.status === 200 && participant) {
         setParticipants((prevParticipants) => {
@@ -147,14 +148,15 @@ export const ProjectInfo2 = ({
     const response = await eliminarParticipanteDelProyecto(
       user.user_id,
       project.project_id,
-      userId
+      userId,
+      user.token
     );
     if (response.status === 200) {
       setParticipants((prevData) =>
         prevData.filter((p) => p.user_id !== userId)
       );
       onParticipantsUpdate(participants);
-      await eliminarSplitsDelParticipante(userId, project.project_id);
+      await eliminarSplitsDelParticipante(userId, project.project_id, user.token);
     }
   };
 
@@ -298,13 +300,11 @@ export const ProjectInfo2 = ({
 
       <NewGastoModal
         projectId={project.project_id}
-        gastos={expenses}
         isOpen={modalGastoIsOpen}
         onClose={closeGastoModal}
         onAddGasto={handleAddGasto}
       />
       <NewParticipantModal
-        projectId={project.project_id}
         projectParticipants={participants}
         isOpen={modalParticipanteIsOpen}
         onClose={closeParticipanteModal}

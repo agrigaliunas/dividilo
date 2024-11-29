@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ProjectParticipant, ProjectParticipantRounded } from "../ProjectParticipantRounded";
 import { Link } from "react-router-dom";
 import { fetchUsersByProjectId } from "../../services/ProjectService";
+import { useAuth } from "../../contexts/AuthContext";
 
 const participantColors = [
   "bg-brandblue"
@@ -10,10 +11,11 @@ const participantColors = [
 export const ProjectCard = ({ project }) => {
 
   const [participants, setParticipants] = useState([])
+  const {user} = useAuth()
 
   useEffect(() => {
     const loadParticipants = async () => {
-      const usuariosData = await fetchUsersByProjectId(project.project_id);
+      const usuariosData = await fetchUsersByProjectId(project.project_id, user.token);
       setParticipants(usuariosData);
     };
     loadParticipants();
@@ -37,10 +39,10 @@ export const ProjectCard = ({ project }) => {
           </div>
         </div>
         <div className="flex flex-row gap-3 w-full items-center justify-center">
-          {participants.map((p, index) => {
+          {participants.map((p, pIndex) => {
             return (
               <ProjectParticipantRounded
-                key={p.id}
+                key={pIndex}
                 participant={p}
               />
             );

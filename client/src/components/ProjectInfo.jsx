@@ -12,7 +12,7 @@ import { CrossButton } from "./buttons/CrossButton";
 import { NewGastoModal } from "./modals/NewGastoModal";
 import NewTicketModal from "./modals/NewTicketModal";
 import {deleteProject, updateProject, eliminarParticipanteDelProyecto } from "../services/ProjectService";
-import { getExpensesByProjectId, getExpensesWithTicketsByProjectId } from "../services/ExpenseService";
+import { getExpensesWithTicketsByProjectId } from "../services/ExpenseService";
 
 export const ProjectInfo = ({ proyecto, participantesProyecto }) => {
 
@@ -306,8 +306,8 @@ export const ProjectInfo = ({ proyecto, participantesProyecto }) => {
               </span>
               <div className="flex flex-row gap-4">
                 {projectData.participantes.length > 0 &&
-                  projectData.participantes.map(p => (
-                    <ProjectParticipantRounded participant={p} />
+                  projectData.participantes.map((p, pIndex) => (
+                    <ProjectParticipantRounded participant={p} key={pIndex} />
                   ))}
               </div>
             </div>
@@ -462,7 +462,6 @@ export const ProjectInfo = ({ proyecto, participantesProyecto }) => {
         <>
           {
             <NewParticipantModal
-              projectId={projectData.id}
               participantesId={projectData.participantes}
               isOpen={modalParticipanteIsOpen}
               onClose={closeParticipanteModal}
@@ -472,7 +471,6 @@ export const ProjectInfo = ({ proyecto, participantesProyecto }) => {
           {
             <NewGastoModal
             projectId={projectData.id}
-              gastos={projectData.gastos}
               isOpen={modalGastoIsOpen}
               onClose={closeGastoModal}
               onAddGasto={handleAddGasto}
@@ -572,9 +570,9 @@ export const ProjectInfo = ({ proyecto, participantesProyecto }) => {
               </span>
               <div className="flex flex-row gap-4">
                 {projectData.participantes.length > 0 &&
-                  projectData.participantes.map(p => (
+                  projectData.participantes.map((p, pIndex) => (
                     <div className="relative inline-block">
-                      <ProjectParticipantRounded participant={p} />
+                      <ProjectParticipantRounded participant={p} key={pIndex}/>
                       {p.user_id !== user.user_id && (
                         <CrossButton
                           handleFunction={() => eliminarParticipante(projectData.id, p.user_id)}

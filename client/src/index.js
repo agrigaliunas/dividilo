@@ -9,7 +9,7 @@ import { AuthProvider } from "./contexts/AuthContext.js";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <Router>
       <AuthProvider>
         <MenuProvider>
@@ -17,7 +17,7 @@ root.render(
         </MenuProvider>
       </AuthProvider>
     </Router>
-  </React.StrictMode>
+  // </React.StrictMode>
 );
 
 reportWebVitals();

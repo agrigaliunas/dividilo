@@ -1,7 +1,11 @@
 const { Project } = require("../db/config");
 const { ProjectUser } = require("../db/config");
 const { registerPendingUser } = require("../services/AuthService");
-const { getUserByEmail, getUsersByIdList, getUserById } = require("../services/UserService");
+const {
+  getUserByEmail,
+  getUsersByIdList,
+  getUserById,
+} = require("../services/UserService");
 const { Op } = require("sequelize");
 const { addNotification } = require("./NotificationsService");
 const { removeSplitFromUserByProjectId } = require("./SplitService");
@@ -10,11 +14,10 @@ const ADDED_PARTICIPANT_SUCCESFULLY = "Participante agregado correctamente.";
 
 const addProject = async (projectData) => {
   try {
-
     const user = await getUserById(projectData.user_id);
 
     if (!user) {
-      throw new Error("El usuario no existe.")
+      throw new Error("El usuario no existe.");
     }
 
     const newProject = await Project.create(projectData);
@@ -63,7 +66,6 @@ const deleteExpenseAmount = async (id, amount, transaction) => {
   }
 };
 
-
 const addParticipant = async (id, req) => {
   const existingProject = await Project.findOne({
     where: { project_id: id },
@@ -75,7 +77,7 @@ const addParticipant = async (id, req) => {
 
   const existingParticipant = await getUserByEmail(req.email);
 
-  const userFromNotification = await getUserById(req.user_from_id)
+  const userFromNotification = await getUserById(req.user_from_id);
 
   const notificationMessage = `${userFromNotification.name} ${userFromNotification.lastname} te ha agregado al proyecto ${existingProject.title}`;
 
@@ -93,7 +95,7 @@ const addParticipant = async (id, req) => {
         user_to_id: pendingUser.user_id,
         project_id: id,
         message: notificationMessage,
-        type: 'Success'
+        type: "Success",
       });
 
       return ADDED_PARTICIPANT_SUCCESFULLY;
@@ -112,7 +114,7 @@ const addParticipant = async (id, req) => {
     user_to_id: existingParticipant.user_id,
     project_id: id,
     message: notificationMessage,
-    type: 'Success'
+    type: "Success",
   });
 
   return ADDED_PARTICIPANT_SUCCESFULLY;
@@ -236,9 +238,9 @@ const deleteParticipantFromProject = async (id, req) => {
       throw new Error("El participante no pertenece al proyecto.");
     }
 
-    console.log(req.userId, id)
+    console.log(req.userId, id);
 
-    await removeSplitFromUserByProjectId(req.userId, id)
+    await removeSplitFromUserByProjectId(req.userId, id);
 
     await ProjectUser.destroy({
       where: {
@@ -247,8 +249,8 @@ const deleteParticipantFromProject = async (id, req) => {
       },
     });
 
-    const userFromNotification = await getUserById(req.user_from_id)
-    const project = await getProjectById(id)
+    const userFromNotification = await getUserById(req.user_from_id);
+    const project = await getProjectById(id);
 
     const notificationMessage = `${userFromNotification.name} ${userFromNotification.lastname} te ha borrado del proyecto ${project.title}`;
 
@@ -257,7 +259,7 @@ const deleteParticipantFromProject = async (id, req) => {
       user_to_id: req.userId,
       project_id: id,
       message: notificationMessage,
-      type: 'Warning'
+      type: "Warning",
     });
 
     return "Participante borrado con éxito del proyecto.";
@@ -279,5 +281,5 @@ module.exports = {
   updateProject,
   deleteParticipantFromProject,
   addExpenseAmount,
-  deleteExpenseAmount
+  deleteExpenseAmount,
 };

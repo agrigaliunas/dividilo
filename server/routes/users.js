@@ -2,17 +2,17 @@ const { Router } = require("express");
 const UserController = require("../controllers/UserController");
 const validateRequest = require("../middlewares/request_validator");
 const { check } = require("express-validator");
+const validateJwt = require("../middlewares/jwt_validator");
 
 const router = Router();
 
-// TODO: agregar jwtValidator
+router.get("/:userId", validateJwt, UserController.getUserById);
 
-router.get("/:userId", UserController.getUserById);
-
-router.get("/", UserController.getUserByEmail);
+router.get("/", validateJwt, UserController.getUserByEmail);
 
 router.delete(
   "/:userId",
+  validateJwt,
   [
     check("password").not().isEmpty().withMessage("La contraseña es requerida"),
     validateRequest,
@@ -20,13 +20,11 @@ router.delete(
   UserController.deleteAccount
 );
 
-router.patch(
-    "/:userId",
-    UserController.updateUser
-);
+router.patch("/:userId", validateJwt, UserController.updateUser);
 
 router.patch(
   "/:userId/complete-onboarding",
+  validateJwt,
   UserController.completeOnboarding
 );
 

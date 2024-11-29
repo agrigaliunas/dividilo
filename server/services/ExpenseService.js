@@ -86,7 +86,7 @@ const getExpensesWithTicketsByProjectId = async (projectId) => {
 
           const ticketsWithSplits = await Promise.all(
             ticketsByExpenseId.map(async (ticket) => {
-              console.log("TICKET " + ticket.te)
+              console.log("TICKET " + ticket.te);
               const splits = await getSplitsByTicketId(ticket.ticket_id);
               return {
                 ...ticket.get(),

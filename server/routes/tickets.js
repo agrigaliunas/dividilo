@@ -1,24 +1,33 @@
 const { Router } = require("express");
 const multer = require("multer");
 const TicketController = require("../controllers/TicketController");
+const validateJwt = require("../middlewares/jwt_validator");
 
-const storage = multer.memoryStorage(); // Almacena el archivo en memoria como un Buffer
-const upload = multer({ storage })
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 const router = Router();
 
-router.post("/:ticketId/images", upload.single("file"), TicketController.uploadImage);
+router.post(
+  "/:ticketId/images",
+  validateJwt,
+  upload.single("file"),
+  TicketController.uploadImage
+);
 
-router.delete("/:ticketId/images", TicketController.deleteImage);
+router.delete("/:ticketId/images", validateJwt, TicketController.deleteImage);
 
+router.get("/:ticketId", validateJwt, TicketController.getTicketById);
 
-router.get("/:ticketId", TicketController.getTicketById);
+router.get(
+  "/expense/:expenseId",
+  validateJwt,
+  TicketController.getTicketsByExpenseId
+);
 
-router.get("/expense/:expenseId", TicketController.getTicketsByExpenseId);
+router.post("/", validateJwt, TicketController.addTicket);
 
-router.post("/", TicketController.addTicket);
+router.delete("/:ticketId", validateJwt, TicketController.deleteTicket);
 
-router.delete("/:ticketId", TicketController.deleteTicket);
-
-router.patch("/:ticketId",TicketController.updateTicket);
+router.patch("/:ticketId", validateJwt, TicketController.updateTicket);
 
 module.exports = router;

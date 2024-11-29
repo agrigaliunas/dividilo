@@ -5,7 +5,7 @@ export const getTicketsByExpenseId = async (expenseId, token) => {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      // "Authorization": token,
+      "Authorization": token,
     },
   }).then((data) => data.json());
   return data;
@@ -16,14 +16,13 @@ export const addTicket = async (
   description,
   ticketAmount,
   ticketDate,
-  formData,
   token
 ) => {
   const data = await fetch(`${BACKEND_URL}/tickets`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: token,
+      "Authorization": token,
     },
     body: JSON.stringify({
       description: description,
@@ -45,20 +44,17 @@ export const uploadTicketImage = async (ticketId, formData, token) => {
     body: formData,
   });
 
-  return url
-}
+  return url;
+};
 
-
-export const deleteTicket = async (id) => {
-  const response = await fetch(
-    `${BACKEND_URL}/tickets/${id}`,
-    {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
+export const deleteTicket = async (id, token) => {
+  const response = await fetch(`${BACKEND_URL}/tickets/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": token,
+    },
+  });
 
   return response;
 };

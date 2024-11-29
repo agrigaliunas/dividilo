@@ -1,11 +1,7 @@
-import React, { useEffect, useState } from "react";
-import {
-  agregarParticipanteAlProyecto,
-  fetchUsersByProjectId,
-} from "../../services/ProjectService";
+import React, { useState } from "react";
+
 
 const NewParticipantModal = ({
-  projectId,
   projectParticipants,
   isOpen,
   onClose,

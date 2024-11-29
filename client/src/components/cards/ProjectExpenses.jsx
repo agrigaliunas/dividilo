@@ -37,6 +37,7 @@ export const ProjectExpenses = ({
               onEditExpenseTitle={(newTitle) => onEditExpenseTitle(i, newTitle)}
               modeEdit={editMode}
               index={i}
+              key={i}
               participantesproyecto={participantesProyecto}
               openAddTicketModal={handleOpenAddTicketModal}
             />

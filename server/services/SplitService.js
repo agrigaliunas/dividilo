@@ -1,6 +1,5 @@
 const { Split, Ticket } = require("../db/config");
 
-
 const getTicketById = async (ticketId) => {
   try {
     const ticket = await Ticket.findByPk(ticketId);
@@ -86,11 +85,13 @@ const removeSplit = async (splitId, ticketId) => {
 
 const removeSplitFromUserByProjectId = async (userId, projectId) => {
   try {
-    
-    const { getExpensesWithTicketsByProjectId } = require("../services/ExpenseService")
+    const {
+      getExpensesWithTicketsByProjectId,
+    } = require("../services/ExpenseService");
 
-
-    const expensesWithTickets = await getExpensesWithTicketsByProjectId(projectId);
+    const expensesWithTickets = await getExpensesWithTicketsByProjectId(
+      projectId
+    );
 
     expensesWithTickets.map((expense) => {
       const ticketsFromExpense = expense.tickets;
@@ -98,12 +99,11 @@ const removeSplitFromUserByProjectId = async (userId, projectId) => {
         await Split.destroy({
           where: {
             user_id: userId,
-            ticket_id: ticket.ticket_id
-          }
+            ticket_id: ticket.ticket_id,
+          },
         });
-      })
-    }
-    );
+      });
+    });
 
     return { message: "Split eliminado correctamente" };
   } catch (err) {
@@ -205,8 +205,7 @@ const getSplitsByTicketId = async (ticketId) => {
       return splits;
     }
 
-    return []
-
+    return [];
   } catch (err) {
     throw new Error(err.message);
   }
@@ -219,5 +218,5 @@ module.exports = {
   getSplitById,
   getSplitsByTicketId,
   updateSplitPercentage,
-  removeSplitFromUserByProjectId
+  removeSplitFromUserByProjectId,
 };
