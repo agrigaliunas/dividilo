@@ -22,7 +22,7 @@ export const getExpensesWithTicketsByProjectId = async (projectId, token) => {
   return data;
 };
 
-export const addExpense = async (projectId, expenseTitle, token) => {
+export const addExpense = async (projectId, userId, expenseTitle, token) => {
   const data = await fetch(`${BACKEND_URL}/expenses`, {
     method: "POST",
     headers: {
@@ -30,6 +30,7 @@ export const addExpense = async (projectId, expenseTitle, token) => {
       "Authorization": token,
     },
     body: JSON.stringify({
+      user_from_id: userId,
       title: expenseTitle,
       project_id: projectId
     }),

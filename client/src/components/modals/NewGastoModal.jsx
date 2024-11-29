@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { addExpense } from "../../services/ExpenseService";
+import { useAuth } from "../../contexts/AuthContext";
 
 export const NewGastoModal = ({
   projectId,
+  user,
   gastos,
   isOpen,
   onClose,
@@ -16,7 +18,7 @@ export const NewGastoModal = ({
   };
 
   const handleAddGasto = async () => {
-    const nuevoGasto = await addExpense(projectId, descripcionNuevoGasto);
+    const nuevoGasto = await addExpense(projectId, user, descripcionNuevoGasto);
     onAddGasto(nuevoGasto);
     onClose();
   };
