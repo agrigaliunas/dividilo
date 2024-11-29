@@ -37,14 +37,12 @@ export const ProjectParticipants = ({
               )}
             </div>
           ))}
-        {editMode && (
-          <button
-            onClick={openNewParticipanteModal}
-            className="rounded-full w-12 h-12 flex items-center justify-center border border-1 border-gray-400 bg-white text-black hover:bg-gray-50 font-semibold p-2"
-          >
-            <UserPlus />
-          </button>
-        )}
+        <button
+          onClick={openNewParticipanteModal}
+          className="rounded-full w-12 h-12 flex items-center justify-center border border-1 border-gray-400 bg-white text-black hover:bg-gray-50 font-semibold p-2"
+        >
+          <UserPlus />
+        </button>
       </div>
     </div>
   );

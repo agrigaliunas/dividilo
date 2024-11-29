@@ -2,11 +2,12 @@ const { Ticket } = require("../db/config");
 const { addTicketAmount, deleteTicketAmount } = require("./ExpenseService");
 const { uploadImageToCloudinary } = require("./ImageService");
 const { sequelize } = require("../db/config");
+const { getSplitsByTicketId, updateSplitPercentage } = require("./SplitService");
 
 const uploadImage = async (ticketId, imageBuffer) => {
   try {
     const ticket = await Ticket.findByPk(ticketId);
-
+    
     if (!ticket) {
       throw new Error("Ticket no encontrado.");
     }
@@ -64,7 +65,7 @@ const getTicketById = async (ticketId) => {
 
     return ticket;
   } catch (error) {
-    console.error("Error al obtener ticket:", err.message);
+    console.error("Error al obtener ticket:", error.message);
     throw new Error("No se pudo obtener el ticket.");
   }
 };
@@ -99,6 +100,17 @@ const updateTicket = async (id, req) => {
       throw new Error("Ticket no existente.");
     }
 
+    const splitsFromTicket = await getSplitsByTicketId(id)
+
+    const totalFromSplits = splitsFromTicket.reduce(
+      (sum, split) => sum + parseFloat(split.user_amount),
+      0.0
+    );
+
+    if (totalFromSplits > req.amount){
+      throw new Error("Error. El nuevo total es menor al total de los splits.")
+    }
+
     const originalAmount = ticket.amount;
 
     await deleteTicketAmount(ticket.expense_id, originalAmount, transaction);
@@ -117,6 +129,13 @@ const updateTicket = async (id, req) => {
     await addTicketAmount(ticket.expense_id, ticket.amount, transaction);
 
     await transaction.commit();
+
+
+    splitsFromTicket.forEach(async (split) => {
+      const newPercentage = split.user_amount / req.amount;
+      await updateSplitPercentage(split.split_id, newPercentage)
+    });
+
     return "Ticket actualizado con éxito.";
   } catch (error) {
     await transaction.rollback();
