@@ -55,3 +55,15 @@ export const updateExpense = async (id, newExpenseTitle, token) => {
 
   return response;
 };
+
+export const deleteExpense = async (id, token) => {
+  const response = await fetch(`${BACKEND_URL}/expenses/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": token,
+    }
+  });
+
+  return response;
+};

@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { ChevronDown } from "../icons/ChevronDown";
 import { ProjectTicket } from "./ProjectTicket";
 import { ChevronUp } from "../icons/ChevronUp";
+import { Trash } from "../icons/Trash";
+import { deleteExpense } from "../../services/ExpenseService";
+import { useAuth } from "../../contexts/AuthContext";
 
 export const ProjectExpense = ({
   expense,
@@ -10,9 +13,11 @@ export const ProjectExpense = ({
   index,
   participantesproyecto,
   openAddTicketModal,
-  onEditTicket
+  onEditTicket,
 }) => {
   const [gastosExpandidos, setGastosExpandidos] = useState({});
+
+  const {user} = useAuth()
 
   const toggleGasto = (index) => {
     setGastosExpandidos((prev) => ({
@@ -21,6 +26,12 @@ export const ProjectExpense = ({
     }));
   };
 
+  const handleDeleteExpense = async () => {
+    await deleteExpense(expense.expense_id, user.token)
+
+    window.location.reload(true)
+  }
+
   return (
     <div
       key={index}
@@ -28,14 +39,22 @@ export const ProjectExpense = ({
     >
       <div className="flex flex-col gap-3 items-left bg-white p-5 rounded-xl shadow-md w-full">
         {modeEdit ? (
-          <input
-            type="text"
-            className="font-bold text-center text-xl lg:text-2xl rounded-lg border-b border-black bg-transparent border-dashed border-spacing-3"
-            value={expense.title || ""}
-            onChange={(e) => onEditExpenseTitle(e.target.value)}
-            placeholder="Ingrese título del gasto..."
-            aria-label="Editar título del gasto"
-          />
+          <>
+            <button
+              onClick={() => handleDeleteExpense()}
+              className="bg-red-200 upper rounded-md py-1 hover:opacity-80 px-4 flex text-red-800 w-fit ml-auto"
+            >
+              <Trash style="w-6 h-6" /> Eliminar gasto
+            </button>
+            <input
+              type="text"
+              className="font-bold text-center text-xl lg:text-2xl rounded-lg border-b border-black bg-transparent border-dashed border-spacing-3"
+              value={expense.title || ""}
+              onChange={(e) => onEditExpenseTitle(e.target.value)}
+              placeholder="Ingrese título del gasto..."
+              aria-label="Editar título del gasto"
+            />
+          </>
         ) : (
           <span className="font-bold text-center text-xl lg:text-2xl rounded-lg">
             {expense.title}
@@ -45,7 +64,9 @@ export const ProjectExpense = ({
           Total ${expense.total_amount}
         </span>
         {(!expense.tickets || expense.tickets.length === 0) && (
-          <span className="text-gray-500 text-center">No hay tickets registrados.</span>
+          <span className="text-gray-500 text-center">
+            No hay tickets registrados.
+          </span>
         )}
         {expense.tickets?.length > 0 && (
           <div className="flex my-1">
@@ -53,7 +74,17 @@ export const ProjectExpense = ({
               onClick={() => toggleGasto(index)}
               className="bg-gray-200 rounded-full p-1 hover:opacity-80 w-full flex justify-center items-center text-gray-500 font-semibold"
             >
-              {!gastosExpandidos[index] ? <><ChevronDown />Ver tickets</> : <><ChevronUp />Esconder tickets</>} 
+              {!gastosExpandidos[index] ? (
+                <>
+                  <ChevronDown />
+                  Ver tickets
+                </>
+              ) : (
+                <>
+                  <ChevronUp />
+                  Esconder tickets
+                </>
+              )}
             </button>
           </div>
         )}
