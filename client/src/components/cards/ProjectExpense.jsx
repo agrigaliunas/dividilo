@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { ChevronDown } from "../icons/ChevronDown";
 import { ProjectTicket } from "./ProjectTicket";
+import { ChevronUp } from "../icons/ChevronUp";
 
 export const ProjectExpense = ({
   expense,
@@ -51,7 +52,7 @@ export const ProjectExpense = ({
               onClick={() => toggleGasto(index)}
               className="bg-gray-200 rounded-full p-1 hover:opacity-80 w-full flex justify-center items-center text-gray-500 font-semibold"
             >
-              <ChevronDown /> Ver tickets 
+              {!gastosExpandidos[index] ? <><ChevronDown />Ver tickets</> : <><ChevronUp />Esconder tickets</>} 
             </button>
           </div>
         )}

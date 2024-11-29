@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
-    const Notification = sequelize.define('Split', {
+    const Notification = sequelize.define('Notification', {
         notification_id: {
             type: DataTypes.INTEGER,
             primaryKey: true,

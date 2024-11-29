@@ -201,11 +201,12 @@ const getSplitsByTicketId = async (ticketId) => {
       where: { ticket_id: ticketId },
     });
 
-    if (splits.length === 0) {
-      throw new Error("No se encontraron splits para este ticket");
+    if (splits.length > 0) {
+      return splits;
     }
 
-    return splits;
+    return []
+
   } catch (err) {
     throw new Error(err.message);
   }

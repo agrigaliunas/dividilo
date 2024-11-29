@@ -23,7 +23,7 @@ const deleteExpense = async (id) => {
         },
       });
 
-      await deleteExpenseAmount(expense.project_id, expense.total_amount)
+      await deleteExpenseAmount(expense.project_id, expense.total_amount);
 
       return "Gasto borrado con exito.";
     }
@@ -75,31 +75,45 @@ const getExpensesWithTicketsByProjectId = async (projectId) => {
     const expenses = await getExpensesByProjectId(projectId);
 
     if (expenses && expenses.length > 0) {
-      const expensesWithTickets = await Promise.all(
+      const expensesWithTicketsAndSplits = await Promise.all(
         expenses.map(async (exp) => {
           const { getTicketsByExpenseId } = require("./TicketService");
-          const ticketsByExpenseId = await getTicketsByExpenseId(exp.expense_id);
+          const { getSplitsByTicketId } = require("./SplitService");
+
+          const ticketsByExpenseId = await getTicketsByExpenseId(
+            exp.expense_id
+          );
+
+          const ticketsWithSplits = await Promise.all(
+            ticketsByExpenseId.map(async (ticket) => {
+              console.log("TICKET " + ticket.te)
+              const splits = await getSplitsByTicketId(ticket.ticket_id);
+              return {
+                ...ticket.get(),
+                splits,
+              };
+            })
+          );
+
           return {
             expense_id: exp.expense_id,
             title: exp.title,
             total_amount: exp.total_amount,
             project_id: exp.project_id,
-            tickets: ticketsByExpenseId
+            tickets: ticketsWithSplits,
           };
         })
       );
 
-      return expensesWithTickets;
+      return expensesWithTicketsAndSplits;
     }
 
-    return []; 
+    return [];
   } catch (error) {
-    console.error("Error al obtener gastos con tickets:", error);
-    throw new Error("Falla al obtener gastos con tickets.");
+    console.error("Error al obtener gastos con tickets y splits:", error);
+    throw new Error("Falla al obtener gastos con tickets y splits.");
   }
 };
-
-
 
 const addTicketAmount = async (id, amount, transaction) => {
   try {
@@ -137,7 +151,6 @@ const deleteTicketAmount = async (id, amount, transaction) => {
   }
 };
 
-
 const getTicketsByExpenseId = async (expenseId) => {
   try {
     const tickets = await Ticket.findAll({
@@ -153,7 +166,6 @@ const getTicketsByExpenseId = async (expenseId) => {
   }
 };
 
-
 module.exports = {
   addExpense,
   deleteExpense,
@@ -161,5 +173,5 @@ module.exports = {
   getExpensesByProjectId,
   addTicketAmount,
   deleteTicketAmount,
-  getExpensesWithTicketsByProjectId
+  getExpensesWithTicketsByProjectId,
 };
