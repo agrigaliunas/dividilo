@@ -1,10 +1,31 @@
 const { Expense, Ticket } = require("../db/config");
 const { Op } = require("sequelize");
-const { deleteExpenseAmount, addExpenseAmount } = require("./ProjectService");
+const { deleteExpenseAmount, addExpenseAmount, getUsersByProjectId, getProjectById } = require("./ProjectService");
+const { getUserById } = require("./UserService")
+const { addNotification } = require("./NotificationsService")
 
 const addExpense = async (expenseData) => {
   try {
     const newExpense = await Expense.create(expenseData);
+    const userFromNotification = await getUserById(expenseData.user_from_id)
+    const project = await getProjectById(expenseData.project_id)
+
+    const notificationMessage = `${userFromNotification.name} ${userFromNotification.lastname} ha agregado el gasto ${newExpense.title} en el proyecto ${project.title}`;
+
+    const usersFromProject = await getUsersByProjectId(newExpense.project_id)
+
+    const filteredUsers = usersFromProject.filter(user => user.user_id !== userFromNotification.user_id);
+  
+    filteredUsers.map(async (user) => {
+      await addNotification({
+        user_from_id: userFromNotification.user_id,
+        user_to_id: user.user_id,
+        project_id: newExpense.project_id,
+        message: notificationMessage,
+        type: 'Success'
+      });
+    })
+
     return newExpense;
   } catch (err) {
     console.error("Error creando gasto:", err.message);
@@ -13,6 +34,9 @@ const addExpense = async (expenseData) => {
 };
 
 const deleteExpense = async (id) => {
+
+  // TODO: Agregar el parametro userFromNotification cuando este la funcionalidad de borrar gasto en el front-end
+
   try {
     const expense = await Expense.findByPk(id);
 
@@ -23,7 +47,25 @@ const deleteExpense = async (id) => {
         },
       });
 
-      await deleteExpenseAmount(expense.project_id, expense.total_amount);
+    // const project = await getProjectById(expense.project_id)
+
+    // const notificationMessage = `${user.name} ${user.lastname} ha borrado el gasto ${expense.title} en el proyecto ${project.title}`;
+
+    // const usersFromProject = await getUsersByProjectId(project.project_id)
+
+    // const filteredUsers = usersFromProject.filter(user => user.user_id !== userFromNotification.user_id);
+
+    // filteredUsers.map(async (user) => {
+    //   await addNotification({
+    //     user_from_id: userFromNotifiacion.user_id,
+    //     user_to_id: user.user_id,
+    //     project_id: project.project_id,
+    //     message: notificationMessage,
+    //     type: 'Warning'
+    //   });
+    // })
+
+      await deleteExpenseAmount(expense.project_id, expense.total_amount)
 
       return "Gasto borrado con exito.";
     }

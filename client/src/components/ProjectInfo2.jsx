@@ -369,6 +369,7 @@ export const ProjectInfo2 = ({
 
       <NewGastoModal
         projectId={project.project_id}
+        gastos={expenses}
         isOpen={modalGastoIsOpen}
         onClose={closeGastoModal}
         onAddGasto={handleAddGasto}

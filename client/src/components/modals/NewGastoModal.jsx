@@ -4,6 +4,7 @@ import { useAuth } from "../../contexts/AuthContext";
 
 export const NewGastoModal = ({
   projectId,
+  gastos,
   isOpen,
   onClose,
   onAddGasto,
@@ -18,7 +19,7 @@ export const NewGastoModal = ({
   };
 
   const handleAddGasto = async () => {
-    const nuevoGasto = await addExpense(projectId, descripcionNuevoGasto, user.token);
+    const nuevoGasto = await addExpense(projectId, user.user_id, descripcionNuevoGasto, user.token);
     onAddGasto(nuevoGasto);
     onClose();
   };
