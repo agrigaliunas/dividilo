@@ -1,0 +1,753 @@
+openapi: 3.0.0
+info:
+  title: Dividilo
+  version: 1.0.0
+servers:
+  - url: http://localhost:5000
+tags:
+  - name: Usuarios
+  - name: Auth
+  - name: Proyectos
+  - name: Gastos
+  - name: Tickets
+  - name: Splits
+  - name: Notificaciones
+paths:
+  /api/users/1:
+    get:
+      tags:
+        - Usuarios
+      summary: Obtener usuario por id
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFndXN0aW5ncmlnYWxpdW5hc0BnbWFpbC5jb20iLCJpYXQiOjE3MzI3NzM1OTAsImV4cCI6MTczMjg1OTk5MH0.amdc8UqH4WIg5nxFfCdqkpnM88hWpI6b6ppzgh7zswY
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/users:
+    get:
+      tags:
+        - Usuarios
+      summary: Obtener usuario por email
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFndXN0aW5ncmlnYWxpdW5hc0BnbWFpbC5jb20iLCJpYXQiOjE3MzI3NzM1OTAsImV4cCI6MTczMjg1OTk5MH0.amdc8UqH4WIg5nxFfCdqkpnM88hWpI6b6ppzgh7zswY
+        - name: email
+          in: query
+          schema:
+            type: string
+          example: participante1@gmail.com
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/users/8:
+    patch:
+      tags:
+        - Usuarios
+      summary: Modificar usuario
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Agustin
+                lastname: Lala
+                email: agustingrigaliunas@gmail.com
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFndXN0aW5ncmlnYWxpdW5hc0BnbWFpbC5jb20iLCJpYXQiOjE3MzI3NzM1OTAsImV4cCI6MTczMjg1OTk5MH0.amdc8UqH4WIg5nxFfCdqkpnM88hWpI6b6ppzgh7zswY
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/users/2/complete-onboarding:
+    patch:
+      tags:
+        - Usuarios
+      summary: Completar onboarding
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Lautaro
+                lastname: Jimenez
+                password: Hola123
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/users/9:
+    delete:
+      tags:
+        - Usuarios
+      summary: Eliminar usuario
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFndXN0aW5ncmlnYWxpdW5hc0BnbWFpbC5jb20iLCJpYXQiOjE3MzI3NzM1OTAsImV4cCI6MTczMjg1OTk5MH0.amdc8UqH4WIg5nxFfCdqkpnM88hWpI6b6ppzgh7zswY
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/auth/register:
+    post:
+      tags:
+        - Auth
+      summary: Registrar usuario
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Lautaro
+                lastname: Jimenez
+                email: lauta.jimenez2@gmail.com
+                password: Hola123
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/auth/restore-password:
+    patch:
+      tags:
+        - Auth
+      summary: Restaurar contraseña
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                email: agustingrigaliunas@gmail.com
+                password: Hola123
+                newPassword: Hola321
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/auth/login:
+    post:
+      tags:
+        - Auth
+      summary: Login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                email: lauta.jimenez@gmail.com
+                password: Hola123
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/projects:
+    post:
+      tags:
+        - Proyectos
+      summary: Crear proyecto
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                title: Projecto Test 3
+                description: descripcion proyecto expense
+                user_id: 1
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFndXN0aW5ncmlnYWxpdW5hc0BnbWFpbC5jb20iLCJpYXQiOjE3MzI3NzM1OTAsImV4cCI6MTczMjg1OTk5MH0.amdc8UqH4WIg5nxFfCdqkpnM88hWpI6b6ppzgh7zswY
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/projects/22:
+    delete:
+      tags:
+        - Proyectos
+      summary: Borrar proyecto
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFndXN0aW5ncmlnYWxpdW5hc0BnbWFpbC5jb20iLCJpYXQiOjE3MzI3NzM1OTAsImV4cCI6MTczMjg1OTk5MH0.amdc8UqH4WIg5nxFfCdqkpnM88hWpI6b6ppzgh7zswY
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/projects/2:
+    post:
+      tags:
+        - Proyectos
+      summary: Agregar participante a proyecto
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                email: lauta.jimenez2@gmail.com
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFndXN0aW5ncmlnYWxpdW5hc0BnbWFpbC5jb20iLCJpYXQiOjE3MzI3NzM1OTAsImV4cCI6MTczMjg1OTk5MH0.amdc8UqH4WIg5nxFfCdqkpnM88hWpI6b6ppzgh7zswY
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/projects/user/1:
+    get:
+      tags:
+        - Proyectos
+      summary: Obtener proyectos de usuario
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFndXN0aW5ncmlnYWxpdW5hc0BnbWFpbC5jb20iLCJpYXQiOjE3MzI3NzM1OTAsImV4cCI6MTczMjg1OTk5MH0.amdc8UqH4WIg5nxFfCdqkpnM88hWpI6b6ppzgh7zswY
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/projects/1/users:
+    get:
+      tags:
+        - Proyectos
+      summary: Obtener usuarios de proyecto
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFndXN0aW5ncmlnYWxpdW5hc0BnbWFpbC5jb20iLCJpYXQiOjE3MzI3NzM1OTAsImV4cCI6MTczMjg1OTk5MH0.amdc8UqH4WIg5nxFfCdqkpnM88hWpI6b6ppzgh7zswY
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/projects/1:
+    get:
+      tags:
+        - Proyectos
+      summary: Obtener proyecto por id
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFndXN0aW5ncmlnYWxpdW5hc0BnbWFpbC5jb20iLCJpYXQiOjE3MzI3NzM1OTAsImV4cCI6MTczMjg1OTk5MH0.amdc8UqH4WIg5nxFfCdqkpnM88hWpI6b6ppzgh7zswY
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    patch:
+      tags:
+        - Proyectos
+      summary: Actualizar proyecto
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                title: Viaje a mdq
+                description: viajecito
+                state: En progreso
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFndXN0aW5ncmlnYWxpdW5hc0BnbWFpbC5jb20iLCJpYXQiOjE3MzI3NzM1OTAsImV4cCI6MTczMjg1OTk5MH0.amdc8UqH4WIg5nxFfCdqkpnM88hWpI6b6ppzgh7zswY
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/projects/8/users:
+    delete:
+      tags:
+        - Proyectos
+      summary: Eliminar participante de un proyecto
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFndXN0aW5ncmlnYWxpdW5hc0BnbWFpbC5jb20iLCJpYXQiOjE3MzI3NzM1OTAsImV4cCI6MTczMjg1OTk5MH0.amdc8UqH4WIg5nxFfCdqkpnM88hWpI6b6ppzgh7zswY
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/expenses:
+    post:
+      tags:
+        - Gastos
+      summary: Agregar gasto
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                title: Estacionamiento
+                project_id: 3
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFndXN0aW5ncmlnYWxpdW5hc0BnbWFpbC5jb20iLCJpYXQiOjE3MzI3NzM1OTAsImV4cCI6MTczMjg1OTk5MH0.amdc8UqH4WIg5nxFfCdqkpnM88hWpI6b6ppzgh7zswY
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/expenses/3:
+    delete:
+      tags:
+        - Gastos
+      summary: Eliminar gasto
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFndXN0aW5ncmlnYWxpdW5hc0BnbWFpbC5jb20iLCJpYXQiOjE3MzI4NjI3MjMsImV4cCI6MTczMjk0OTEyM30.bz5aWkqVWSd0J64KJve-LWOrL9wLdi_mX8CT8YqiZd4
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/expenses/2:
+    patch:
+      tags:
+        - Gastos
+      summary: Actualizar gasto
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                title: Gasto prueba
+                total_amount: 50000
+                project_id: 10
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFndXN0aW5ncmlnYWxpdW5hc0BnbWFpbC5jb20iLCJpYXQiOjE3MzI3NzM1OTAsImV4cCI6MTczMjg1OTk5MH0.amdc8UqH4WIg5nxFfCdqkpnM88hWpI6b6ppzgh7zswY
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/expenses/project/2:
+    get:
+      tags:
+        - Gastos
+      summary: Obtener gastos de un proyecto
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFndXN0aW5ncmlnYWxpdW5hc0BnbWFpbC5jb20iLCJpYXQiOjE3MzI3NzM1OTAsImV4cCI6MTczMjg1OTk5MH0.amdc8UqH4WIg5nxFfCdqkpnM88hWpI6b6ppzgh7zswY
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/expenses/project/1/expenses-with-tickets:
+    get:
+      tags:
+        - Gastos
+      summary: Obtener gastos y tickets de un proyecto
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFndXN0aW5ncmlnYWxpdW5hc0BnbWFpbC5jb20iLCJpYXQiOjE3MzI3NzM1OTAsImV4cCI6MTczMjg1OTk5MH0.amdc8UqH4WIg5nxFfCdqkpnM88hWpI6b6ppzgh7zswY
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/tickets/1/images:
+    post:
+      tags:
+        - Tickets
+      summary: Subir imagen a ticket
+      requestBody:
+        content: {}
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFndXN0aW5ncmlnYWxpdW5hc0BnbWFpbC5jb20iLCJpYXQiOjE3MzI3NzM1OTAsImV4cCI6MTczMjg1OTk5MH0.amdc8UqH4WIg5nxFfCdqkpnM88hWpI6b6ppzgh7zswY
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/tickets/2/images:
+    delete:
+      tags:
+        - Tickets
+      summary: Borrar imagen de ticket
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFndXN0aW5ncmlnYWxpdW5hc0BnbWFpbC5jb20iLCJpYXQiOjE3MzI4NjI3MjMsImV4cCI6MTczMjk0OTEyM30.bz5aWkqVWSd0J64KJve-LWOrL9wLdi_mX8CT8YqiZd4
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/tickets/2:
+    get:
+      tags:
+        - Tickets
+      summary: Obtener ticket por id
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFndXN0aW5ncmlnYWxpdW5hc0BnbWFpbC5jb20iLCJpYXQiOjE3MzI3NzM1OTAsImV4cCI6MTczMjg1OTk5MH0.amdc8UqH4WIg5nxFfCdqkpnM88hWpI6b6ppzgh7zswY
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    patch:
+      tags:
+        - Tickets
+      summary: Actualizar ticket
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                amount: 49000
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFndXN0aW5ncmlnYWxpdW5hc0BnbWFpbC5jb20iLCJpYXQiOjE3MzI4NjI3MjMsImV4cCI6MTczMjk0OTEyM30.bz5aWkqVWSd0J64KJve-LWOrL9wLdi_mX8CT8YqiZd4
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - Tickets
+      summary: Borrar ticket
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFndXN0aW5ncmlnYWxpdW5hc0BnbWFpbC5jb20iLCJpYXQiOjE3MzI4NjI3MjMsImV4cCI6MTczMjk0OTEyM30.bz5aWkqVWSd0J64KJve-LWOrL9wLdi_mX8CT8YqiZd4
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/tickets/expense/2:
+    get:
+      tags:
+        - Tickets
+      summary: Obtener ticket por id gasto
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFndXN0aW5ncmlnYWxpdW5hc0BnbWFpbC5jb20iLCJpYXQiOjE3MzI3NzM1OTAsImV4cCI6MTczMjg1OTk5MH0.amdc8UqH4WIg5nxFfCdqkpnM88hWpI6b6ppzgh7zswY
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/tickets:
+    post:
+      tags:
+        - Tickets
+      summary: Crear ticket
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                description: TV
+                amount: 4000
+                ticket_date: '2024-11-28'
+                expense_id: 1
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFndXN0aW5ncmlnYWxpdW5hc0BnbWFpbC5jb20iLCJpYXQiOjE3MzI3NzM1OTAsImV4cCI6MTczMjg1OTk5MH0.amdc8UqH4WIg5nxFfCdqkpnM88hWpI6b6ppzgh7zswY
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/splits:
+    post:
+      tags:
+        - Splits
+      summary: Crear split
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                ticket_id: 5
+                user_id: 1
+                user_amount: 400
+                split_type: Monto
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFndXN0aW5ncmlnYWxpdW5hc0BnbWFpbC5jb20iLCJpYXQiOjE3MzI4MjQzOTksImV4cCI6MTczMjkxMDc5OX0.09Zz3Ivj86_iLRjJlXiDC_U34FH8tGCJWNRBxUtj0ik
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/splits/2:
+    get:
+      tags:
+        - Splits
+      summary: Obtener split por id
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFndXN0aW5ncmlnYWxpdW5hc0BnbWFpbC5jb20iLCJpYXQiOjE3MzI4MjQzOTksImV4cCI6MTczMjkxMDc5OX0.09Zz3Ivj86_iLRjJlXiDC_U34FH8tGCJWNRBxUtj0ik
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/splits/ticket/1:
+    get:
+      tags:
+        - Splits
+      summary: Obtener splits por ticket id
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFndXN0aW5ncmlnYWxpdW5hc0BnbWFpbC5jb20iLCJpYXQiOjE3MzI4MjQzOTksImV4cCI6MTczMjkxMDc5OX0.09Zz3Ivj86_iLRjJlXiDC_U34FH8tGCJWNRBxUtj0ik
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/splits/1:
+    put:
+      tags:
+        - Splits
+      summary: Actualizar split
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                user_amount: 11000
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFndXN0aW5ncmlnYWxpdW5hc0BnbWFpbC5jb20iLCJpYXQiOjE3MzI4MjQzOTksImV4cCI6MTczMjkxMDc5OX0.09Zz3Ivj86_iLRjJlXiDC_U34FH8tGCJWNRBxUtj0ik
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/splits/3:
+    delete:
+      tags:
+        - Splits
+      summary: Borrar split
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFndXN0aW5ncmlnYWxpdW5hc0BnbWFpbC5jb20iLCJpYXQiOjE3MzI4MjQzOTksImV4cCI6MTczMjkxMDc5OX0.09Zz3Ivj86_iLRjJlXiDC_U34FH8tGCJWNRBxUtj0ik
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/notifications:
+    post:
+      tags:
+        - Notificaciones
+      summary: Agregar notificacion
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                user_from_id: 1
+                user_to_id: 2
+                project_id: 1
+                message: Lautaro te ha agregado al proyecto comida
+                type: Success
+                notification_datetime: '2024-11-20 22:00:00'
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFndXN0aW5ncmlnYWxpdW5hc0BnbWFpbC5jb20iLCJpYXQiOjE3MzI3NzM1OTAsImV4cCI6MTczMjg1OTk5MH0.amdc8UqH4WIg5nxFfCdqkpnM88hWpI6b6ppzgh7zswY
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/notifications/1:
+    delete:
+      tags:
+        - Notificaciones
+      summary: Borrar notificación
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFndXN0aW5ncmlnYWxpdW5hc0BnbWFpbC5jb20iLCJpYXQiOjE3MzI3NzM1OTAsImV4cCI6MTczMjg1OTk5MH0.amdc8UqH4WIg5nxFfCdqkpnM88hWpI6b6ppzgh7zswY
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/notifications/user/1:
+    get:
+      tags:
+        - Notificaciones
+      summary: Obtener notificaciones por usuario
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFndXN0aW5ncmlnYWxpdW5hc0BnbWFpbC5jb20iLCJpYXQiOjE3MzI3NzM1OTAsImV4cCI6MTczMjg1OTk5MH0.amdc8UqH4WIg5nxFfCdqkpnM88hWpI6b6ppzgh7zswY
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/notifications/user/2:
+    delete:
+      tags:
+        - Notificaciones
+      summary: Eliminar notificacion por usuario
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFndXN0aW5ncmlnYWxpdW5hc0BnbWFpbC5jb20iLCJpYXQiOjE3MzI3NzM1OTAsImV4cCI6MTczMjg1OTk5MH0.amdc8UqH4WIg5nxFfCdqkpnM88hWpI6b6ppzgh7zswY
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
