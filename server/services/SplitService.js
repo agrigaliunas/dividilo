@@ -84,6 +84,34 @@ const removeSplit = async (splitId, ticketId) => {
   }
 };
 
+const removeSplitFromUserByProjectId = async (userId, projectId) => {
+  try {
+    
+    const { getExpensesWithTicketsByProjectId } = require("../services/ExpenseService")
+
+
+    const expensesWithTickets = await getExpensesWithTicketsByProjectId(projectId);
+
+    expensesWithTickets.map((expense) => {
+      const ticketsFromExpense = expense.tickets;
+      ticketsFromExpense.map(async (ticket) => {
+        await Split.destroy({
+          where: {
+            user_id: userId,
+            ticket_id: ticket.ticket_id
+          }
+        });
+      })
+    }
+    );
+
+    return { message: "Split eliminado correctamente" };
+  } catch (err) {
+    console.error("Error eliminando split:", err.message);
+    throw new Error("Falla al eliminar un split.");
+  }
+};
+
 const updateSplitPercentage = async (splitId, newPercentage) => {
   try {
     const updatedSplit = await Split.update(
@@ -189,5 +217,6 @@ module.exports = {
   removeSplit,
   getSplitById,
   getSplitsByTicketId,
-  updateSplitPercentage
+  updateSplitPercentage,
+  removeSplitFromUserByProjectId
 };

@@ -4,6 +4,7 @@ const { registerPendingUser } = require("../services/AuthService");
 const { getUserByEmail, getUsersByIdList, getUserById } = require("../services/UserService");
 const { Op } = require("sequelize");
 const { addNotification } = require("./NotificationsService");
+const { removeSplitFromUserByProjectId } = require("./SplitService");
 
 const ADDED_PARTICIPANT_SUCCESFULLY = "Participante agregado correctamente.";
 
@@ -234,6 +235,10 @@ const deleteParticipantFromProject = async (id, req) => {
     if (!projectUser) {
       throw new Error("El participante no pertenece al proyecto.");
     }
+
+    console.log(req.userId, id)
+
+    await removeSplitFromUserByProjectId(req.userId, id)
 
     await ProjectUser.destroy({
       where: {

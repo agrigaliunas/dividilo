@@ -61,10 +61,26 @@ const getSplitsByTicketId = async (req, res) => {
   }
 };
 
+
+const removeSplitFromUserByProjectId = async (req, res) => {
+  const { userId, projectId } = req.params;
+
+  try {
+    const response = await SplitService.removeSplitFromUserByProjectId(userId, projectId);
+    res.status(200).json(response);
+  } catch (err) {
+    console.error('Error en removeSplitFromUserByProjectId:', err.message);
+    res.status(500).json({
+      message: err.message,
+    });
+  }
+};
+
 module.exports = {
   addSplit,
   updateSplit,
   deleteSplit,
   getSplitById,
   getSplitsByTicketId,
+  removeSplitFromUserByProjectId
 };
