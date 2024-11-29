@@ -83,6 +83,5 @@ Asegurate de configurar correctamente la URL de la base de datos y otros valores
 ## Documentación de la API
 
 Para ver la documentación de Swagger, hay un archivo llamado dividilo-api.yaml. Descarga ese archivo y pega el contenido en https://editor.swagger.io/
+La colección de postman se encuentra en el archivo Dividilo.postman_collection
 
-Además, la colección de postman se encuentra en el archivo Dividilo.postman_collection
----
