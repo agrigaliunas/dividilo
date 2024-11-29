@@ -1,0 +1,494 @@
+{
+  "usuarios": [
+    {
+      "id": "1",
+      "nombre": "Agustin",
+      "apellido": "Grigaliunas",
+      "email": "agustingrigaliunas@gmail.com",
+      "password": "Contraseña123",
+      "rol": "usuario"
+    },
+    {
+      "id": "2",
+      "nombre": "Lautaro",
+      "apellido": "Jimenez",
+      "email": "lauta.jimenez@gmail.com",
+      "password": "Contraseña123",
+      "rol": "admin"
+    },
+    {
+      "id": "3",
+      "nombre": "Maria",
+      "apellido": "Gomez",
+      "email": "maria.gomez@gmail.com",
+      "password": "Contraseña123",
+      "rol": "usuario"
+    },
+    {
+      "id": "4",
+      "nombre": "Juan",
+      "apellido": "Perez",
+      "email": "juan.perez@gmail.com",
+      "password": "Contraseña123",
+      "rol": "usuario"
+    },
+    {
+      "id": "22bb",
+      "nombre": "Pablo",
+      "apellido": "Pablito",
+      "email": "pablo@gmail.com",
+      "password": "Pablo1234",
+      "rol": "usuario"
+    },
+    {
+      "id": "dbc1c960-5f37-422e-be17-086241c29703",
+      "nombre": "Roberto",
+      "apellido": "Robertoooooo",
+      "email": "rober@gmail.com",
+      "password": "Roberto1234",
+      "rol": "usuario"
+    },
+    {
+      "id": "ce66ce42-e165-4eac-be2d-1778af1f8811",
+      "nombre": "Lola",
+      "apellido": "Lolalalalal",
+      "email": "lola@gmail.com",
+      "password": "Lola1234",
+      "rol": "usuario"
+    },
+    {
+      "id": "93042587-8a65-495c-9ef3-9ad9f28e81c3",
+      "nombre": "Lolo",
+      "apellido": "Lolaloa",
+      "email": "lolo@gmail.com",
+      "password": "Lolo1234",
+      "rol": "usuario"
+    }
+  ],
+  "proyectos": [
+    {
+      "id": "1",
+      "nombre": "Viaje MDQ",
+      "descripcion": "Viaje con la familia",
+      "montoTotalProyecto": 3100,
+      "estado": "Finalizado",
+      "participantes": ["2", "4"],
+      "gastos": [
+        {
+          "id": "1",
+          "descripcion": "Hotel en MDQ",
+          "montoTotalGasto": 3000,
+          "tickets": [
+            {
+              "id": "1",
+              "montoTotalTicket": 1000,
+              "descripcion": "Spa del hotel",
+              "fecha": "2024-01-01",
+              "imagen": "https://content.wepik.com/statics/10979914/preview-page0.jpg",
+              "split": [
+                {
+                  "participanteId": "2",
+                  "porcentaje": 50,
+                  "montoParticipante": 500
+                },
+                {
+                  "participanteId": "4",
+                  "porcentaje": 50,
+                  "montoParticipante": 500
+                }
+              ]
+            },
+            {
+              "id": "2",
+              "montoTotalTicket": 2000,
+              "descripcion": "Habitacion",
+              "fecha": "2024-01-01",
+              "imagen": "https://vencru.com/wp-content/uploads/2020/08/sample-invoice-template.png",
+              "split": [
+                {
+                  "participanteId": "2",
+                  "porcentaje": 70,
+                  "montoParticipante": 1400
+                },
+                {
+                  "participanteId": "4",
+                  "porcentaje": 30,
+                  "montoParticipante": 600
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "2",
+          "descripcion": "Estacionamiento",
+          "montoTotalGasto": 100,
+          "tickets": [
+            {
+              "id": "3",
+              "montoTotalTicket": 100,
+              "descripcion": "Estacionamos 6hs",
+              "fecha": "2024-01-02",
+              "imagen": "https://images.picxy.com/cache/2020/2/9/234518585f936e3dfb87407a1448c842.jpg",
+              "split": [
+                {
+                  "participanteId": "2",
+                  "porcentaje": 100,
+                  "montoParticipante": 100
+                },
+                {
+                  "participanteId": "4",
+                  "porcentaje": 0,
+                  "montoParticipante": 0
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "nombre": "Remodelación cocina",
+      "descripcion": "Remodelando la cocina del departamento",
+      "montoTotalProyecto": 6000,
+      "estado": "En progreso",
+      "participantes": ["1", "3"],
+      "gastos": [
+        {
+          "id": "3",
+          "descripcion": "Heladera y cocina",
+          "montoTotalGasto": 3000,
+          "tickets": [
+            {
+              "id": "4",
+              "montoTotalTicket": 1700,
+              "descripcion": "Heladera",
+              "fecha": "2024-09-20",
+              "imagen": "https://imgv2-1-f.scribdassets.com/img/document/308818607/original/bd1fcd3f83/1724997884?v=1",
+              "split": [
+                {
+                  "participanteId": "1",
+                  "porcentaje": 50,
+                  "montoParticipante": 850
+                },
+                {
+                  "participanteId": "3",
+                  "porcentaje": 50,
+                  "montoParticipante": 850
+                }
+              ]
+            },
+            {
+              "id": "5",
+              "montoTotalTicket": 1300,
+              "descripcion": "Cocina",
+              "fecha": "2024-09-21",
+              "imagen": "https://marketplace.canva.com/EAFC1OcYOM0/2/0/1131w/canva-black-white-minimalist-simple-creative-freelancer-invoice-pyLVaYlAk1o.jpg",
+              "split": [
+                {
+                  "participanteId": "1",
+                  "porcentaje": 50,
+                  "montoParticipante": 650
+                },
+                {
+                  "participanteId": "3",
+                  "porcentaje": 50,
+                  "montoParticipante": 650
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "4",
+          "descripcion": "Mesada",
+          "montoTotalGasto": 3000,
+          "tickets": [
+            {
+              "id": "6",
+              "montoTotalTicket": 2500,
+              "descripcion": "Marmol",
+              "fecha": "2024-09-24",
+              "imagen": "https://marketplace.canva.com/EAFC1OcYOM0/2/0/1131w/canva-black-white-minimalist-simple-creative-freelancer-invoice-pyLVaYlAk1o.jpg",
+              "split": [
+                {
+                  "participanteId": "1",
+                  "porcentaje": 20,
+                  "montoParticipante": 500
+                },
+                {
+                  "participanteId": "3",
+                  "porcentaje": 80,
+                  "montoParticipante": 2000
+                }
+              ]
+            },
+            {
+              "id": "7",
+              "montoTotalTicket": 500,
+              "descripcion": "Bajomesada",
+              "fecha": "2024-09-24",
+              "imagen": "https://marketplace.canva.com/EAFC1OcYOM0/2/0/1131w/canva-black-white-minimalist-simple-creative-freelancer-invoice-pyLVaYlAk1o.jpg",
+              "split": [
+                {
+                  "participanteId": "1",
+                  "porcentaje": 50,
+                  "montoParticipante": 250
+                },
+                {
+                  "participanteId": "3",
+                  "porcentaje": 50,
+                  "montoParticipante": 250
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "nombre": "Fiesta de Cumpleaños",
+      "descripcion": "Organización de la fiesta de cumpleaños de Maria",
+      "montoTotalProyecto": 1500,
+      "estado": "Finalizado",
+      "participantes": ["3", "4"],
+      "gastos": [
+        {
+          "id": "5",
+          "descripcion": "Decoraciones",
+          "montoTotalGasto": 500,
+          "tickets": [
+            {
+              "id": "8",
+              "montoTotalTicket": 500,
+              "descripcion": "Globos y guirnaldas",
+              "fecha": "2024-10-01",
+              "imagen": "https://marketplace.canva.com/EAFC1OcYOM0/2/0/1131w/canva-black-white-minimalist-simple-creative-freelancer-invoice-pyLVaYlAk1o.jpg",
+              "split": [
+                {
+                  "participanteId": "3",
+                  "porcentaje": 60,
+                  "montoParticipante": 300
+                },
+                {
+                  "participanteId": "4",
+                  "porcentaje": 40,
+                  "montoParticipante": 200
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "6",
+          "descripcion": "Comida y bebida",
+          "montoTotalGasto": 1000,
+          "tickets": [
+            {
+              "id": "9",
+              "montoTotalTicket": 1000,
+              "descripcion": "Catering para 20 personas",
+              "fecha": "2024-10-02",
+              "imagen": "https://marketplace.canva.com/EAFC1OcYOM0/2/0/1131w/canva-black-white-minimalist-simple-creative-freelancer-invoice-pyLVaYlAk1o.jpg",
+              "split": [
+                {
+                  "participanteId": "3",
+                  "porcentaje": 70,
+                  "montoParticipante": 700
+                },
+                {
+                  "participanteId": "4",
+                  "porcentaje": 30,
+                  "montoParticipante": 300
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "4",
+      "nombre": "Viaje a Bariloche",
+      "descripcion": "Viaje grupal a Bariloche con amigos",
+      "montoTotalProyecto": 5000,
+      "estado": "Finalizado",
+      "participantes": ["1", "2", "4"],
+      "gastos": [
+        {
+          "id": "7",
+          "descripcion": "Transporte",
+          "montoTotalGasto": 2500,
+          "tickets": [
+            {
+              "id": "10",
+              "montoTotalTicket": 2500,
+              "descripcion": "Pasajes de avión",
+              "fecha": "2024-12-01",
+              "imagen": "",
+              "split": [
+                {
+                  "participanteId": "1",
+                  "porcentaje": 40,
+                  "montoParticipante": 1000
+                },
+                {
+                  "participanteId": "2",
+                  "porcentaje": 40,
+                  "montoParticipante": 1000
+                },
+                {
+                  "participanteId": "4",
+                  "porcentaje": 20,
+                  "montoParticipante": 500
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "8",
+          "descripcion": "Alojamiento",
+          "montoTotalGasto": 2500,
+          "tickets": [
+            {
+              "id": "11",
+              "montoTotalTicket": 2500,
+              "descripcion": "Cabaña para 7 días",
+              "fecha": "2024-12-02",
+              "imagen": "https://marketplace.canva.com/EAFC1OcYOM0/2/0/1131w/canva-black-white-minimalist-simple-creative-freelancer-invoice-pyLVaYlAk1o.jpg",
+              "split": [
+                {
+                  "participanteId": "1",
+                  "porcentaje": 50,
+                  "montoParticipante": 1250
+                },
+                {
+                  "participanteId": "2",
+                  "porcentaje": 30,
+                  "montoParticipante": 750
+                },
+                {
+                  "participanteId": "4",
+                  "porcentaje": 20,
+                  "montoParticipante": 500
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "5",
+      "nombre": "Proyecto de trabajo colaborativo",
+      "descripcion": "Desarrollo de una app con el equipo",
+      "montoTotalProyecto": 8000,
+      "estado": "En progreso",
+      "participantes": ["1", "2", "3", "4"],
+      "gastos": [
+        {
+          "id": "9",
+          "descripcion": "Licencias de software",
+          "montoTotalGasto": 3000,
+          "tickets": [
+            {
+              "id": "12",
+              "montoTotalTicket": 3000,
+              "descripcion": "Licencias para herramientas de desarrollo",
+              "fecha": "2024-11-01",
+              "imagen": "",
+              "split": [
+                {
+                  "participanteId": "1",
+                  "porcentaje": 25,
+                  "montoParticipante": 750
+                },
+                {
+                  "participanteId": "2",
+                  "porcentaje": 25,
+                  "montoParticipante": 750
+                },
+                {
+                  "participanteId": "3",
+                  "porcentaje": 25,
+                  "montoParticipante": 750
+                },
+                {
+                  "participanteId": "4",
+                  "porcentaje": 25,
+                  "montoParticipante": 750
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "10",
+          "descripcion": "Diseño gráfico",
+          "montoTotalGasto": 5000,
+          "tickets": [
+            {
+              "id": "13",
+              "montoTotalTicket": 5000,
+              "descripcion": "Contratación de un diseñador freelance",
+              "fecha": "2024-11-10",
+              "imagen": "https://marketplace.canva.com/EAFC1OcYOM0/2/0/1131w/canva-black-white-minimalist-simple-creative-freelancer-invoice-pyLVaYlAk1o.jpg",
+              "split": [
+                {
+                  "participanteId": "1",
+                  "porcentaje": 30,
+                  "montoParticipante": 1500
+                },
+                {
+                  "participanteId": "2",
+                  "porcentaje": 30,
+                  "montoParticipante": 1500
+                },
+                {
+                  "participanteId": "3",
+                  "porcentaje": 20,
+                  "montoParticipante": 1000
+                },
+                {
+                  "participanteId": "4",
+                  "porcentaje": 20,
+                  "montoParticipante": 1000
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "edf1",
+      "nombre": "Viaje a MDQ",
+      "descripcion": "Viaje con la familia",
+      "participantes": [null, "1"],
+      "montoTotalProyecto": 0,
+      "gastos": [],
+      "estado": "En progreso"
+    },
+    {
+      "id": "e20e",
+      "nombre": "Viaje a MDQ",
+      "descripcion": "Viaje con la familia",
+      "participantes": ["93042587-8a65-495c-9ef3-9ad9f28e81c3", "1"],
+      "montoTotalProyecto": 0,
+      "gastos": [],
+      "estado": "En progreso"
+    },
+    {
+      "id": "927e",
+      "nombre": "proyecto test",
+      "descripcion": "asdasd",
+      "participantes": ["93042587-8a65-495c-9ef3-9ad9f28e81c3"],
+      "montoTotalProyecto": 0,
+      "gastos": [],
+      "estado": "En progreso"
+    }
+  ]
+}
