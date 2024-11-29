@@ -5,6 +5,7 @@ export const ProjectExpenses = ({
   expenses,
   participantesProyecto,
   onEditExpenseTitle,
+  onEditTicket,
   editMode,
   openGastoModal,
   handleOpenAddTicketModal,
@@ -23,13 +24,10 @@ export const ProjectExpenses = ({
           >
             Agregar gasto
           </button>
-
         </div>
       </div>
 
-      <div
-        className="flex flex-col gap-2"
-      >
+      <div className="flex flex-col gap-2">
         {expenses.length > 0 &&
           expenses.map((exp, i) => (
             <ProjectExpense
@@ -40,6 +38,7 @@ export const ProjectExpenses = ({
               key={i}
               participantesproyecto={participantesProyecto}
               openAddTicketModal={handleOpenAddTicketModal}
+              onEditTicket={(ticketId, description, date, amount) => onEditTicket(ticketId, description, date, amount)}
             />
           ))}
       </div>

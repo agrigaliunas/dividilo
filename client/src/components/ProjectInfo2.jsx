@@ -18,7 +18,8 @@ import { fetchUsuarioByEmail } from "../services/UserService";
 import NewGastoModal from "./modals/NewGastoModal";
 import NewTicketModal from "./modals/NewTicketModal";
 import { updateExpense } from "../services/ExpenseService";
-import { eliminarSplitsDelParticipante } from "../services/SplitService"
+import { eliminarSplitsDelParticipante } from "../services/SplitService";
+import { updateTicket } from "../services/TicketService";
 
 export const ProjectInfo2 = ({
   proyecto,
@@ -55,20 +56,33 @@ export const ProjectInfo2 = ({
         project.state,
         user.token
       );
-
+  
+      const updatedTicketsPromises = expenses.flatMap((expense) =>
+        expense.tickets?.map((ticket) =>
+          updateTicket(
+            ticket.ticket_id,
+            ticket.description,
+            ticket.amount,
+            ticket.date,
+            user.token
+          )
+        )
+      );
+  
       const updatedExpensesPromises = expenses.map((expense) =>
         updateExpense(expense.expense_id, expense.title, user.token)
       );
-
-      await Promise.all(updatedExpensesPromises);
-
+  
+      await Promise.all([...updatedTicketsPromises, ...updatedExpensesPromises]);
+  
+      // Actualizar el estado local
       setExpenses(expenses);
       setProject(project);
       onProjectUpdate(project);
-
-      console.log(project);
-
+  
       setEditandoProyectoMode(false);
+  
+      window.location.reload();
     } catch (error) {
       console.error("Error al guardar el proyecto o los gastos:", error);
       alert(
@@ -76,6 +90,7 @@ export const ProjectInfo2 = ({
       );
     }
   };
+  
 
   const handleDeleteProject = async () => {
     const response = await deleteProject(project.project_id, user.token);
@@ -156,7 +171,11 @@ export const ProjectInfo2 = ({
         prevData.filter((p) => p.user_id !== userId)
       );
       onParticipantsUpdate(participants);
-      await eliminarSplitsDelParticipante(userId, project.project_id, user.token);
+      await eliminarSplitsDelParticipante(
+        userId,
+        project.project_id,
+        user.token
+      );
     }
   };
 
@@ -167,16 +186,6 @@ export const ProjectInfo2 = ({
     }));
   };
 
-  const getParticipanteNombreApellido = useCallback(
-    (participanteId) => {
-      const usuario = participantesProyecto.find(
-        (user) => user.user_id === participanteId
-      );
-      return usuario?.initials || "Desconocido";
-    },
-    [participantesProyecto]
-  );
-
   const handleEditExpenseTitle = (index, newTitle) => {
     setExpenses((prevExpenses) => {
       const updatedExpenses = [...prevExpenses];
@@ -185,68 +194,114 @@ export const ProjectInfo2 = ({
     });
   };
 
-  // const calcularGastoParticipante = useCallback(
-  //   (participanteId) => {
-  //     const totalGasto = gastosProyecto.reduce((acc, gasto) => {
-  //       const tickets = gasto.tickets || [];
-  //       const ticketGasto = tickets.reduce((sum, ticket) => {
-  //         const split = ticket.split.find(
-  //           (s) => s.participanteId === participanteId
-  //         );
-  //         return (
-  //           sum +
-  //           (split ? (ticket.montoTotalTicket * split.porcentaje) / 100 : 0)
-  //         );
-  //       }, 0);
-  //       return acc + ticketGasto;
-  //     }, 0);
+  const handleEditTicket = async (ticketId, description, date, amount) => {
 
-  //     const balance =
-  //       proyecto.montoTotalProyecto / participantesProyecto.length - totalGasto;
+    setExpenses((prevExpenses) => {
+      return prevExpenses.map((expense) => {
+        const updatedTickets = expense.tickets.map((ticket) => {
+          if (ticket.ticket_id === ticketId) {
+            return {
+              ...ticket,
+              description,
+              date,
+              amount,
+            };
+          }
+          return ticket;
+        });
 
-  //     return balance < 0
-  //       ? { texto: `+ $${Math.abs(balance)}`, color: "text-green-500" }
-  //       : balance === 0
-  //       ? { texto: `$0.00`, color: "text-gray-500" }
-  //       : { texto: `- $${balance}`, color: "text-red-500" };
-  //   },
-  //   [gastosProyecto, proyecto, participantesProyecto]
-  // );
+        return {
+          ...expense,
+          tickets: updatedTickets,
+        };
+      });
+    });
+  };
 
-  // const ParticipantBalance = useMemo(
-  //   () => (
-  //     <div className="flex flex-col gap-4 border border-1 bg-white p-5 rounded-xl shadow-md">
-  //       <h2 className="text-2xl text-left font-bold">Balances</h2>
-  //       <div className="flex flex-col gap-2">
-  //         {participantesProyecto.map((participante) => {
-  //           const { texto, color } = calcularGastoParticipante(
-  //             participante.user_id
-  //           );
-  //           return (
-  //             <div
-  //               key={participante.user_id}
-  //               className="flex flex-row bg-white p-5 rounded-xl shadow-md"
-  //             >
-  //               <span className="text-lg lg:text-2xl font-semibold">
-  //                 {getParticipanteNombreApellido(participante.user_id)}
-  //               </span>
-  //               <span
-  //                 className={`text-lg lg:text-2xl font-bold ml-auto ${color}`}
-  //               >
-  //                 {texto}
-  //               </span>
-  //             </div>
-  //           );
-  //         })}
-  //       </div>
-  //     </div>
-  //   ),
-  //   [
-  //     participantesProyecto,
-  //     calcularGastoParticipante,
-  //     getParticipanteNombreApellido,
-  //   ]
-  // );
+  const calcularGastoParticipante = useCallback(
+    (participanteId) => {
+      let totalGasto = 0;
+      let splits = [];
+
+      for (const expense of expenses) {
+        for (const ticket of expense.tickets) {
+          const split = ticket.splits.find((s) => s.user_id === participanteId);
+          if (split) {
+            totalGasto += split.user_amount;
+            splits.push(split);
+          } else {
+            totalGasto = 0;
+          }
+
+          if (ticket.user_id === participanteId) {
+            totalGasto += ticket.amount;
+          }
+        }
+      }
+
+      var balance = 0;
+
+      if (totalGasto !== 0) {
+        balance = project.total_amount / participants.length - totalGasto;
+      }
+
+      return {
+        texto:
+          balance < 0
+            ? `+ $${Math.abs(balance).toFixed(2)}`
+            : balance === 0
+            ? `$0.00`
+            : `- $${Math.abs(balance).toFixed(2)}`,
+        color:
+          balance < 0
+            ? "text-green-500"
+            : balance === 0
+            ? "text-gray-500"
+            : "text-red-500",
+      };
+    },
+    [expenses, project, participants]
+  );
+
+  const ParticipantBalance = useMemo(
+    () => (
+      <div className="flex flex-col gap-4">
+        <h2 className="text-2xl text-left font-bold border border-1 bg-white p-5 rounded-xl shadow-md">
+          Balances
+        </h2>
+        <div className={`flex flex-col gap-2`}>
+          {participants.map((participante) => {
+            const { texto, color } = calcularGastoParticipante(
+              participante.user_id
+            );
+            return (
+              <div
+                key={participante.user_id}
+                className="flex flex-row bg-white p-5 rounded-xl shadow-md"
+              >
+                <div className="flex flex-col">
+                  <span className="text-lg lg:text-xl font-medium">
+                    {participante.name + " " + participante.lastname}
+                  </span>
+                  {!participante.finished_onboarding && (
+                    <span className="text-gray-500 ml-1">
+                      {participante.email}
+                    </span>
+                  )}
+                </div>
+                <span
+                  className={`text-lg lg:text-2xl font-bold ml-auto ${color}`}
+                >
+                  {texto}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    ),
+    [participants, calcularGastoParticipante]
+  );
 
   return (
     <div className="flex flex-col w-full lg:px-[20vw] lg:py-[5vw] px-[5vw] py-[5vw] gap-8">
@@ -292,6 +347,7 @@ export const ProjectInfo2 = ({
           expenses={expenses}
           participantesProyecto={participants}
           onEditExpenseTitle={handleEditExpenseTitle}
+          onEditTicket={handleEditTicket}
           editMode={editandoProyectoMode}
           openGastoModal={openGastoModal}
           handleOpenAddTicketModal={openTicketModal}
@@ -315,7 +371,7 @@ export const ProjectInfo2 = ({
         isOpen={modalTicketIsOpen}
         onClose={closeTicketModal}
       />
-      {/* {ParticipantBalance} */}
+      {ParticipantBalance}
     </div>
   );
 };

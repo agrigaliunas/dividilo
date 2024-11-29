@@ -10,6 +10,7 @@ export const ProjectExpense = ({
   index,
   participantesproyecto,
   openAddTicketModal,
+  onEditTicket
 }) => {
   const [gastosExpandidos, setGastosExpandidos] = useState({});
 
@@ -66,6 +67,7 @@ export const ProjectExpense = ({
                     ticket={expenseTicket}
                     index={ticketIndex}
                     participantes={participantesproyecto}
+                    editTicket={onEditTicket}
                   />
                   {expense.tickets.length > 1 && (
                     <div className="border border-t-5 border-gray-300"></div>
