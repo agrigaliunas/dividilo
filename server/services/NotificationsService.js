@@ -46,8 +46,23 @@ const deleteNotification = async (id) => {
   }
 };
 
+const deleteAllNotificationByUserId = async (userId) => {
+  try {
+    await Notification.destroy({
+      where: { user_to_id: userId },
+    });
+
+    return "Notificaciones borradas con éxito.";
+  } catch (error) {
+    throw new Error(
+      "Ocurrió un error al intentar borrar las notificaciones: " + error.message
+    );
+  }
+};
+
 module.exports = {
   addNotification,
   getNotificationsByUserId,
   deleteNotification,
+  deleteAllNotificationByUserId,
 };

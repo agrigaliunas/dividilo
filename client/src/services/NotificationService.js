@@ -10,3 +10,13 @@ export const fetchNotificationsByUserId = async (userId, token) => {
   }).then((data) => data.json());
   return data;
 };
+
+export const deleteNotificationsByUserId = async (userId, token) => {
+  await fetch(`${BACKEND_URL}/notifications/user/${userId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": token,
+    }
+  })
+}

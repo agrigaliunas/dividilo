@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/AuthContext.js";
-import { fetchNotificationsByUserId } from "../../services/NotificationService.js";
+import { deleteNotificationsByUserId, fetchNotificationsByUserId } from "../../services/NotificationService.js";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
+import { Trash } from "../icons/Trash.jsx";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -49,9 +50,20 @@ const NotificationsLayout = () => {
     loadNotifications();
   }, [user.user_id]);
 
+
+  const handleDeleteNotifications = async () => {
+    await deleteNotificationsByUserId(user.user_id, user.token)
+    window.location.reload(true)
+  }
+
   return (
     <div className="p-4 space-y-3">
+      <div className="w-full flex flex-row justify-between items-center">
       <h2 className="lg:text-5xl text-4xl font-semibold">Notificaciones</h2>
+      <button className="flex flex-row gap-1 hover:opacity-70" onClick={handleDeleteNotifications}>
+        <Trash style="w-6 h-6" /> Borrar notificaciones
+      </button>
+      </div>
       {!notifications ||
         (notifications.length === 0 && (
           <span className="text-gray-500 text-center">
