@@ -77,7 +77,7 @@ const deleteTicket = async (id) => {
     if (ticket) {
       await Ticket.destroy({
         where: {
-          expense_id: id,
+          ticket_id: id,
         },
       });
 
