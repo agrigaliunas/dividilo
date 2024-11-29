@@ -33,10 +33,7 @@ const addExpense = async (expenseData) => {
   }
 };
 
-const deleteExpense = async (id) => {
-
-  // TODO: Agregar el parametro userFromNotification cuando este la funcionalidad de borrar gasto en el front-end
-
+const deleteExpense = async (id, userFromNotification) => {
   try {
     const expense = await Expense.findByPk(id);
 
@@ -47,23 +44,23 @@ const deleteExpense = async (id) => {
         },
       });
 
-    // const project = await getProjectById(expense.project_id)
+    const project = await getProjectById(expense.project_id)
 
-    // const notificationMessage = `${user.name} ${user.lastname} ha borrado el gasto ${expense.title} en el proyecto ${project.title}`;
+    const notificationMessage = `${userFromNotification.name} ${userFromNotification.lastname} ha borrado el gasto ${expense.title} en el proyecto ${project.title}`;
 
-    // const usersFromProject = await getUsersByProjectId(project.project_id)
+    const usersFromProject = await getUsersByProjectId(project.project_id)
 
-    // const filteredUsers = usersFromProject.filter(user => user.user_id !== userFromNotification.user_id);
+    const filteredUsers = usersFromProject.filter(user => user.get().user_id !== userFromNotification.user_id);
 
-    // filteredUsers.map(async (user) => {
-    //   await addNotification({
-    //     user_from_id: userFromNotifiacion.user_id,
-    //     user_to_id: user.user_id,
-    //     project_id: project.project_id,
-    //     message: notificationMessage,
-    //     type: 'Warning'
-    //   });
-    // })
+    filteredUsers.map(async (user) => {
+      await addNotification({
+        user_from_id: userFromNotification.user_id,
+        user_to_id: user.get().user_id,
+        project_id: project.project_id,
+        message: notificationMessage,
+        type: 'Warning'
+      });
+    })
 
       await deleteExpenseAmount(expense.project_id, expense.total_amount)
 

@@ -1,4 +1,5 @@
-const { Split, Ticket } = require("../db/config");
+const { Split, Ticket, Project, Expense } = require("../db/config");
+const { addNotification } = require("./NotificationsService");
 
 const getTicketById = async (ticketId) => {
   try {
@@ -46,57 +47,108 @@ const addSplit = async (splitData) => {
 
     const ticketTotalAmount = ticket.amount;
 
-    const userAmount = parseFloat(splitData.user_amount)
+    const userAmount = parseFloat(splitData.user_amount);
 
     if (splitData.split_type === "Monto") {
       if (userAmount > ticketTotalAmount) {
         throw new Error("El monto del split excede el total del ticket.");
       }
-  
+
       if (ticketTotalAmount - totalFromSplits < userAmount) {
         throw new Error(
           "El monto del split excede el total de los splits del ticket."
         );
       }
-  
+
       const percentage = splitData.user_amount / ticketTotalAmount;
-  
+
       await Split.create({
         user_id: splitData.user_id,
         ticket_id: splitData.ticket_id,
         user_amount: userAmount,
         user_percentage: percentage,
       });
-  
-      return { message: "Split añadido correctamente" };
     } else {
 
       if (splitData.user_percentage > 1) {
         throw new Error("El porcentaje debe ser menor a 1.");
       }
-  
-      const amount = splitData.user_percentage*ticketTotalAmount;
-  
+
+      const amount = splitData.user_percentage * ticketTotalAmount;
+
       await Split.create({
         user_id: splitData.user_id,
         ticket_id: splitData.ticket_id,
         user_amount: amount,
         user_percentage: splitData.user_percentage,
       });
-  
-      return { message: "Split añadido correctamente" };
     }
 
 
+    let newSplitsFromTicket = [];
+    try {
+      newSplitsFromTicket = await getSplitsByTicketId(splitData.ticket_id);
+    } catch (err) {
+      newSplitsFromTicket = [];
+    }
+
+    const usersFromTicket = newSplitsFromTicket.map((split) => split.user_id);
+
+    const expense = await Expense.findByPk(ticket.expense_id);
+    const project = await Project.findByPk(expense.project_id);
+
+    const notificationMessage = `Se ha agregado un nuevo split en el proyecto ${project.title}. Tus balances pueden haber sido afectados.`;
+
+    usersFromTicket.map(async (userId) => {
+      await addNotification({
+        user_from_id: splitData.user_from_id,
+        user_to_id: userId,
+        project_id: project.project_id,
+        message: notificationMessage,
+        type: "Update",
+      });
+    });
+
+    return { message: "Split añadido correctamente" };
   } catch (err) {
     console.error("Error creando split:", err.message);
     throw new Error("Falla al crear un split.");
   }
 };
 
-const removeSplit = async (splitId, ticketId) => {
+const removeSplit = async (splitId, userFromId) => {
   try {
+
+    const splitToDelete = await Split.findByPk(splitId);
+
+    let splitsFromTicket = [];
+    try {
+      splitsFromTicket = await getSplitsByTicketId(splitToDelete.ticket_id);
+    } catch (err) {
+      splitsFromTicket = [];
+    }
+
+    const ticket = await getTicketById(splitToDelete.ticket_id);
+
     await Split.destroy({ where: { split_id: splitId } });
+
+    const usersFromTicket = splitsFromTicket.map((split) => split.user_id);
+
+    const expense = await Expense.findByPk(ticket.expense_id)
+    const project = await Project.findByPk(expense.project_id)
+
+    const notificationMessage = `Se ha borrado un split en el proyecto ${project.title}. Tus balances pueden haber sido afectados.`;
+    
+    usersFromTicket.map(async (userId) => {
+      await addNotification({
+        user_from_id: userFromId,
+        user_to_id: userId,
+        project_id: project.project_id,
+        message: notificationMessage,
+        type: 'Update'
+      });
+    })
+
 
     return { message: "Split eliminado correctamente" };
   } catch (err) {

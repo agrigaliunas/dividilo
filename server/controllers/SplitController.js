@@ -29,7 +29,7 @@ const deleteSplit = async (req, res) => {
   try {
     const response = await SplitService.removeSplit(
       req.params.splitId,
-      req.body.ticketId
+      req.body.user_from_id
     );
     res.status(200).json(response);
   } catch (err) {

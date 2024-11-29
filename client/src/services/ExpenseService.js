@@ -5,7 +5,7 @@ export const getExpensesByProjectId = async (projectId, token) => {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": token,
+      Authorization: token,
     },
   }).then((data) => data.json());
   return data;
@@ -18,7 +18,7 @@ export const getExpensesWithTicketsByProjectId = async (projectId, token) => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": token,
+        Authorization: token,
       },
     }
   ).then((data) => data.json());
@@ -30,7 +30,7 @@ export const addExpense = async (projectId, userId, expenseTitle, token) => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": token,
+      Authorization: token,
     },
     body: JSON.stringify({
       user_from_id: userId,
@@ -46,7 +46,7 @@ export const updateExpense = async (id, newExpenseTitle, token) => {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": token,
+      Authorization: token,
     },
     body: JSON.stringify({
       title: newExpenseTitle,
@@ -56,13 +56,18 @@ export const updateExpense = async (id, newExpenseTitle, token) => {
   return response;
 };
 
-export const deleteExpense = async (id, token) => {
+export const deleteExpense = async (id, accessToken, user) => {
+  const { token: _, ...userWithoutToken } = user;
+
   const response = await fetch(`${BACKEND_URL}/expenses/${id}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": token,
-    }
+      Authorization: accessToken,
+    },
+    body: JSON.stringify({
+      user: userWithoutToken,
+    }),
   });
 
   return response;

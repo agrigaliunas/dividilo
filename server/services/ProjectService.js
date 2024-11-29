@@ -238,8 +238,6 @@ const deleteParticipantFromProject = async (id, req) => {
       throw new Error("El participante no pertenece al proyecto.");
     }
 
-    console.log(req.userId, id);
-
     await removeSplitFromUserByProjectId(req.userId, id);
 
     await ProjectUser.destroy({

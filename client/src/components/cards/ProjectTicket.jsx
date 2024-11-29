@@ -124,14 +124,13 @@ export const ProjectTicket = ({
   };
 
   const handleSaveSplit = async () => {
-    await addSplit(newSplit, ticket.ticket_id, selectedSplitType, user.token);
+    await addSplit(newSplit, ticket.ticket_id, selectedSplitType, user.user_id, user.token);
     setShowModal(false);
     window.location.reload(true);
   };
 
   const handleDeleteSplit = async (splitId) => {
-    console.log(splitId)
-    await deleteSplit(splitId, user.token);
+    await deleteSplit(splitId, user.user_id, user.token);
     window.location.reload(true);
   };
 

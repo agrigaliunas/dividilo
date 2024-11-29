@@ -27,7 +27,7 @@ export const ProjectExpense = ({
   };
 
   const handleDeleteExpense = async () => {
-    await deleteExpense(expense.expense_id, user.token)
+    await deleteExpense(expense.expense_id, user.token, user)
 
     window.location.reload(true)
   }

@@ -13,7 +13,7 @@ const addExpense = async (req, res) => {
 
 const deleteExpense = async (req, res) => {
   try {
-    const user = await ExpenseService.deleteExpense(req.params.expenseId);
+    const user = await ExpenseService.deleteExpense(req.params.expenseId, req.body.user);
     res.status(200).json(user);
   } catch (err) {
     res.status(500).json({

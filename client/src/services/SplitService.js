@@ -18,7 +18,7 @@ export const eliminarSplitsDelParticipante = async (
   return response;
 };
 
-export const addSplit = async (newSplit, ticketId, selectedSplitType, token) => {
+export const addSplit = async (newSplit, ticketId, selectedSplitType, userFromId, token) => {
   const data = await fetch(`${BACKEND_URL}/splits`, {
     method: "POST",
     headers: {
@@ -30,19 +30,23 @@ export const addSplit = async (newSplit, ticketId, selectedSplitType, token) => 
       user_id: newSplit.user_id,
       user_amount: newSplit.user_amount,
       split_type: selectedSplitType,
-      user_percentage: newSplit.user_percentage || null
+      user_percentage: newSplit.user_percentage || null,
+      user_from_id: userFromId
     }),
   }).then((data) => data.json());
   return data;
 }
 
 
-export const deleteSplit = async (splitId, token) => {
+export const deleteSplit = async (splitId, userFromId, token) => {
   const data = await fetch(`${BACKEND_URL}/splits/${splitId}`, {
     method: "DELETE",
     headers: {
+      "Content-Type": "application/json",
       "Authorization": token,
-    }
-  }).then((data) => data.json());
-  return data;
+    },
+    body: JSON.stringify({
+      user_from_id: userFromId
+    })
+  });
 }
