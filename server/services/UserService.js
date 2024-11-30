@@ -1,8 +1,9 @@
-const { User } = require("../db/config");
+const { User, Notification } = require("../db/config");
 const { sendEmail } = require("../services/EmailService");
 const { accountDeletedTemplate } = require("../utils/EmailTemplates");
 const { Op } = require("sequelize");
 const bcrypt = require("bcrypt");
+const { getNotificationsByUserId } = require("./NotificationsService");
 
 const getUserById = async (id) => {
   const user = await User.findByPk(id, {

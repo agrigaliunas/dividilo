@@ -125,6 +125,7 @@ const deleteProject = async (id) => {
     const project = await Project.findByPk(id);
 
     if (project) {
+
       await ProjectUser.destroy({
         where: {
           project_id: id,

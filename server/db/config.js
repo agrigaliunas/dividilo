@@ -42,9 +42,20 @@ Split.belongsTo(User, { foreignKey: "user_id" });
 Ticket.hasMany(Split, { foreignKey: "ticket_id" });
 Split.belongsTo(Ticket, { foreignKey: "ticket_id" });
 
-Notification.belongsTo(User, { as: "UserFrom", foreignKey: "user_from_id" });
-Notification.belongsTo(User, { as: "UserTo", foreignKey: "user_to_id" });
-Notification.belongsTo(Project, { foreignKey: "project_id" });
+Notification.belongsTo(User, {
+  as: "UserFrom",
+  foreignKey: "user_from_id",
+  onDelete: "CASCADE",
+});
+Notification.belongsTo(User, {
+  as: "UserTo",
+  foreignKey: "user_to_id",
+  onDelete: "CASCADE",
+});
+Notification.belongsTo(Project, {
+  foreignKey: "project_id",
+  onDelete: "CASCADE",
+});
 
 const initializeDatabase = async () => {
   try {
